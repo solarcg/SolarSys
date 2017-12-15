@@ -190,11 +190,12 @@
         } );
 
         var loader = new THREE.TextureLoader();
-        loader.load( 'res/saturn.jpg', function ( texture ) {
+        loader.load( 'res/saturn_circule.jpg', function ( texture ) {
 
-            var geometry = new THREE.CylinderGeometry(180, 180, 2, 170)
+            var geometry = new THREE.CylinderGeometry(180, 230, 0, 100, 100, true);
             var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
             var mesh = new THREE.Mesh( geometry, material );
+            mesh.rotateY(90);
             saturn.add( mesh );
         } );
 
