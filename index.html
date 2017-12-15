@@ -1,12 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Solar System</title>
+    <title>three.js canvas - geometry - earth</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            color: #808080;
+            font-family:Monospace;
+            font-size:13px;
+            text-align:center;
+
+            background-color: #ffffff;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px; width: 100%;
+            padding: 5px;
+        }
+
+        a {
+
+            color: #0080ff;
+        }
+
+    </style>
 </head>
 <body>
-    <img src="http://forum.celestialmatters.org/download/file.php?id=1483&mode=view"/>
+
+<div id="container"></div>
+<div id="info"><a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a> - Webgl Earth Demo</div>
+<script src="js/three.js"></script>
+<script src="js/renderers/Projector.js"></script>
+<script src="js/renderers/CanvasRenderer.js"></script>
+<script src="js/libs/stats.min.js"></script>
+
+<script>
+
+    var container, stats;
+    var camera, scene, renderer;
+    var mouseX = 0, mouseY = 0;
+
+    // 109 : 11 : 9 : 4 : 3.8 :1 : 0.95 : 0.53 : 0.38
+    var sun, mercury, venus, earth, moon, mars, jupiter, saturn, neptune, uranus;
+
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+
+    init();
+    animate();
+
+    function init() {
+
+        container = document.getElementById( 'container' );
+
+        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 4000 );
+        camera.position.z = 2000;
+        camera.lookAt(0, 0, 0);
+
+        scene = new THREE.Scene();
+
+
+
+        // galaxy
+        galaxy = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/galaxy.png', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 2000, 50, 50 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5, side: THREE.BackSide } );
+            var mesh = new THREE.Mesh( geometry, material );
+            galaxy.add( mesh );
+
+        } );
+
+        // sun
+        sun = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/sun.png', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 500, 50, 50 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            sun.add( mesh );
+
+        } );
+
+        // mercury
+        mercury = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/mercury.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 38.3, 50, 50 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            mercury.add( mesh );
+
+        } );
+
+        // venus
+        venus = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/venus.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 95.1, 50, 50 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            venus.add( mesh );
+
+        } );
+
+        // earth
+        earth = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/no_cloud.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 100, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+
+            var bumpLoader = new THREE.TextureLoader();
+            bumpLoader.load( 'res/elev_bump.jpg', function ( texture ) {
+                material.bumpMap = texture;
+                material.bumpScale = 0.005;
+            });
+
+            var specularLoader = new THREE.TextureLoader();
+            specularLoader.load( 'res/water.png', function ( texture ) {
+                material.specularMap = texture;
+                material.specular = new THREE.Color('grey');
+            });
+            var mesh = new THREE.Mesh( geometry, material );
+            earth.add( mesh );
+        } );
+        // cloud
+
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/fair_cloud.png', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 100, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5, transparent: true } );
+            var mesh = new THREE.Mesh( geometry, material );
+            earth.add( mesh );
+
+        } );
+
+        // mars
+        mars = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/mars.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 70, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            mars.add( mesh );
+        } );
+
+        // jupiter
+        jupiter = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/jupiter.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 150, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            jupiter.add( mesh );
+        } );
+
+        // saturn
+        saturn = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/saturn.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 140, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            saturn.add( mesh );
+        } );
+
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/saturn.jpg', function ( texture ) {
+
+            var geometry = new THREE.CylinderGeometry(180, 180, 2, 170)
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            saturn.add( mesh );
+        } );
+
+        // uranus
+        uranus = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/uranus.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 120, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            uranus.add( mesh );
+        } );
+
+        // neptune
+        neptune = new THREE.Group();
+        var loader = new THREE.TextureLoader();
+        loader.load( 'res/neptune.jpg', function ( texture ) {
+
+            var geometry = new THREE.SphereGeometry( 130, 20, 20 );
+
+            var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+            var mesh = new THREE.Mesh( geometry, material );
+            neptune.add( mesh );
+        } );
+
+
+        scene.add(galaxy);
+        sun.position.set(-1800, 0, 0);
+        scene.add(sun);
+        mercury.position.set(-1000, 0, 0);
+        scene.add(mercury);
+        venus.position.set(-700, 0, 0);
+        scene.add(venus);
+        earth.position.set(-400, 0, 0);
+        scene.add(earth);
+        mars.position.set(-100, 0, 0);
+        scene.add(mars);
+        jupiter.position.set(200, 0, 0);
+        scene.add(jupiter);
+        saturn.position.set(500, 0, 0);
+        scene.add(saturn);
+        uranus.position.set(800, 0, 0);
+        scene.add(uranus);
+        neptune.position.set(1100, 0, 0);
+        scene.add(neptune);
+
+
+
+
+
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+
+        stats = new Stats();
+        container.appendChild( stats.dom );
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    function onWindowResize() {
+
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        mouseX = ( event.clientX - windowHalfX );
+        mouseY = ( event.clientY - windowHalfY );
+
+    }
+
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+
+        render();
+        stats.update();
+
+    }
+
+    function render() {
+
+camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+        camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+        camera.lookAt( 0, 0, 0 );
+
+        renderer.render( scene, camera );
+
+    }
+
+
+</script>
+
 </body>
 </html>
