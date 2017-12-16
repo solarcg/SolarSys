@@ -17,8 +17,28 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="934">
-              <caret line="187" column="24" lean-forward="false" selection-start-line="187" selection-start-column="24" selection-end-line="187" selection-end-column="24" />
+            <state relative-caret-position="753">
+              <caret line="134" column="33" lean-forward="true" selection-start-line="134" selection-start-column="33" selection-end-line="134" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stars.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/stars.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="69" column="18" lean-forward="true" selection-start-line="69" selection-start-column="18" selection-end-line="69" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="planet.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/planet.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="373">
+              <caret line="139" column="69" lean-forward="false" selection-start-line="139" selection-start-column="69" selection-end-line="139" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -27,43 +47,15 @@
       <file leaf-file-name="three.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/three.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="2432">
+              <caret line="31260" column="0" lean-forward="true" selection-start-line="31260" selection-start-column="0" selection-end-line="31260" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="no_cloud.jpg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/no_cloud.jpg">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="galaxy.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/galaxy.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="water.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/water.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="elev_bump.jpg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/elev_bump.jpg">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fair_cloud.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/fair_cloud.png">
+      <file leaf-file-name="saturnring.jpg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/saturnring.jpg">
           <provider selected="true" editor-type-id="images">
             <state />
           </provider>
@@ -82,7 +74,11 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>mars</find>
+      <find>../res</find>
     </findStrings>
+    <replaceStrings>
+      <replace>res</replace>
+    </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -93,6 +89,8 @@
         <option value="$PROJECT_DIR$/js/planets/earth.js" />
         <option value="$PROJECT_DIR$/js/planets/galaxy.js" />
         <option value="$PROJECT_DIR$/js/planets/mars.js" />
+        <option value="$PROJECT_DIR$/js/stars.js" />
+        <option value="$PROJECT_DIR$/js/planet.js" />
         <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
@@ -104,8 +102,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="166" />
-    <option name="y" value="475" />
+    <option name="x" value="192" />
+    <option name="y" value="105" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -124,8 +122,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -137,11 +135,6 @@
               <item name="SolaySys" type="b2602c69:ProjectViewProjectNode" />
               <item name="SolaySys" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SolaySys" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SolaySys" type="462c0819:PsiDirectoryNode" />
-              <item name="res" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -156,12 +149,13 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\learnings\cs\SolaySys\js\planets" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\learnings\cs\SolaySys\res" />
       <recent name="D:\learnings\cs\SolaySys\js" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\learnings\cs\SolaySys\res" />
+      <recent name="D:\learnings\cs\SolaySys\js\planets" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -196,30 +190,32 @@
       <updated>1513305472695</updated>
       <workItem from="1513305475348" duration="2325000" />
       <workItem from="1513309442969" duration="10908000" />
+      <workItem from="1513348612145" duration="5984000" />
+      <workItem from="1513393495282" duration="22429000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13233000" />
+    <option name="totallyTimeSpent" value="41646000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1515625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997879" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32979852" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -231,11 +227,97 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="8" />
     </breakpoint-manager>
-    <watches-manager />
+    <watches-manager>
+      <configuration name="JavascriptDebugType">
+        <watch expression="satlitesSpeed[i]" language="HTML" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/js/stars.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="8" lean-forward="true" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/water.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/galaxy.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/elev_bump.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/earth.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/fair_cloud.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/planet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="30" column="22" lean-forward="true" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/no_cloud.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/galaxy.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/water.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/elev_bump.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/fair_cloud.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -273,12 +355,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1513244820316" expanded="true" signature="1193:1203" ph="..." />
-            <marker date="1513244820316" expanded="true" signature="1291:1301" ph="..." />
-            <marker date="1513244820316" expanded="true" signature="1457:1467" ph="..." />
-            <marker date="1513244820316" expanded="true" signature="1554:1564" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -286,7 +362,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
           <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -317,12 +392,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1513244820316" expanded="true" signature="1193:1203" ph="..." />
-            <marker date="1513244820316" expanded="true" signature="1291:1301" ph="..." />
-            <marker date="1513244820316" expanded="true" signature="1457:1467" ph="..." />
-            <marker date="1513244820316" expanded="true" signature="1554:1564" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -330,7 +399,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
           <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -349,7 +417,30 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/planets/earth.js" />
+    <entry file="file://$PROJECT_DIR$/js/planets/galaxy.js" />
+    <entry file="file://$PROJECT_DIR$/js/planets/mars.js" />
+    <entry file="file://$PROJECT_DIR$/res/sunmap.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/sun.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/elev_bump.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/earth.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/earthmap1k.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
@@ -359,42 +450,74 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/saturnring.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/saturnmap.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/saturnringpattern.gif">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/uranusringtrans.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/uranusringcolor.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/uranusringcolour.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/uranusringtrans.gif">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/saturnringcolor.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/three.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="2432">
+          <caret line="31260" column="0" lean-forward="true" selection-start-line="31260" selection-start-column="0" selection-end-line="31260" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/planets/earth.js">
+    <entry file="file://$PROJECT_DIR$/js/stars.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="285">
+          <caret line="69" column="18" lean-forward="true" selection-start-line="69" selection-start-column="18" selection-end-line="69" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/planets/galaxy.js">
+    <entry file="file://$PROJECT_DIR$/js/planet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/planets/mars.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="373">
+          <caret line="139" column="69" lean-forward="false" selection-start-line="139" selection-start-column="69" selection-end-line="139" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="934">
-          <caret line="187" column="24" lean-forward="false" selection-start-line="187" selection-start-column="24" selection-end-line="187" selection-end-column="24" />
+        <state relative-caret-position="753">
+          <caret line="134" column="33" lean-forward="true" selection-start-line="134" selection-start-column="33" selection-end-line="134" selection-end-column="33" />
           <folding />
         </state>
       </provider>
