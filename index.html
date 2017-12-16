@@ -1,12 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Solar System</title>
+    <title>three.js SolarSys</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            color: #808080;
+            font-family:Monospace;
+            font-size:13px;
+            text-align:center;
+
+            background-color: #ffffff;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px; width: 100%;
+            padding: 5px;
+        }
+
+        a {
+
+            color: #0080ff;
+        }
+
+    </style>
 </head>
 <body>
-    <img src="http://forum.celestialmatters.org/download/file.php?id=1483&mode=view"/>
+
+<div id="container"></div>
+<div id="info"><a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a> - Webgl Demo</div>
+<script src="js/three.js"></script>
+<script src="js/renderers/Projector.js"></script>
+<script src="js/renderers/CanvasRenderer.js"></script>
+<script src="js/libs/stats.min.js"></script>
+<script src="js/planet.js"></script>
+
+<script>
+
+    var container, stats;
+    var camera, scene, renderer;
+    var mouseX = 0, mouseY = 0;
+
+    // 109 : 11 : 9 : 4 : 3.8 :1 : 0.95 : 0.53 : 0.38
+
+
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+
+    init();
+    animate();
+
+    function init() {
+
+        container = document.getElementById( 'container' );
+
+        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera.position.z = 5000;
+        camera.lookAt(0, 0, 0);
+
+        scene = new THREE.Scene();
+
+        createPlanet("galaxy");
+        createPlanet("sun");
+        createPlanet("mercury");
+        createPlanet("venus");
+        createPlanet("earth");
+        createPlanet("mars");
+        createPlanet("jupiter");
+        createPlanet("saturn");
+        createPlanet("uranus");
+        createPlanet("neptune");
+
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+
+        stats = new Stats();
+        container.appendChild( stats.dom );
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    function onWindowResize() {
+
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        mouseX = ( event.clientX - windowHalfX );
+        mouseY = ( event.clientY - windowHalfY );
+
+    }
+
+
+    function animate() {
+
+        requestAnimationFrame( animate );
+
+        render();
+        stats.update();
+
+    }
+
+    function render() {
+        mercury.rotation.y += 0.01;
+        mercuryPivot.rotation.y += 0.01;
+        venus.rotation.y += 0.009;
+        venusPivot.rotation.y += 0.009;
+        earth.rotation.y += 0.008;
+        earthPivot.rotation.y += 0.008;
+        mars.rotation.y += 0.007;
+        marsPivot.rotation.y += 0.007;
+        jupiter.rotation.y += 0.006;
+        jupiterPivot.rotation.y += 0.006;
+        saturn.rotation.y += 0.005;
+        saturnPivot.rotation.y += 0.005;
+        uranus.rotation.y += 0.004;
+        uranusPivot.rotation.y += 0.004;
+        neptune.rotation.y += 0.003;
+        neptunePivot.rotation.y += 0.003;
+        camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+        camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+        camera.lookAt( 0, 0, 0 );
+        renderer.render( scene, camera );
+
+    }
+
+
+</script>
+
 </body>
 </html>
