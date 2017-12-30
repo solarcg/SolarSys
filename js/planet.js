@@ -8,9 +8,11 @@ var satlites = [];
 var satlitesPivot = [];
 var satlitesSpeed = [];
 var satlitesAngle = [];
+
+var textureLoader = new THREE.TextureLoader();
+
 function loadSun(sun) {
-    var loader = new THREE.TextureLoader();
-    loader.load(stars[0].src, function (texture) {
+    textureLoader.load(stars[0].src, function (texture) {
         var geometry = new THREE.SphereGeometry(stars[0].radius, 50, 50);
         var material = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
         var mesh = new THREE.Mesh(geometry, material);
@@ -34,12 +36,10 @@ function drawTrackLine(color, radius) {
 
 }
 
-
 function loadPlanetTexture(index) {
     planets[index] = new THREE.Group();
     planetsPivot[index] = new THREE.Group();
-    var loader = new THREE.TextureLoader();
-    loader.load(stars[index].src, function (texture) {
+    textureLoader.load(stars[index].src, function (texture) {
         var geometry = new THREE.SphereGeometry(stars[index].radius, 50, 50);
         var material = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5});
         if (stars[index].usebump) {
@@ -61,15 +61,15 @@ function loadPlanetTexture(index) {
             });
         }
         if (stars[index].ring != null) {
-            var loader = new THREE.TextureLoader();
-            loader.load( stars[index].ring, function ( texture ) {
+        
+            textureLoader.load( stars[index].ring, function ( texture ) {
                 var geometry = new THREE.CylinderGeometry(stars[index].radius * 1.1,stars[index].radius * 1.4, 0, 100, 100, true);
                 var material = new THREE.MeshLambertMaterial( { map: texture, overdraw: 0.5} );
                 var mesh = new THREE.Mesh( geometry, material );
                 planets[index].add( mesh );
             } );
-            var loader = new THREE.TextureLoader();
-            loader.load( stars[index].ring, function ( texture ) {
+        
+            textureLoader.load( stars[index].ring, function ( texture ) {
                 var geometry = new THREE.CylinderGeometry(stars[index].radius * 1.4, stars[index].radius * 1.1, 0, 100, 100, true);
                 var material = new THREE.MeshLambertMaterial( { map: texture, overdraw: 0.5} );
                 var mesh = new THREE.Mesh( geometry, material );
@@ -91,8 +91,7 @@ function loadPlanetTexture(index) {
 function loadSatliteTexture(index, index1, index2) {
     satlites[index] = new THREE.Group();
     satlitesPivot[index] = new THREE.Group();
-    var loader = new THREE.TextureLoader();
-    loader.load(stars[index1].satlites[index2].src, function (texture) {
+    textureLoader.load(stars[index1].satlites[index2].src, function (texture) {
         var geometry = new THREE.SphereGeometry(stars[index1].satlites[index2].radius, 50, 50);
         var material = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5});
         if (stars[index1].satlites[index2].usebump) {
@@ -114,15 +113,15 @@ function loadSatliteTexture(index, index1, index2) {
             });
         }
         if (stars[index1].satlites[index2].ring != null) {
-            var loader = new THREE.TextureLoader();
-            loader.load( stars[index1].satlites[index2].ring, function ( texture ) {
+        
+            textureLoader.load( stars[index1].satlites[index2].ring, function ( texture ) {
                 var geometry = new THREE.CylinderGeometry(stars[index1].satlites[index2].radius * 1.1, stars[index1].satlites[index2].radius * 1.4, 0, 100, 100, true);
                 var material = new THREE.MeshLambertMaterial( { map: texture, overdraw: 0.5} );
                 var mesh = new THREE.Mesh( geometry, material );
                 satlites[index].add( mesh );
             } );
-            var loader = new THREE.TextureLoader();
-            loader.load( stars[index1].satlites[index2].ring, function ( texture ) {
+        
+            textureLoader.load( stars[index1].satlites[index2].ring, function ( texture ) {
                 var geometry = new THREE.CylinderGeometry(stars[index1].satlites[index2].radius * 1.4, stars[index1].satlites[index2].radius * 1.1, 0, 100, 100, true);
                 var material = new THREE.MeshLambertMaterial( { map: texture, overdraw: 0.5} );
                 var mesh = new THREE.Mesh( geometry, material );
@@ -142,8 +141,7 @@ function loadSatliteTexture(index, index1, index2) {
 
 function createStars() {
     galaxy = new THREE.Group();
-    var loader = new THREE.TextureLoader();
-    loader.load('res/galaxy.png', function (texture) {
+    textureLoader.load('res/galaxy.png', function (texture) {
         var geometry = new THREE.SphereGeometry(10000, 50, 50);
         var material = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5, side: THREE.BackSide});
         var mesh = new THREE.Mesh(geometry, material);

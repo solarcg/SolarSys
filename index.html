@@ -1,155 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>three.js SolarSys</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-        body {
-            color: #808080;
-            font-family:Monospace;
-            font-size:13px;
-            text-align:center;
-
-            background-color: #ffffff;
-            margin: 0px;
-            overflow: hidden;
-        }
-
-        #info {
-            position: absolute;
-            top: 0px; width: 100%;
-            padding: 5px;
-        }
-
-        a {
-
-            color: #0080ff;
-        }
-
-    </style>
-</head>
-<body>
-
-<div id="container"></div>
-<div id="info"><a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a> - Webgl Demo</div>
-<script src="js/three.js"></script>
-<script src="js/renderers/Projector.js"></script>
-<script src="js/renderers/CanvasRenderer.js"></script>
-<script src="js/libs/stats.min.js"></script>
-<script src="js/stars.js"></script>
-<script src="js/planet.js"></script>
-
-<script>
-
-    var container, stats;
-    var camera, scene, renderer;
-    var mouseX = 0, mouseY = 0;
-
-    var windowHalfX = window.innerWidth / 2;
-    var windowHalfY = window.innerHeight / 2;
-
-    init();
-    animate();
-
-    function initScene() {
-        scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x000000);
-    }
-    
-    function initCamera() {
-        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 20000 );
-        camera.position.z = 10000;
-        camera.position.y = 5000;
-        camera.lookAt(0, 0, 0);
-    }
-
-    function initLight() {
-        var sunLight = new THREE.PointLight(0xFFFFFF);
-        sunLight.position.set(0, 0, 0);
-        scene.add(sunLight);
-    }
-
-    function initRender() {
-        renderer = new THREE.WebGLRenderer({antialias: true});
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
-    }
-    
-
-    function init() {
-
-        container = document.getElementById( 'container' );
-
-        initCamera();
-
-        initScene();
-
-        initLight();
-
-        createStars();
-
-        initRender();
-
-        stats = new Stats();
-        container.appendChild( stats.dom );
-
-        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-        window.addEventListener( 'resize', onWindowResize, false );
-
-    }
-
-    function onWindowResize() {
-
-        windowHalfX = window.innerWidth / 2;
-        windowHalfY = window.innerHeight / 2;
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-    }
-
-    function onDocumentMouseMove( event ) {
-
-        mouseX = ( event.clientX - windowHalfX );
-        mouseY = ( event.clientY - windowHalfY );
-
-    }
-
-
-    function animate() {
-
-        requestAnimationFrame( animate );
-
-        render();
-        stats.update();
-
-    }
-
-    function render() {
-        for (var i = 1; i < planets.length; i++) {
-            planetsPivot[i].rotateOnAxis(new THREE.Vector3(0, 1, 0).normalize(), 0.01 / stars[i].time);
-        }
-        for (var i = 1; i < stars.length; i++) {
-            planets[i].rotation.y += 0.01 / stars[i].selftime;
-        }
-        for (var i = 0; i < count; i++) {
-            satlitesPivot[i].rotateOnAxis(new THREE.Vector3(0, 1, 0).normalize(), 0.0001 / satlitesSpeed[i]);
-        }
-        camera.position.x += ( mouseX ) * 0.01;
-        camera.position.y += ( - mouseY ) * 0.01;
-        camera.lookAt( 0, 0, 0 );
-        renderer.render( scene, camera );
-
-    }
-
-
-</script>
-
-</body>
+    <head>
+        <title>three.js SolarSys</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/solar.css">
+    </head>
+    <body>
+        <div id="container"></div>
+        <div id="info">
+            <a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a> - Webgl Demo</div>
+        <!-- Libraries -->
+        <script src="js/three.js"></script>
+        <script src="js/renderers/Projector.js"></script>
+        <script src="js/renderers/CanvasRenderer.js"></script>
+        <script src="js/libs/stats.min.js"></script>
+        <!-- Data -->
+        <script src="js/stars.js"></script>
+        <!-- Planet loader -->
+        <script src="js/planet.js"></script>
+        <!-- Animation -->
+        <script src="js/animation.js"></script>
+        <!-- Controls -->
+        <script src="js/control.js"></script>
+        <!-- Initializers -->
+        <script src="js/main.js"></script>
+    </body>
 </html>
