@@ -8,8 +8,10 @@ function render() {
     for (var i = 0; i < count; i++) {
         satlitesPivot[i].rotateOnAxis(new THREE.Vector3(0, 1, 0).normalize(), 0.0001 / satlitesSpeed[i]);
     }
-    camera.position.x += ( mouseX ) * 0.01;
-    camera.position.y += ( - mouseY ) * 0.01;
-    camera.lookAt( 0, 0, 0 );
+    
+    camera.lookAt(0, 0, 0);
+    camera.position.x = cameraParameters.getX();
+    camera.position.y = cameraParameters.getY();
+    camera.position.z = cameraParameters.getZ();
     renderer.render( scene, camera );
 }
