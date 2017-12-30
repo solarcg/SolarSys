@@ -1,9 +1,6 @@
 var container, stats;
 var camera, scene, renderer;
 
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
-
 init();
 animate();
 
@@ -13,7 +10,7 @@ function initScene() {
 }
 
 function initCamera() {
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1e20);
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1e10);
     // camera.position.z = 10000;
     // camera.position.y = 5000;
     // camera.lookAt(0, 0, 0);
@@ -26,7 +23,7 @@ function initLight() {
     scene.add(sunLight);
     // Add lense flare
     var flareTexture = textureLoader.load("res/effects/flare.jpg");
-    var lensFlare = new THREE.LensFlare(flareTexture, 200, 0.0, THREE.AdditiveBlending, new THREE.Color( 0xffffff ));
+    var lensFlare = new THREE.LensFlare(flareTexture, 200, 0, THREE.AdditiveBlending, new THREE.Color( 0xffffff ));
     lensFlare.position.copy(sunLight.position);
     scene.add(lensFlare);
 }
@@ -52,9 +49,11 @@ function init() {
 
     stats = new Stats();
     container.appendChild( stats.dom );
-    container.addEventListener( 'mousedown', onContainerMouseDown, false );
-    container.addEventListener( 'mousemove', onContainerMouseMove, false );
-    container.addEventListener( 'mouseup', onContainerMouseUp, false );
+    window.addEventListener( 'mousedown', onWindowMouseDown, false );
+    window.addEventListener( 'mousemove', onWindowMouseMove, false );
+    window.addEventListener( 'mouseup', onWindowMouseUp, false );
+	window.addEventListener("mousewheel", onMouseWheelChange, false);
+	window.addEventListener("DOMMouseScroll", onMouseWheelChange, false);
     window.addEventListener( 'resize', onWindowResize, false );
 }
 

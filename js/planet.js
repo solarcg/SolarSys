@@ -8,18 +8,18 @@ var satlites = [];
 var satlitesPivot = [];
 var satlitesSpeed = [];
 var satlitesAngle = [];
-
+var sunMaterial = new THREE.MeshBasicMaterial();
 var textureLoader = new THREE.TextureLoader();
+
 
 function loadSun(sun) {
     textureLoader.load(stars[0].src, function (texture) {
         var geometry = new THREE.SphereGeometry(stars[0].radius, 50, 50);
-        var material = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
-        var mesh = new THREE.Mesh(geometry, material);
+        sunMaterial = new THREE.MeshBasicMaterial({map: texture, overdraw: 0.5});
+        var mesh = new THREE.Mesh(geometry, sunMaterial);
         sun.add(mesh);
         scene.add(sun);
     });
-
 }
 
 function drawTrackLine(color, radius) {
@@ -43,8 +43,7 @@ function loadPlanetTexture(index) {
         var geometry = new THREE.SphereGeometry(stars[index].radius, 50, 50);
         var material = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5});
         if (stars[index].usebump) {
-            var bumpLoader = new THREE.TextureLoader();
-            bumpLoader.load(stars[index].bump, function (texture) {
+            textureLoader.load(stars[index].bump, function (texture) {
                 material.bumpMap = texture;
                 material.bumpScale = 0.005;
             });
@@ -52,8 +51,7 @@ function loadPlanetTexture(index) {
         var mesh = new THREE.Mesh(geometry, material);
         planets[index].add(mesh);
         if (stars[index].usecloud) {
-            var cloudLoader = new THREE.TextureLoader();
-            cloudLoader.load(stars[index].cloud, function (texture) {
+            textureLoader.load(stars[index].cloud, function (texture) {
                 var geometry = new THREE.SphereGeometry( stars[index].radius + 5, 50, 50 );
                 var material = new THREE.MeshLambertMaterial( { map: texture, overdraw: 0.5, transparent: true } );
                 var mesh = new THREE.Mesh( geometry, material );
