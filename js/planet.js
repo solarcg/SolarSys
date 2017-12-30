@@ -140,14 +140,22 @@ function loadSatliteTexture(index, index1, index2) {
 }
 
 function createStars() {
-    galaxy = new THREE.Group();
-    textureLoader.load('res/galaxy.png', function (texture) {
-        var geometry = new THREE.SphereGeometry(10000, 50, 50);
-        var material = new THREE.MeshLambertMaterial({map: texture, overdraw: 0.5, side: THREE.BackSide});
-        var mesh = new THREE.Mesh(geometry, material);
-        galaxy.add(mesh);
-    });
-    scene.add(galaxy);
+    // Add sky box
+    let skyboxTextureFilenames = [
+        "res/skybox/posX.jpg", "res/skybox/negX.jpg",
+        "res/skybox/posY.jpg", "res/skybox/negY.jpg",
+        "res/skybox/posZ.jpg", "res/skybox/negZ.jpg"];
+    var materialArray = [];
+    var skyGeometry = new THREE.CubeGeometry(10000000, 10000000, 10000000);	
+	for (var i = 0; i < 6; i++)
+		materialArray.push( new THREE.MeshBasicMaterial({
+			map: textureLoader.load(skyboxTextureFilenames[i]),
+			side: THREE.BackSide
+		}));
+	var skyBox = new THREE.Mesh( skyGeometry, materialArray );
+	scene.add( skyBox );
+
+    // Add the sun
     sun = new THREE.Group();
     loadSun(sun);
     for (var i = 1; i < stars.length; i++) {
