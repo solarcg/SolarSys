@@ -37,6 +37,7 @@
 <script src="js/renderers/Projector.js"></script>
 <script src="js/renderers/CanvasRenderer.js"></script>
 <script src="js/libs/stats.min.js"></script>
+<script src="js/stars.js"></script>
 <script src="js/planet.js"></script>
 
 <script>
@@ -45,41 +46,53 @@
     var camera, scene, renderer;
     var mouseX = 0, mouseY = 0;
 
-    // 109 : 11 : 9 : 4 : 3.8 :1 : 0.95 : 0.53 : 0.38
-
-
     var windowHalfX = window.innerWidth / 2;
     var windowHalfY = window.innerHeight / 2;
 
     init();
     animate();
 
+    function initScene() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+    }
+    
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 20000 );
+        camera.position.z = 10000;
+        camera.position.y = 5000;
+        camera.lookAt(0, 0, 0);
+    }
+
+    function initLight() {
+        var sunLight = new THREE.PointLight(0xFFFFFF);
+        sunLight.position.set(0, 0, 0);
+        scene.add(sunLight);
+    }
+
+    function initRender() {
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        container.appendChild( renderer.domElement );
+    }
+    
+
     function init() {
 
         container = document.getElementById( 'container' );
 
-        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.position.z = 5000;
-        camera.lookAt(0, 0, 0);
+        initCamera();
 
-        scene = new THREE.Scene();
+        initScene();
 
-        createPlanet("galaxy");
-        createPlanet("sun");
-        createPlanet("mercury");
-        createPlanet("venus");
-        createPlanet("earth");
-        createPlanet("mars");
-        createPlanet("jupiter");
-        createPlanet("saturn");
-        createPlanet("uranus");
-        createPlanet("neptune");
+        initLight();
 
+        createStars();
 
-        renderer = new THREE.WebGLRenderer();
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        container.appendChild( renderer.domElement );
+        initRender();
 
         stats = new Stats();
         container.appendChild( stats.dom );
@@ -119,24 +132,17 @@
     }
 
     function render() {
-        mercury.rotation.y += 0.01;
-        mercuryPivot.rotation.y += 0.01;
-        venus.rotation.y += 0.009;
-        venusPivot.rotation.y += 0.009;
-        earth.rotation.y += 0.008;
-        earthPivot.rotation.y += 0.008;
-        mars.rotation.y += 0.007;
-        marsPivot.rotation.y += 0.007;
-        jupiter.rotation.y += 0.006;
-        jupiterPivot.rotation.y += 0.006;
-        saturn.rotation.y += 0.005;
-        saturnPivot.rotation.y += 0.005;
-        uranus.rotation.y += 0.004;
-        uranusPivot.rotation.y += 0.004;
-        neptune.rotation.y += 0.003;
-        neptunePivot.rotation.y += 0.003;
-        camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-        camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+        for (var i = 1; i < planets.length; i++) {
+            planetsPivot[i].rotateOnAxis(new THREE.Vector3(0, 1, 0).normalize(), 0.01 / stars[i].time);
+        }
+        for (var i = 1; i < stars.length; i++) {
+            planets[i].rotation.y += 0.01 / stars[i].selftime;
+        }
+        for (var i = 0; i < count; i++) {
+            satlitesPivot[i].rotateOnAxis(new THREE.Vector3(0, 1, 0).normalize(), 0.0001 / satlitesSpeed[i]);
+        }
+        camera.position.x += ( mouseX ) * 0.01;
+        camera.position.y += ( - mouseY ) * 0.01;
         camera.lookAt( 0, 0, 0 );
         renderer.render( scene, camera );
 
