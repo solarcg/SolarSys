@@ -78,112 +78,65 @@ function mergeRecursive(obj1, obj2) {
     return obj1;
 }
 
-function loadTextures(celestialBody) {
-    var texturePool = {
-        diffuse:{
-            filename: celestialBody.material.diffuse.map,
-            texture: null
-        },
-        specular:{
-            filename: celestialBody.material.specular.map,
-            texture: null
-        },
-        night:{
-            filename: celestialBody.material.night.map,
-            texture: null
-        },
-        bump:{
-            filename: celestialBody.material.bump.map,
-            texture: null
-        },
-        ring:{
-            filename: celestialBody.ring.map,
-            texture: null
-        },
-        cloud:{
-            filename: celestialBody.atmosphere.cloud.map,
-            texture: null
-        },
-        promise:[]
-    };
-
-    for (var key in texturePool) {
-        if(key === 'promise') break;
-        if(texturePool[key].filename !== null) {
-            texturePool.promise.push(new Promise((resolve, reject) => {
-                textureLoader.load(texturePool[key].filename,
-                    texture => {
-                        texturePool[key].texture = texture;
-                        if (texture instanceof THREE.Texture) resolve(texturePool[key]);
-                    },
-                    xhr => {
-                      console.log((xhr.loaded / xhr.total * 100) +
-                        '% loaded');
-                    },
-                    xhr => {
-                      reject('An error occurred loading while loading: '
-                            + texturePool[key] + ': ' + texturePool[key].filename);
-                    })
-            }));
-        }
-    }
-    return texturePool;
-}
-
 CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
-    // Set material
-    let texturePool = loadTextures(this);
+    var that = this;
     // if(this.spherical)
     this.bodySphereGeometry = new THREE.SphereGeometry(this.radius, 64, 64);
     // else if(!this.spherical) blablabla...
     var sphereMaterial = this.bodySphereMaterial = null;
-    let that = this;
-    Promise.all(texturePool.promise).then(loadedTextures => {
-        switch (that.material.type) {
-            case "basic":
-                sphereMaterial = that.bodySphereMaterial = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color(that.material.diffuse.color),
-                    map: texturePool.diffuse.texture
-                });
-                break;
-            case "lambert":
-                sphereMaterial = that.bodySphereMaterial = new THREE.MeshLambertMaterial({
-                    color: new THREE.Color(that.material.diffuse.color),
-                    map:texturePool.diffuse.texture,
-                    bumpMap: texturePool.bump.texture,
-                    bumpScale: that.material.bump.height
-                });
-                break;
-            case "phong": default:
-                sphereMaterial = that.bodySphereMaterial = new THREE.MeshPhongMaterial({
-                    color: new THREE.Color(that.material.diffuse.color),
-                    map: texturePool.diffuse.texture,
-                    specular: new THREE.Color(that.material.specular.color),
-                    specularMap: texturePool.specular.texture,
-                    shininess: that.material.specular.shininess,
-                    bumpMap: texturePool.bump.texture,
-                    bumpScale: that.material.bump.height
+    switch (this.material.type) {
+        case "basic":
+            sphereMaterial = this.bodySphereMaterial
+                = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(this.material.diffuse.color)});
+            if(this.material.diffuse.map !== null) {
+                sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+            }
+            break;
+        case "lambert":
+            sphereMaterial = this.bodySphereMaterial
+                = new THREE.MeshLambertMaterial({
+                    color: new THREE.Color(this.material.diffuse.color),
+                    bumpScale: this.material.bump.height});
+            if(this.material.diffuse.map !== null) {
+                sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+            }
+            break;
+        case "phong": default:
+            sphereMaterial = this.bodySphereMaterial
+                = new THREE.MeshPhongMaterial({
+                    color: new THREE.Color(this.material.diffuse.color),
+                    specular: new THREE.Color(this.material.specular.color),
+                    shininess: this.material.specular.shininess,
+                    bumpScale: this.material.bump.height});
+            if(this.material.diffuse.map !== null) {
+                sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+            }
+            if(this.material.specular.map !== null) {
+                sphereMaterial.specularMap = textureLoader.load(this.material.specular.map);
+            }
+            if(this.material.bump.map !== null) {
+                sphereMaterial.bumpMap = textureLoader.load(this.material.bump.map);
+            }
+            break;
+    }
 
-                });
-                break;
-        }
-        that.objectGroup = new THREE.Group();
-        // Add the main body part
-        textureLoader.load(that.material.diffuse.map, function (texture) {
-            that.bodySphereMaterial = new THREE.MeshPhongMaterial({map:texture});
-        });
-        that.bodySphereMesh = new THREE.Mesh(that.bodySphereGeometry, that.bodySphereMaterial);
-        that.bodySphereMesh.scale.set(1, 1 - that.oblateness, 1);
-        
-        that.objectGroup.add(that.bodySphereMesh);
-        argScene.add(that.objectGroup);
-    }).catch(e => { console.log(e); });
+    this.objectGroup = new THREE.Group();
+    // Add the main body part
+    textureLoader.load(this.material.diffuse.map, function (texture) {
+        this.bodySphereMaterial = new THREE.MeshPhongMaterial({map:texture});
+    });
+    this.bodySphereMesh = new THREE.Mesh(this.bodySphereGeometry, this.bodySphereMaterial);
+    this.bodySphereMesh.scale.set(1, 1 - this.oblateness, 1);
+    
+    this.objectGroup.add(this.bodySphereMesh);
+    argScene.add(this.objectGroup);
 };
 
 CelestialBody.prototype.update = function (time) {
     if(this.objectGroup !== undefined) {
         // Calculate the orbit
-        let x = 0, y = 0, z = 1000;
+        let x = 0, y = 0, z = 200;
 
         this.objectGroup.position.set(x, y, z);
     }
