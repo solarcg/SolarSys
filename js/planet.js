@@ -9,7 +9,6 @@ var satlitesPivot = [];
 var satlitesSpeed = [];
 var satlitesAngle = [];
 var sunMaterial = new THREE.MeshBasicMaterial();
-var textureLoader = new THREE.TextureLoader();
 
 
 function loadSun(sun) {
