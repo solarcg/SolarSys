@@ -4,14 +4,6 @@ var windowHalfY = window.innerHeight / 2;
 var mouseStatus = { x:0, y:0,
     leftDown:false, centerDown:false, rightDown:false };
 
-var cameraParameters = { theta: 0.2, phi: 0.3, 
-    distance: 7500, safeDistance: 200, safeFar: 1e6,
-    // centerObject: stars[0],
-    getX: function() { return this.distance * Math.cos(this.theta) * Math.cos(this.phi); },
-    getZ: function() { return this.distance * Math.sin(this.theta) * Math.cos(this.phi); },
-    getY: function() { return this.distance * Math.sin(this.phi); }
-};
-
 function onWindowMouseMove(event) {
     // Keep the value in 0 -- 2 PI
     if(mouseStatus.leftDown) {

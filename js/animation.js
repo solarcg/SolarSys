@@ -10,7 +10,7 @@ function render() {
     // }
 
     for(objKey in celestialBodies) {
-        celestialBodies[objKey].update(0);
+        celestialBodies[objKey].update(globalTime.getRelative());
     }
     
     camera.position.x = cameraParameters.getX();

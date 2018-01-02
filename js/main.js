@@ -71,8 +71,8 @@ function init() {
     window.addEventListener( 'mousedown', onWindowMouseDown, false );
     window.addEventListener( 'mousemove', onWindowMouseMove, false );
     window.addEventListener( 'mouseup', onWindowMouseUp, false );
-	window.addEventListener("mousewheel", onMouseWheelChange, false);
-	window.addEventListener("DOMMouseScroll", onMouseWheelChange, false);
+	window.addEventListener( 'mousewheel', onMouseWheelChange, false);
+	window.addEventListener( 'DOMMouseScroll', onMouseWheelChange, false);
     window.addEventListener( 'resize', onWindowResize, false );
 }
 
