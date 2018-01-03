@@ -48,13 +48,14 @@ function initObjects() {
         "res/skybox/posY.jpg", "res/skybox/negY.jpg",
         "res/skybox/posZ.jpg", "res/skybox/negZ.jpg"];
     var materialArray = [];
-    var skyGeometry = new THREE.CubeGeometry(10000000, 10000000, 10000000);	
+    var skyGeometry = new THREE.CubeGeometry(10000000, 10000000, 10000000);
 	for (var i = 0; i < 6; i++)
 		materialArray.push( new THREE.MeshBasicMaterial({
 			map: textureLoader.load(skyboxTextureFilenames[i]),
 			side: THREE.BackSide
 		}));
-	var skyBox = new THREE.Mesh( skyGeometry, materialArray );
+    var skyBox = new THREE.Mesh( skyGeometry, materialArray );
+    skyBox.rotateX(Math.PI/2);
     scene.add(skyBox);
     for(objKey in celestialBodies) {
         celestialBodies[objKey].generateObjectsOnScene(scene);

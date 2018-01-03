@@ -32,7 +32,7 @@ celestialBodies = {
         material: {
             type:       "phong",
             diffuse:    { map: "res/earth/diffuse.jpg" },
-            specular:   { map: "res/earth/spec.jpg", color: 0x435670, shininess:15 },
+            specular:   { map: "res/earth/spec.jpg", color: 0x243232, shininess:25 },
             bump:       { map: "res/earth/bump.jpg", height: 0. }
         },
         atmosphere: {
