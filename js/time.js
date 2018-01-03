@@ -7,6 +7,6 @@ var globalTime = {
 };
 
 window.setInterval(() => {
-    globalTime.relative += 0.01 * globalTime.scale;
-    globalTime.absolute += 0.01;
+    globalTime.relative += 0.001 * globalTime.scale;
+    globalTime.absolute += 0.001;
 }, 10);

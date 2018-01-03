@@ -16,7 +16,9 @@ function render() {
     camera.position.x = cameraParameters.getX();
     camera.position.y = cameraParameters.getY();
     camera.position.z = cameraParameters.getZ();
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(cameraParameters.getCenterX(),
+        cameraParameters.getCenterY(),
+        cameraParameters.getCenterZ());
 
 
     // if(Math.sqrt(

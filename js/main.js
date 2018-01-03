@@ -1,6 +1,5 @@
 var container, stats;
 var camera, scene, renderer;
-var textureLoader = new THREE.TextureLoader();
 
 init();
 animate();
@@ -18,12 +17,8 @@ function initLight() {
     // Add light
     var sunLight = new THREE.PointLight(0xFFFFFF);
     sunLight.position.set(0, 0, 0);
+    sunLight.castShadow = true;
     scene.add(sunLight);
-    // Add lens flare
-    var flareTexture = textureLoader.load("res/effects/flare.jpg");
-    var lensFlare = new THREE.LensFlare(flareTexture, 200, 0, THREE.AdditiveBlending, new THREE.Color( 0xffffff ));
-    lensFlare.position.set(0, 0, 0);
-    scene.add(lensFlare);
 }  
 
 function initRender() {
@@ -32,6 +27,17 @@ function initRender() {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+
+    // renderer.shadowMapEnabled = true;
+    // renderer.shadowMapSoft = true;
+    // renderer.shadowCameraNear = 3;
+    // renderer.shadowCameraFar = camera.far;
+    // renderer.shadowCameraFov = 50;
+    // renderer.shadowMapBias = 0.0039;
+    // renderer.shadowMapDarkness = 0.5;
+    // renderer.shadowMapWidth = 1024;
+    // renderer.shadowMapHeight = 1024;
+
     container.appendChild( renderer.domElement );
 }
 
@@ -53,7 +59,6 @@ function initObjects() {
     for(objKey in celestialBodies) {
         celestialBodies[objKey].generateObjectsOnScene(scene);
     }
-    console.log(celestialBodies.earth);
 }
 
 function init() {
