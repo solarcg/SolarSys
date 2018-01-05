@@ -6,6 +6,10 @@ celestialBodies = {
         orbit: {
             semiMajorAxis: 0.
         },
+        rotation: {
+            period: 2500,
+            inclination: 0,
+        },
         material: {
             type:       "basic",
             diffuse:    { map: "res/sol/diffuse.png" }
@@ -24,10 +28,16 @@ celestialBodies = {
         parent: this.sun,
         shineColor: 0x9999ff,
         orbit: {
-            period: 10.,
+            period: 5,
             semiMajorAxis: 1000.,
             eccentricity: 0.,
             inclination: 0.
+        },
+        rotation: {
+            period: 100.,
+            inclination: 23.5,
+            meridianAngle: 0., 
+            offset: 0.
         },
         material: {
             type:       "phong",
