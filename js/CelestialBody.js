@@ -192,10 +192,14 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     this.ringMaterial = null;
     this.ringMeshPositive = null;
     this.ringMeshNegative = null;
+    this.ringTexture = null;
     if(this.ring.map !== null) {
+        this.ringTexture = textureLoader.load(this.ring.map);
+        this.ringTexture.rotation = Math.PI/2;
         this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.lower, this.radius + this.ring.higher, 0, 100, 100, true);
-        this.ringMaterial = new THREE.MeshLambertMaterial({
-            map: textureLoader.load(this.ring.map)
+        this.ringMaterial = new THREE.MeshPhongMaterial({
+            map: this.ringTexture, transparent: true,
+            emissive: new THREE.Color(0x222222)
         });
         this.ringMeshPositive = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
         this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.higher, this.radius + this.ring.lower, 0, 100, 100, true);
@@ -203,7 +207,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     }
 
     // Add meshes to the object group
-    // this.objectGroup.add(this.lensFlare);
+    this.objectGroup.add(this.lensFlare);
     this.objectGroup.add(this.bodySphereMesh);
     if (this.ringMeshPositive !== null) {
         this.objectGroup.add(this.ringMeshPositive);

@@ -79,7 +79,7 @@ celestialBodies = {
         name:"Earth",
         radius: 10.,
         parent: this.sun,
-        shineColor: 0x9999ff,
+        shineColor: 0x6666ff,
         orbit: {
             period: 5,
             semiMajorAxis: 1000.,
@@ -93,7 +93,7 @@ celestialBodies = {
             offset: 0.
         },
         material: {
-            type:       "lambert",
+            type:       "phong",
             diffuse:    { map: "res/earth/diffuse.jpg" },
             specular:   { map: "res/earth/spec.jpg", color: 0x243232, shininess:25 },
             bump:       { map: "res/earth/bump.jpg", height: 0. }
@@ -101,7 +101,7 @@ celestialBodies = {
         atmosphere: {
             cloud: {
                 map:        "res/earth/clouds.png",
-                height:     0.5,
+                height:     0.1,
                 speed:      0.02
             }
         }
@@ -110,7 +110,7 @@ celestialBodies = {
         name:"Mars",
         radius: 5.3226,
         parent: this.sun,
-        shineColor: 0x9999ff,
+        shineColor: 0xff9988,
         orbit: {
             period: 9.4,
             semiMajorAxis: 1300.,
