@@ -1,5 +1,9 @@
 var container, stats;
 var camera, scene, renderer;
+var trackCamera = new Map();
+var params = {
+    planets: "Galaxy",
+};
 
 init();
 animate();
@@ -11,6 +15,17 @@ function initScene() {
 
 function initCamera() {
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1e10);
+    trackCamera["Galaxy"] = new cameraParameters(7500, 200, "Sun");
+    trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
+    trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
+    trackCamera["Venus"] = new cameraParameters(30, 30, "Venus");
+    trackCamera["Earth"] = new cameraParameters(30, 30, "Earth");
+    trackCamera["Mars"] = new cameraParameters(30, 30, "Mars");
+    trackCamera["Jupiter"] = new cameraParameters(150, 150, "Jupiter");
+    trackCamera["Saturn"] = new cameraParameters(150, 150, "Saturn");
+    trackCamera["Uranus"] = new cameraParameters(150, 150, "Uranus");
+    trackCamera["Neptune"] = new cameraParameters(150, 150, "Neptune");
+    trackCamera["Pluto"] = new cameraParameters(150, 150, "Pluto");
 }
 
 function initLight() {
@@ -43,7 +58,7 @@ function initRender() {
 
 function initObjects() {
     // Add sky box
-    let skyboxTextureFilenames = [
+    var skyboxTextureFilenames = [
         "res/skybox/posX.jpg", "res/skybox/negX.jpg",
         "res/skybox/posY.jpg", "res/skybox/negY.jpg",
         "res/skybox/posZ.jpg", "res/skybox/negZ.jpg"];
@@ -80,6 +95,13 @@ function init() {
 	window.addEventListener( 'mousewheel', onMouseWheelChange, false);
 	window.addEventListener( 'DOMMouseScroll', onMouseWheelChange, false);
     window.addEventListener( 'resize', onWindowResize, false );
+
+
+
+    var gui = new dat.GUI();
+
+    gui.add( params, 'planets', [ "Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
+    gui.open();
 }
 
 function onWindowResize() {

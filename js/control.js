@@ -6,19 +6,20 @@ var mouseStatus = { x:0, y:0,
 
 function onWindowMouseMove(event) {
     // Keep the value in 0 -- 2 PI
+    var body = params.planets;
     if(mouseStatus.leftDown) {
-        if(cameraParameters.theta > 2 * Math.PI) {
-            cameraParameters.theta
-                = cameraParameters.theta
-                    - 2 * Math.PI * Math.floor(cameraParameters.theta/(2*Math.PI));
+        if(trackCamera[body].theta > 2 * Math.PI) {
+            trackCamera[body].theta
+                = trackCamera[body].theta
+                    - 2 * Math.PI * Math.floor(trackCamera[body].theta/(2*Math.PI));
         }
-        if(cameraParameters.phi > 2 * Math.PI) {
-            cameraParameters.phi
-                = cameraParameters.phi
-                    - 2 * Math.PI * Math.floor(cameraParameters.phi/(2*Math.PI));
+        if(trackCamera[body].phi > 2 * Math.PI) {
+            trackCamera[body].phi
+                = trackCamera[body].phi
+                    - 2 * Math.PI * Math.floor(trackCamera[body].phi/(2*Math.PI));
         }
-        cameraParameters.theta += (event.clientX - windowHalfX - mouseStatus.x) * 0.01;
-        cameraParameters.phi += (event.clientY - windowHalfY - mouseStatus.y) * 0.01;
+        trackCamera[body].theta += (event.clientX - windowHalfX - mouseStatus.x) * 0.01;
+        trackCamera[body].phi += (event.clientY - windowHalfY - mouseStatus.y) * 0.01;
     }
     mouseStatus.x = event.clientX - windowHalfX;
     mouseStatus.y = event.clientY - windowHalfY;
@@ -41,14 +42,15 @@ function onWindowMouseUp(event) {
 }
 
 function onMouseWheelChange(event) {
-    let delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
-    let newDistance = cameraParameters.distance - 0.05*cameraParameters.distance*delta;
+    var body = params.planets;
+    var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
+    var newDistance = trackCamera[body].distance - 0.05*trackCamera[body].distance*delta;
     
-    if(newDistance <= cameraParameters.safeDistance) {
-        newDistance = cameraParameters.safeDistance;
-    } else if(newDistance >= cameraParameters.safeFar) {
-        newDistance = cameraParameters.safeFar;
+    if(newDistance <= trackCamera[body].safeDistance) {
+        newDistance = trackCamera[body].safeDistance;
+    } else if(newDistance >= trackCamera[body].safeFar) {
+        newDistance = trackCamera[body].safeFar;
     }
-    
-    cameraParameters.distance = newDistance;
+
+    trackCamera[body].distance = newDistance;
 }

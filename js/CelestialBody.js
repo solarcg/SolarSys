@@ -135,7 +135,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     });
     this.bodySphereMesh = new THREE.Mesh(this.bodySphereGeometry, this.bodySphereMaterial);
     this.bodySphereMesh.scale.set(1, 1 - this.oblateness, 1);
-    
+
     // Add lens flare
     this.lensFlare = null;
     if(!this.star) {
@@ -145,15 +145,15 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         this.lensFlare.size = 200;
         this.lensFlare.position.set(this.getX(), this.getY(), this.getZ());
 
-        var that = this;      
+        var that = this;
         this.lensFlare.customUpdateCallback = function() {
-            let cameraDistance = Math.sqrt(
-                (cameraParameters.getX() - that.getX())
-                * (cameraParameters.getX() - that.getX()),
-                (cameraParameters.getY() - that.getY())
-                * (cameraParameters.getY() - that.getY()),
-                (cameraParameters.getZ() - that.getZ())
-                * (cameraParameters.getZ() - that.getZ()));
+            var cameraDistance = Math.sqrt(
+                (trackCamera[params.planets].getX() - that.getX())
+                * (trackCamera[params.planets].getX() - that.getX()),
+                (trackCamera[params.planets].getY() - that.getY())
+                * (trackCamera[params.planets].getY() - that.getY()),
+                (trackCamera[params.planets].getZ() - that.getZ())
+                * (trackCamera[params.planets].getZ() - that.getZ()));
             if(cameraDistance/that.radius < 125) {
                 that.bodySphereMaterial.depthTest = true;
             }
@@ -164,7 +164,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         };
     } else {
         this.lensFlare =
-        new THREE.LensFlare(this.flareTexture, 400, 0, 
+        new THREE.LensFlare(this.flareTexture, 400, 0,
             THREE.AdditiveBlending, new THREE.Color(this.shineColor));
     }
 
@@ -194,17 +194,16 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     this.ringMeshNegative = null;
     if(this.ring.map !== null) {
         this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.lower, this.radius + this.ring.higher, 0, 100, 100, true);
-        this.ringMaterial = new THREE.MeshBasicMaterial({
-            map: textureLoader.load(this.ring.map) 
+        this.ringMaterial = new THREE.MeshLambertMaterial({
+            map: textureLoader.load(this.ring.map)
         });
         this.ringMeshPositive = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
         this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.higher, this.radius + this.ring.lower, 0, 100, 100, true);
         this.ringMeshNegative = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
     }
 
-
     // Add meshes to the object group
-    this.objectGroup.add(this.lensFlare);
+    // this.objectGroup.add(this.lensFlare);
     this.objectGroup.add(this.bodySphereMesh);
     if (this.ringMeshPositive !== null) {
         this.objectGroup.add(this.ringMeshPositive);
@@ -217,7 +216,6 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         // if(!this.star) this.cloudMesh.castShadow = true;
         // if(!this.star) this.cloudMesh.receiveShadow = true;
     }
-
     // simple inclination
     this.objectGroup.rotateZ(this.rotation.inclination / 180.0 * Math.PI);
     argScene.add(this.objectGroup);
@@ -249,4 +247,9 @@ CelestialBody.prototype.getY = function () {
 CelestialBody.prototype.getZ = function () {
     if (this.objectGroup == null || this.objectGroup.position == null) return 0;
     return this.objectGroup.position.getComponent(2);
+};
+
+CelestialBody.prototype.getRadius = function () {
+    if (this.objectGroup == null || this.objectGroup.position == null) return 0;
+    return this.radius;
 };
