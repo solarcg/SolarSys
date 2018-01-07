@@ -8,7 +8,7 @@ var mouseStatus = {
 
 function onWindowMouseMove(event) {
     // Keep the value in 0 -- 2 PI
-    var body = params.planets;
+    var body = params.Camera;
     if (mouseStatus.leftDown) {
         if (trackCamera[body].theta > 2 * Math.PI) {
             trackCamera[body].theta
@@ -58,7 +58,7 @@ function onWindowMouseUp(event) {
 }
 
 function onMouseWheelChange(event) {
-    var body = params.planets;
+    var body = params.Camera;
     var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
     var newDistance = trackCamera[body].distance - 0.05 * trackCamera[body].distance * delta;
 

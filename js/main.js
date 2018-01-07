@@ -2,19 +2,22 @@ var container, stats;
 var camera, scene, renderer;
 var trackCamera = new Map();
 var clock = new THREE.Clock();
+var gui = new dat.GUI();
 var tick = 0;
 var params = {
-    planets: "Galaxy",
+    Camera: "Galaxy",
 };
+var calculateParams;
+
 var options = {
     position: new THREE.Vector3(),
     positionRandomness: .3,
     velocity: new THREE.Vector3(),
-    velocityRandomness: .5,
+    velocityRandomness: 3.0,
     color: 0xaa88ff,
     colorRandomness: .2,
     turbulence: 0.,
-    lifetime: 2,
+    lifetime: 2.,
     size: 5,
     sizeRandomness: 1
 };
@@ -119,10 +122,31 @@ function init() {
     window.addEventListener('DOMMouseScroll', onMouseWheelChange, false);
     window.addEventListener('resize', onWindowResize, false);
 
-
-    var gui = new dat.GUI();
-
-    gui.add(params, 'planets', ["Galaxy", "Sun", "Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
+    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
+    var calculate = gui.addFolder('Calculate');
+    calculateParams = new function () {
+        this.Sun = true;
+        this.Comet = true;
+        this.Mercury = false;
+        this.Venus = false;
+        this.Earth = true;
+        this.Mars = false;
+        this.Jupiter = false;
+        this.Saturn = false;
+        this.Uranus = false;
+        this.Neptune = false;
+        this.Pluto = false;
+    };
+    calculate.add(calculateParams, 'Comet');
+    calculate.add(calculateParams, 'Mercury');
+    calculate.add(calculateParams, 'Venus');
+    calculate.add(calculateParams, 'Earth');
+    calculate.add(calculateParams, 'Mars');
+    calculate.add(calculateParams, 'Jupiter');
+    calculate.add(calculateParams, 'Saturn');
+    calculate.add(calculateParams, 'Uranus');
+    calculate.add(calculateParams, 'Neptune');
+    calculate.add(calculateParams, 'Pluto');
     gui.open();
 }
 

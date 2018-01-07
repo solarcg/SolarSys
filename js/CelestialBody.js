@@ -188,12 +188,12 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             var that = this;
             this.lensFlare.customUpdateCallback = function () {
                 var cameraDistance = Math.sqrt(
-                    (trackCamera[params.planets].getX() - that.getX())
-                    * (trackCamera[params.planets].getX() - that.getX()),
-                    (trackCamera[params.planets].getY() - that.getY())
-                    * (trackCamera[params.planets].getY() - that.getY()),
-                    (trackCamera[params.planets].getZ() - that.getZ())
-                    * (trackCamera[params.planets].getZ() - that.getZ()));
+                    (trackCamera[params.Camera].getX() - that.getX())
+                    * (trackCamera[params.Camera].getX() - that.getX()),
+                    (trackCamera[params.Camera].getY() - that.getY())
+                    * (trackCamera[params.Camera].getY() - that.getY()),
+                    (trackCamera[params.Camera].getZ() - that.getZ())
+                    * (trackCamera[params.Camera].getZ() - that.getZ()));
                 if (cameraDistance / that.radius < 125) {
                     that.bodySphereMaterial.depthTest = true;
                 }

@@ -8,19 +8,10 @@ var cameraParameters = function (distance, safeDistance, body) {
     this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1e10);
 };
 
-cameraParameters.prototype.getDistance = function () {
-    return this.distance;
-}
-
-cameraParameters.prototype.getCenterX = function() { 
-    return celestialBodies[this.body].getX();
-};
-cameraParameters.prototype.getCenterY = function() { 
-    return celestialBodies[this.body].getY();
-};
-cameraParameters.prototype.getCenterZ = function() { 
-    return celestialBodies[this.body].getZ();
-};
+cameraParameters.prototype.getDistance = function () { return this.distance; };
+cameraParameters.prototype.getCenterX = function() { return celestialBodies[this.body].getX(); };
+cameraParameters.prototype.getCenterY = function() { return celestialBodies[this.body].getY(); };
+cameraParameters.prototype.getCenterZ = function() { return celestialBodies[this.body].getZ(); };
 cameraParameters.prototype.getX = function() { 
     return this.getCenterX() - (celestialBodies[this.body].getRadius() + this.distance) * Math.cos(this.theta) * Math.cos(this.phi);
 };

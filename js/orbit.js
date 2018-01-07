@@ -23,7 +23,6 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
         tick += delta;
         if (tick < 0) tick = 0;
         if (delta > 0) {
-
             options.position.x = x;
             options.position.y = y;
             options.position.z = z;
