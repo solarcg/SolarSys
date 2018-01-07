@@ -75,6 +75,9 @@ function initObjects() {
     for(objKey in celestialBodies) {
         celestialBodies[objKey].generateObjectsOnScene(scene);
     }
+    for(objKey in celestialBodies) {
+        celestialBodies[objKey].parent = celestialBodies[celestialBodies[objKey].parent];
+    }
 }
 
 function init() {

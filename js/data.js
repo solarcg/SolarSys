@@ -2,6 +2,7 @@ celestialBodies = {
     Sun: new CelestialBody({
         name:"Sun",
         star: true,
+        parent: "Sun",
         radius: 100.,
         orbit: {
             semiMajorAxis: 0.
@@ -25,7 +26,7 @@ celestialBodies = {
     Mercury: new CelestialBody({
         name:"Mercury",
         radius: 3.825,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 1.2,
@@ -48,7 +49,7 @@ celestialBodies = {
     Venus: new CelestialBody({
         name:"Venus",
         radius: 9.488,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 3.1,
@@ -78,7 +79,7 @@ celestialBodies = {
     Earth: new CelestialBody({
         name:"Earth",
         radius: 10.,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x6666ff,
         orbit: {
             period: 5,
@@ -106,10 +107,32 @@ celestialBodies = {
             }
         }
     }),
+    Moon: new CelestialBody({
+        name:"Moon",
+        radius: 3.,
+        parent: "Earth",
+        shineColor: 0x6666ff,
+        orbit: {
+            period: 1,
+            semiMajorAxis: 15.,
+            eccentricity: 0.,
+            inclination: 0.
+        },
+        rotation: {
+            period: 100.,
+            inclination: 0.,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type:       "lambert",
+            diffuse:    { map: "res/moon/diffuse.jpg" },
+        }
+    }),
     Mars: new CelestialBody({
         name:"Mars",
         radius: 5.3226,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0xff9988,
         orbit: {
             period: 9.4,
@@ -132,7 +155,7 @@ celestialBodies = {
     Jupiter: new CelestialBody({
         name:"Jupiter",
         radius: 40.,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 59.3,
@@ -161,7 +184,7 @@ celestialBodies = {
     Saturn: new CelestialBody({
         name:"Saturn",
         radius: 40.,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 40.0,
@@ -196,7 +219,7 @@ celestialBodies = {
     Uranus: new CelestialBody({
         name:"Uranus",
         radius: 30.,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 50.0,
@@ -223,7 +246,7 @@ celestialBodies = {
     Neptune: new CelestialBody({
         name:"Neptune",
         radius: 30.,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 50.0,
@@ -250,7 +273,7 @@ celestialBodies = {
     Pluto: new CelestialBody({
         name:"Pluto",
         radius: 30.,
-        parent: this.sun,
+        parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 50.0,
