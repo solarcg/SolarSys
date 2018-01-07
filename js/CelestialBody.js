@@ -203,7 +203,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     }
 
     // Add meshes to the object group
-    // this.objectGroup.add(this.lensFlare);
+    this.objectGroup.add(this.lensFlare);
     this.objectGroup.add(this.bodySphereMesh);
     if (this.ringMeshPositive !== null) {
         this.objectGroup.add(this.ringMeshPositive);

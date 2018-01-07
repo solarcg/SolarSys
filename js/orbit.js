@@ -19,5 +19,5 @@ CelestialBody.prototype.updateOrbitAndRotation = function(time) {
     
     this.objectGroup.position.set(x, y, z);
     // self-rotation
-    this.objectGroup.rotateOnAxis(new THREE.Vector3(0, 1, 0), time / this.rotation.period);
+    this.objectGroup.rotateOnAxis(new THREE.Vector3(0, 1, 0), 1.0 / this.rotation.period);
 }
