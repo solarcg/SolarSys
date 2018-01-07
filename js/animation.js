@@ -1,5 +1,5 @@
 function render() {
-    for(objKey in celestialBodies) {
+    for (var objKey in celestialBodies) {
         celestialBodies[objKey].update(globalTime.getRelative());
     }
     var body = params.planets;
@@ -15,6 +15,5 @@ function render() {
     // } else {
     //     sunMaterial.depthTest = true;
     // }
-
-    renderer.render( scene, renderCamera );
+    renderer.render(scene, renderCamera);
 }

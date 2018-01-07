@@ -6,6 +6,8 @@ var CelestialBody = function (obj) {
     this.star = false;
     // Object shape info
     this.spherical = true; this.oblateness = 0.; this.radius = 1.;
+    this.isComet = false;
+    this.particleSystem = null;
     // Parent/moon objects
     this.parent = null;
     this.children = [];
@@ -92,31 +94,37 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     var that = this;
     // if(this.spherical)
     if (!this.spherical) {
-        this.objectGroup = new THREE.Group();
-        var onProgress = function ( xhr ) {
-            if ( xhr.lengthComputable ) {
-                var percentComplete = xhr.loaded / xhr.total * 100;
-            }
-        };
-        var onError = function ( xhr ) { };
-        mtlLoader.setPath(that.path);
-        mtlLoader.load( that.mtlPath, function( materials ) {
-            materials.preload();
-            objLoader.setMaterials( materials );
-            objLoader.setPath(that.path);
-            objLoader.load( that.objPath, function ( object ) {
-                that.objectGroup.add(object);
-                object.scale.set(0.2, 0.2, 0.2);
-            }, onProgress, onError );
+        if (this.isComet) {
+            this.objectGroup = new THREE.Group();
+            this.particleSystem = new THREE.GPUParticleSystem({
+                maxParticles: 100000
+            });
+            this.objectGroup.add(this.particleSystem);
+            argScene.add(this.objectGroup);
+        } else {
+            this.objectGroup = new THREE.Group();
+            var onProgress = function (xhr) {
+                if (xhr.lengthComputable) {
+                    var percentComplete = xhr.loaded / xhr.total * 100;
+                }
+            };
+            var onError = function (xhr) {
+            };
+            mtlLoader.setPath(that.path);
+            mtlLoader.load(that.mtlPath, function (materials) {
+                materials.preload();
+                objLoader.setMaterials(materials);
+                objLoader.setPath(that.path);
+                objLoader.load(that.objPath, function (object) {
+                    that.objectGroup.add(object);
+                    object.scale.set(0.15, 0.15, 0.15);
+                }, onProgress, onError);
 
-        });
-
-        argScene.add(this.objectGroup);
-
+            });
+            argScene.add(this.objectGroup);
+        }
     } else {
         this.bodySphereGeometry = new THREE.SphereGeometry(this.radius, 64, 64);
-
-
         // else if(!this.spherical) blablabla...
         // The base body sphere material
         var sphereMaterial = this.bodySphereMaterial = null;
@@ -124,8 +132,9 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             case "basic":
                 sphereMaterial = this.bodySphereMaterial
                     = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color(this.material.diffuse.color)});
-                if(this.material.diffuse.map !== null) {
+                    color: new THREE.Color(this.material.diffuse.color)
+                });
+                if (this.material.diffuse.map !== null) {
                     sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
                 }
                 break;
@@ -133,48 +142,51 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                 sphereMaterial = this.bodySphereMaterial
                     = new THREE.MeshLambertMaterial({
                     color: new THREE.Color(this.material.diffuse.color),
-                    bumpScale: this.material.bump.height});
-                if(this.material.diffuse.map !== null) {
+                    bumpScale: this.material.bump.height
+                });
+                if (this.material.diffuse.map !== null) {
                     sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
                 }
                 break;
-            case "phong": default:
-            sphereMaterial = this.bodySphereMaterial
-                = new THREE.MeshPhongMaterial({
-                color: new THREE.Color(this.material.diffuse.color),
-                specular: new THREE.Color(this.material.specular.color),
-                shininess: this.material.specular.shininess,
-                bumpScale: this.material.bump.height});
-            if(this.material.diffuse.map !== null) {
-                sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
-            }
-            if(this.material.specular.map !== null) {
-                sphereMaterial.specularMap = textureLoader.load(this.material.specular.map);
-            }
-            if(this.material.bump.map !== null) {
-                sphereMaterial.bumpMap = textureLoader.load(this.material.bump.map);
-            }
-            break;
+            case "phong":
+            default:
+                sphereMaterial = this.bodySphereMaterial
+                    = new THREE.MeshPhongMaterial({
+                    color: new THREE.Color(this.material.diffuse.color),
+                    specular: new THREE.Color(this.material.specular.color),
+                    shininess: this.material.specular.shininess,
+                    bumpScale: this.material.bump.height
+                });
+                if (this.material.diffuse.map !== null) {
+                    sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+                }
+                if (this.material.specular.map !== null) {
+                    sphereMaterial.specularMap = textureLoader.load(this.material.specular.map);
+                }
+                if (this.material.bump.map !== null) {
+                    sphereMaterial.bumpMap = textureLoader.load(this.material.bump.map);
+                }
+                break;
         }
         this.objectGroup = new THREE.Group();
         // Add the main body part
         textureLoader.load(this.material.diffuse.map, function (texture) {
-            this.bodySphereMaterial = new THREE.MeshPhongMaterial({map:texture});
+            this.bodySphereMaterial = new THREE.MeshPhongMaterial({map: texture});
         });
         this.bodySphereMesh = new THREE.Mesh(this.bodySphereGeometry, this.bodySphereMaterial);
         this.bodySphereMesh.scale.set(1, 1 - this.oblateness, 1);
 
         // Add lens flare
         this.lensFlare = null;
-        if(!this.star) {
+        if (!this.star) {
             this.lensFlare =
-                new THREE.LensFlare(this.flareTexture, 20*Math.log(this.radius)*this.albedo,
+                new THREE.LensFlare(this.flareTexture, 20 * Math.log(this.radius) * this.albedo,
                     0, THREE.AdditiveBlending, new THREE.Color(this.shineColor));
             this.lensFlare.size = 200;
             this.lensFlare.position.set(this.getX(), this.getY(), this.getZ());
 
             var that = this;
-            this.lensFlare.customUpdateCallback = function() {
+            this.lensFlare.customUpdateCallback = function () {
                 var cameraDistance = Math.sqrt(
                     (trackCamera[params.planets].getX() - that.getX())
                     * (trackCamera[params.planets].getX() - that.getX()),
@@ -182,7 +194,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                     * (trackCamera[params.planets].getY() - that.getY()),
                     (trackCamera[params.planets].getZ() - that.getZ())
                     * (trackCamera[params.planets].getZ() - that.getZ()));
-                if(cameraDistance/that.radius < 125) {
+                if (cameraDistance / that.radius < 125) {
                     that.bodySphereMaterial.depthTest = true;
                 }
                 else {
@@ -200,16 +212,18 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         this.cloudGeometry = null;
         this.cloudMaterial = null;
         this.cloudMesh = null;
-        if(this.atmosphere.cloud.map !== null) {
+        if (this.atmosphere.cloud.map !== null) {
             this.cloudGeometry = new THREE.SphereGeometry(this.radius + this.atmosphere.cloud.height, 64, 64);
-            if(!this.star) {
+            if (!this.star) {
                 this.cloudMaterial = new THREE.MeshLambertMaterial({
                     map: textureLoader.load(this.atmosphere.cloud.map),
-                    transparent: true});
+                    transparent: true
+                });
             } else {
                 this.cloudMaterial = new THREE.MeshBasicMaterial({
                     map: textureLoader.load(this.atmosphere.cloud.map),
-                    transparent: true});
+                    transparent: true
+                });
             }
             this.cloudMesh = new THREE.Mesh(this.cloudGeometry, this.cloudMaterial);
         }
@@ -221,9 +235,9 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         this.ringMeshPositive = null;
         this.ringMeshNegative = null;
         this.ringTexture = null;
-        if(this.ring.map !== null) {
+        if (this.ring.map !== null) {
             this.ringTexture = textureLoader.load(this.ring.map);
-            this.ringTexture.rotation = Math.PI/2;
+            this.ringTexture.rotation = Math.PI / 2;
             this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.lower, this.radius + this.ring.higher, 0, 100, 100, true);
             this.ringMaterial = new THREE.MeshPhongMaterial({
                 map: this.ringTexture, transparent: true,
@@ -235,7 +249,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         }
 
         // Add meshes to the object group
-        this.objectGroup.add(this.lensFlare);
+        // this.objectGroup.add(this.lensFlare);
         this.objectGroup.add(this.bodySphereMesh);
 
 
@@ -245,7 +259,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         }
         // if(!this.star) this.bodySphereMesh.castShadow = true;
         // if(!this.star) this.bodySphereMesh.receiveShadow = true;
-        if(this.cloudMesh !== null) {
+        if (this.cloudMesh !== null) {
             this.objectGroup.add(this.cloudMesh);
             // if(!this.star) this.cloudMesh.castShadow = true;
             // if(!this.star) this.cloudMesh.receiveShadow = true;
@@ -256,6 +270,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     }
 };
 
+
 CelestialBody.prototype.updateClouds = function (time) {
     if(this.cloudGeometry !== null) {
         this.cloudGeometry.rotateY(time*this.atmosphere.cloud.speed/360);
@@ -263,9 +278,9 @@ CelestialBody.prototype.updateClouds = function (time) {
 }
 
 CelestialBody.prototype.update = function (time) {
-    if(this.objectGroup !== undefined) {
+    if (this.objectGroup !== undefined || this.isComet) {
         this.updateOrbitAndRotation(time);
-        if (this.spherical)
+        if (this.spherical && !this.isComet)
             this.updateClouds(time);
     }
 };

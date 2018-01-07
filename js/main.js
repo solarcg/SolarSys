@@ -1,8 +1,29 @@
 var container, stats;
 var camera, scene, renderer;
 var trackCamera = new Map();
+var clock = new THREE.Clock();
+var tick = 0;
 var params = {
     planets: "Galaxy",
+};
+var options = {
+    position: new THREE.Vector3(),
+    positionRandomness: .3,
+    velocity: new THREE.Vector3(),
+    velocityRandomness: .5,
+    color: 0xaa88ff,
+    colorRandomness: .2,
+    turbulence: 0.,
+    lifetime: 2,
+    size: 5,
+    sizeRandomness: 1
+};
+
+var spawnerOptions = {
+    spawnRate: 15000,
+    horizontalSpeed: 1.5,
+    verticalSpeed: 1.33,
+    timeScale: 1
 };
 
 init();
@@ -14,7 +35,7 @@ function initScene() {
 }
 
 function initCamera() {
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1e10);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e10);
     trackCamera["Galaxy"] = new cameraParameters(7500, 200, "Sun");
     trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
     trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
@@ -34,14 +55,14 @@ function initLight() {
     sunLight.position.set(0, 0, 0);
     sunLight.castShadow = true;
     scene.add(sunLight);
-}  
+}
 
 function initRender() {
     renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     // renderer.shadowMapEnabled = true;
     // renderer.shadowMapSoft = true;
@@ -53,7 +74,7 @@ function initRender() {
     // renderer.shadowMapWidth = 1024;
     // renderer.shadowMapHeight = 1024;
 
-    container.appendChild( renderer.domElement );
+    container.appendChild(renderer.domElement);
 }
 
 function initObjects() {
@@ -64,46 +85,44 @@ function initObjects() {
         "res/skybox/posZ.jpg", "res/skybox/negZ.jpg"];
     var materialArray = [];
     var skyGeometry = new THREE.CubeGeometry(10000000, 10000000, 10000000);
-	for (var i = 0; i < 6; i++)
-		materialArray.push( new THREE.MeshBasicMaterial({
-			map: textureLoader.load(skyboxTextureFilenames[i]),
-			side: THREE.BackSide
-		}));
-    var skyBox = new THREE.Mesh( skyGeometry, materialArray );
-    skyBox.rotateX(Math.PI/2);
+    for (var i = 0; i < 6; i++)
+        materialArray.push(new THREE.MeshBasicMaterial({
+            map: textureLoader.load(skyboxTextureFilenames[i]),
+            side: THREE.BackSide
+        }));
+    var skyBox = new THREE.Mesh(skyGeometry, materialArray);
+    skyBox.rotateX(Math.PI / 2);
     scene.add(skyBox);
-    for(objKey in celestialBodies) {
+    for (var objKey in celestialBodies) {
         celestialBodies[objKey].generateObjectsOnScene(scene);
     }
-    for(objKey in celestialBodies) {
+    for (var objKey in celestialBodies) {
         celestialBodies[objKey].parent = celestialBodies[celestialBodies[objKey].parent];
     }
 }
 
 function init() {
-    container = document.getElementById( 'container' );
+    container = document.getElementById('container');
 
     initCamera();
     initScene();
     initLight();
     initObjects();
-    // createStars();
     initRender();
 
     stats = new Stats();
-    container.appendChild( stats.dom );
-    window.addEventListener( 'mousedown', onWindowMouseDown, false );
-    window.addEventListener( 'mousemove', onWindowMouseMove, false );
-    window.addEventListener( 'mouseup', onWindowMouseUp, false );
-	window.addEventListener( 'mousewheel', onMouseWheelChange, false);
-	window.addEventListener( 'DOMMouseScroll', onMouseWheelChange, false);
-    window.addEventListener( 'resize', onWindowResize, false );
-
+    container.appendChild(stats.dom);
+    window.addEventListener('mousedown', onWindowMouseDown, false);
+    window.addEventListener('mousemove', onWindowMouseMove, false);
+    window.addEventListener('mouseup', onWindowMouseUp, false);
+    window.addEventListener('mousewheel', onMouseWheelChange, false);
+    window.addEventListener('DOMMouseScroll', onMouseWheelChange, false);
+    window.addEventListener('resize', onWindowResize, false);
 
 
     var gui = new dat.GUI();
 
-    gui.add( params, 'planets', [ "Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
+    gui.add(params, 'planets', ["Galaxy", "Sun", "Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
     gui.open();
 }
 
@@ -114,11 +133,11 @@ function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
-    requestAnimationFrame( animate );
+    requestAnimationFrame(animate);
     render();
     stats.update();
 }
