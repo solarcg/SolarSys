@@ -12,6 +12,10 @@ var CelestialBody = function (obj) {
     // TODO: Model info, to be implemented
     // Orbit parameters
     // 周期（恒星）、半长轴、离心率、倾角、升交点黄经、平近点角 (历时原点假设轨道是圆形时的黄经偏移)
+
+    this.path = null;
+    this.objPath = null;
+    this.mtlPath = null;
     this.orbit = {
         period: 1., semiMajorAxis: 1., eccentricity: 0.,
         inclination: 0., ascendingNode: 0., meanLongitude: 0.
@@ -87,36 +91,60 @@ CelestialBody.prototype.flareTexture = textureLoader.load("res/effects/flare.jpg
 CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     var that = this;
     // if(this.spherical)
-    this.bodySphereGeometry = new THREE.SphereGeometry(this.radius, 64, 64);
-    // TODO: Add .obj model file here
-    // else if(!this.spherical) blablabla...
-    // The base body sphere material
-    var sphereMaterial = this.bodySphereMaterial = null;
-    switch (this.material.type) {
-        case "basic":
-            sphereMaterial = this.bodySphereMaterial
-                = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color(this.material.diffuse.color)});
-            if(this.material.diffuse.map !== null) {
-                sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+    if (!this.spherical) {
+        this.objectGroup = new THREE.Group();
+        var onProgress = function ( xhr ) {
+            if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total * 100;
             }
-            break;
-        case "lambert":
-            sphereMaterial = this.bodySphereMaterial
-                = new THREE.MeshLambertMaterial({
+        };
+        var onError = function ( xhr ) { };
+        mtlLoader.setPath(that.path);
+        mtlLoader.load( that.mtlPath, function( materials ) {
+            materials.preload();
+            objLoader.setMaterials( materials );
+            objLoader.setPath(that.path);
+            objLoader.load( that.objPath, function ( object ) {
+                that.objectGroup.add(object);
+                object.scale.set(0.2, 0.2, 0.2);
+            }, onProgress, onError );
+
+        });
+
+        argScene.add(this.objectGroup);
+
+    } else {
+        this.bodySphereGeometry = new THREE.SphereGeometry(this.radius, 64, 64);
+
+
+        // else if(!this.spherical) blablabla...
+        // The base body sphere material
+        var sphereMaterial = this.bodySphereMaterial = null;
+        switch (this.material.type) {
+            case "basic":
+                sphereMaterial = this.bodySphereMaterial
+                    = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(this.material.diffuse.color)});
+                if(this.material.diffuse.map !== null) {
+                    sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+                }
+                break;
+            case "lambert":
+                sphereMaterial = this.bodySphereMaterial
+                    = new THREE.MeshLambertMaterial({
                     color: new THREE.Color(this.material.diffuse.color),
                     bumpScale: this.material.bump.height});
-            if(this.material.diffuse.map !== null) {
-                sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
-            }
-            break;
-        case "phong": default:
+                if(this.material.diffuse.map !== null) {
+                    sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
+                }
+                break;
+            case "phong": default:
             sphereMaterial = this.bodySphereMaterial
                 = new THREE.MeshPhongMaterial({
-                    color: new THREE.Color(this.material.diffuse.color),
-                    specular: new THREE.Color(this.material.specular.color),
-                    shininess: this.material.specular.shininess,
-                    bumpScale: this.material.bump.height});
+                color: new THREE.Color(this.material.diffuse.color),
+                specular: new THREE.Color(this.material.specular.color),
+                shininess: this.material.specular.shininess,
+                bumpScale: this.material.bump.height});
             if(this.material.diffuse.map !== null) {
                 sphereMaterial.map = textureLoader.load(this.material.diffuse.map);
             }
@@ -127,102 +155,105 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                 sphereMaterial.bumpMap = textureLoader.load(this.material.bump.map);
             }
             break;
-    }
-    this.objectGroup = new THREE.Group();
-    // Add the main body part
-    textureLoader.load(this.material.diffuse.map, function (texture) {
-        this.bodySphereMaterial = new THREE.MeshPhongMaterial({map:texture});
-    });
-    this.bodySphereMesh = new THREE.Mesh(this.bodySphereGeometry, this.bodySphereMaterial);
-    this.bodySphereMesh.scale.set(1, 1 - this.oblateness, 1);
-
-    // Add lens flare
-    this.lensFlare = null;
-    if(!this.star) {
-        this.lensFlare =
-            new THREE.LensFlare(this.flareTexture, 20*Math.log(this.radius)*this.albedo,
-                0, THREE.AdditiveBlending, new THREE.Color(this.shineColor));
-        this.lensFlare.size = 200;
-        this.lensFlare.position.set(this.getX(), this.getY(), this.getZ());
-
-        var that = this;
-        this.lensFlare.customUpdateCallback = function() {
-            var cameraDistance = Math.sqrt(
-                (trackCamera[params.planets].getX() - that.getX())
-                * (trackCamera[params.planets].getX() - that.getX()),
-                (trackCamera[params.planets].getY() - that.getY())
-                * (trackCamera[params.planets].getY() - that.getY()),
-                (trackCamera[params.planets].getZ() - that.getZ())
-                * (trackCamera[params.planets].getZ() - that.getZ()));
-            if(cameraDistance/that.radius < 125) {
-                that.bodySphereMaterial.depthTest = true;
-            }
-            else {
-                that.bodySphereMaterial.depthTest = false;
-            }
-            this.updateLensFlares();
-        };
-    } else {
-        this.lensFlare =
-        new THREE.LensFlare(this.flareTexture, 400, 0,
-            THREE.AdditiveBlending, new THREE.Color(this.shineColor));
-    }
-
-    // Add clouds
-    this.cloudGeometry = null;
-    this.cloudMaterial = null;
-    this.cloudMesh = null;
-    if(this.atmosphere.cloud.map !== null) {
-        this.cloudGeometry = new THREE.SphereGeometry(this.radius + this.atmosphere.cloud.height, 64, 64);
-        if(!this.star) {
-            this.cloudMaterial = new THREE.MeshLambertMaterial({
-                map: textureLoader.load(this.atmosphere.cloud.map),
-                transparent: true});
-        } else {
-            this.cloudMaterial = new THREE.MeshBasicMaterial({
-                map: textureLoader.load(this.atmosphere.cloud.map),
-                transparent: true});
         }
-        this.cloudMesh = new THREE.Mesh(this.cloudGeometry, this.cloudMaterial);
-    }
-
-    // Add rings
-    // Add clouds
-    this.ringGeometry = null;
-    this.ringMaterial = null;
-    this.ringMeshPositive = null;
-    this.ringMeshNegative = null;
-    this.ringTexture = null;
-    if(this.ring.map !== null) {
-        this.ringTexture = textureLoader.load(this.ring.map);
-        this.ringTexture.rotation = Math.PI/2;
-        this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.lower, this.radius + this.ring.higher, 0, 100, 100, true);
-        this.ringMaterial = new THREE.MeshPhongMaterial({
-            map: this.ringTexture, transparent: true,
-            emissive: new THREE.Color(0x222222)
+        this.objectGroup = new THREE.Group();
+        // Add the main body part
+        textureLoader.load(this.material.diffuse.map, function (texture) {
+            this.bodySphereMaterial = new THREE.MeshPhongMaterial({map:texture});
         });
-        this.ringMeshPositive = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
-        this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.higher, this.radius + this.ring.lower, 0, 100, 100, true);
-        this.ringMeshNegative = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
-    }
+        this.bodySphereMesh = new THREE.Mesh(this.bodySphereGeometry, this.bodySphereMaterial);
+        this.bodySphereMesh.scale.set(1, 1 - this.oblateness, 1);
 
-    // Add meshes to the object group
-    this.objectGroup.add(this.lensFlare);
-    this.objectGroup.add(this.bodySphereMesh);
-    if (this.ringMeshPositive !== null) {
-        this.objectGroup.add(this.ringMeshPositive);
-        this.objectGroup.add(this.ringMeshNegative);
+        // Add lens flare
+        this.lensFlare = null;
+        if(!this.star) {
+            this.lensFlare =
+                new THREE.LensFlare(this.flareTexture, 20*Math.log(this.radius)*this.albedo,
+                    0, THREE.AdditiveBlending, new THREE.Color(this.shineColor));
+            this.lensFlare.size = 200;
+            this.lensFlare.position.set(this.getX(), this.getY(), this.getZ());
+
+            var that = this;
+            this.lensFlare.customUpdateCallback = function() {
+                var cameraDistance = Math.sqrt(
+                    (trackCamera[params.planets].getX() - that.getX())
+                    * (trackCamera[params.planets].getX() - that.getX()),
+                    (trackCamera[params.planets].getY() - that.getY())
+                    * (trackCamera[params.planets].getY() - that.getY()),
+                    (trackCamera[params.planets].getZ() - that.getZ())
+                    * (trackCamera[params.planets].getZ() - that.getZ()));
+                if(cameraDistance/that.radius < 125) {
+                    that.bodySphereMaterial.depthTest = true;
+                }
+                else {
+                    that.bodySphereMaterial.depthTest = false;
+                }
+                this.updateLensFlares();
+            };
+        } else {
+            this.lensFlare =
+                new THREE.LensFlare(this.flareTexture, 400, 0,
+                    THREE.AdditiveBlending, new THREE.Color(this.shineColor));
+        }
+
+        // Add clouds
+        this.cloudGeometry = null;
+        this.cloudMaterial = null;
+        this.cloudMesh = null;
+        if(this.atmosphere.cloud.map !== null) {
+            this.cloudGeometry = new THREE.SphereGeometry(this.radius + this.atmosphere.cloud.height, 64, 64);
+            if(!this.star) {
+                this.cloudMaterial = new THREE.MeshLambertMaterial({
+                    map: textureLoader.load(this.atmosphere.cloud.map),
+                    transparent: true});
+            } else {
+                this.cloudMaterial = new THREE.MeshBasicMaterial({
+                    map: textureLoader.load(this.atmosphere.cloud.map),
+                    transparent: true});
+            }
+            this.cloudMesh = new THREE.Mesh(this.cloudGeometry, this.cloudMaterial);
+        }
+
+        // Add rings
+        // Add clouds
+        this.ringGeometry = null;
+        this.ringMaterial = null;
+        this.ringMeshPositive = null;
+        this.ringMeshNegative = null;
+        this.ringTexture = null;
+        if(this.ring.map !== null) {
+            this.ringTexture = textureLoader.load(this.ring.map);
+            this.ringTexture.rotation = Math.PI/2;
+            this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.lower, this.radius + this.ring.higher, 0, 100, 100, true);
+            this.ringMaterial = new THREE.MeshPhongMaterial({
+                map: this.ringTexture, transparent: true,
+                emissive: new THREE.Color(0x222222)
+            });
+            this.ringMeshPositive = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
+            this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.higher, this.radius + this.ring.lower, 0, 100, 100, true);
+            this.ringMeshNegative = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
+        }
+
+        // Add meshes to the object group
+        this.objectGroup.add(this.lensFlare);
+        this.objectGroup.add(this.bodySphereMesh);
+
+
+        if (this.ringMeshPositive !== null) {
+            this.objectGroup.add(this.ringMeshPositive);
+            this.objectGroup.add(this.ringMeshNegative);
+        }
+        // if(!this.star) this.bodySphereMesh.castShadow = true;
+        // if(!this.star) this.bodySphereMesh.receiveShadow = true;
+        if(this.cloudMesh !== null) {
+            this.objectGroup.add(this.cloudMesh);
+            // if(!this.star) this.cloudMesh.castShadow = true;
+            // if(!this.star) this.cloudMesh.receiveShadow = true;
+        }
+        // simple inclination
+        this.objectGroup.rotateZ(this.rotation.inclination / 180.0 * Math.PI);
+        argScene.add(this.objectGroup);
     }
-    // if(!this.star) this.bodySphereMesh.castShadow = true;
-    // if(!this.star) this.bodySphereMesh.receiveShadow = true;
-    if(this.cloudMesh !== null) { 
-        this.objectGroup.add(this.cloudMesh);
-        // if(!this.star) this.cloudMesh.castShadow = true;
-        // if(!this.star) this.cloudMesh.receiveShadow = true;
-    }
-    // simple inclination
-    this.objectGroup.rotateZ(this.rotation.inclination / 180.0 * Math.PI);
-    argScene.add(this.objectGroup);
 };
 
 CelestialBody.prototype.updateClouds = function (time) {
@@ -234,7 +265,8 @@ CelestialBody.prototype.updateClouds = function (time) {
 CelestialBody.prototype.update = function (time) {
     if(this.objectGroup !== undefined) {
         this.updateOrbitAndRotation(time);
-        this.updateClouds(time);
+        if (this.spherical)
+            this.updateClouds(time);
     }
 };
 

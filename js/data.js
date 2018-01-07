@@ -23,6 +23,8 @@ celestialBodies = {
             }
         }
     }),
+
+
     Mercury: new CelestialBody({
         name:"Mercury",
         radius: 3.825,
@@ -107,28 +109,26 @@ celestialBodies = {
             }
         }
     }),
-    Moon: new CelestialBody({
-        name:"Moon",
-        radius: 3.,
+    Ship: new CelestialBody({
+        name:"Ship",
+        star: true,
         parent: "Earth",
-        shineColor: 0x6666ff,
+        radius: 150.,
+        spherical: false,
+        path: "res/spaceship/",
+        objPath: "frigate.obj",
+        mtlPath: "frigate.mtl",
         orbit: {
-            period: 1,
-            semiMajorAxis: 15.,
-            eccentricity: 0.,
-            inclination: 0.
+            period: 1.0,
+            semiMajorAxis: 30.,
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
-            meridianAngle: 0.,
-            offset: 0.
+            period: 1000000,
+            inclination: 0,
         },
-        material: {
-            type:       "lambert",
-            diffuse:    { map: "res/moon/diffuse.jpg" },
-        }
     }),
+
+
     Mars: new CelestialBody({
         name:"Mars",
         radius: 5.3226,
