@@ -8,6 +8,7 @@ var params = {
     Camera: "Galaxy",
 };
 var calculateParams;
+var firstflag = true;
 
 var options = {
     position: new THREE.Vector3(),
@@ -77,7 +78,7 @@ function initRender() {
     // renderer.shadowMapWidth = 1024;
     // renderer.shadowMapHeight = 1024;
 
-    container.appendChild(renderer.domElement);
+    
 }
 
 function initObjects() {
@@ -148,6 +149,7 @@ function init() {
     calculate.add(calculateParams, 'Neptune');
     calculate.add(calculateParams, 'Pluto');
     gui.open();
+    //container.appendChild(renderer.domElement);
 }
 
 function onWindowResize() {

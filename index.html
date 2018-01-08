@@ -5,9 +5,21 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/solar.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
-        <div id="container"></div>
+        <div id="container">
+            <div id="prompt">
+                <img src="res/loading/earth.jpg" />
+                <h2> 正在加载资源，请稍后</h2>
+                    <div class="sk-folding-cube">
+                        <div class="sk-cube1 sk-cube"></div>
+                        <div class="sk-cube2 sk-cube"></div>
+                        <div class="sk-cube4 sk-cube"></div>
+                        <div class="sk-cube3 sk-cube"></div>
+                    </div>
+            </div>
+        </div>
         <div id="info">
             <a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a> - Webgl Demo</div>
         <!-- Libraries -->
@@ -18,6 +30,7 @@
         <script src="js/libs/OBJLoader.js"></script>
         <script src="js/libs/MTLLoader.js"></script>
         <script src="js/libs/GPUParticleSystem.js"></script>
+        <script src="js/jquery-3.2.1.min.js"></script>
         <!-- Texture loader -->
         <script>var textureLoader = new THREE.TextureLoader();</script>
         <script>var objLoader = new THREE.OBJLoader();</script>

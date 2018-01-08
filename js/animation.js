@@ -8,10 +8,15 @@ function remain( objKey ) {
 
 function render() {
     for (var objKey in celestialBodies) {
-        if (remain(objKey)) {
+        if ( firstflag || remain(objKey)) {
             celestialBodies[objKey].update(globalTime.getRelative());
         }
     }
+    if (firstflag) {
+        $("#prompt").fadeOut(500);
+        container.appendChild(renderer.domElement);
+    }
+    firstflag = false;
     var body = params.Camera;
     var renderCamera = trackCamera[body].camera;
     trackCamera[body].setCamera();
