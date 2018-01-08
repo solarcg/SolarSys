@@ -16,10 +16,13 @@ function render() {
         $(function () {
             setTimeout(function () {
                 $("#prompt").fadeOut(500);
+                container.appendChild(stats.domElement);
+                gui.open();
             }, 6000);
         
         })
         container.appendChild(renderer.domElement);
+
     }
     firstflag = false;
     var body = params.Camera;

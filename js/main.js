@@ -1,8 +1,7 @@
-var container, stats;
+var container, stats, gui;
 var camera, scene, renderer;
 var trackCamera = new Map();
 var clock = new THREE.Clock();
-var gui = new dat.GUI();
 var tick = 0;
 var params = {
     Camera: "Galaxy",
@@ -40,7 +39,7 @@ function initScene() {
 
 function initCamera() {
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e10);
-    trackCamera["Galaxy"] = new cameraParameters(7500, 200, "Sun");
+    trackCamera["Galaxy"] = new cameraParameters(3000, 200, "Sun");
     trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
     trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
     trackCamera["Venus"] = new cameraParameters(30, 30, "Venus");
@@ -78,7 +77,7 @@ function initRender() {
     // renderer.shadowMapWidth = 1024;
     // renderer.shadowMapHeight = 1024;
 
-    
+
 }
 
 function initObjects() {
@@ -115,7 +114,8 @@ function init() {
     initRender();
 
     stats = new Stats();
-    container.appendChild(stats.dom);
+    gui = new dat.GUI();
+    gui.close();
     window.addEventListener('mousedown', onWindowMouseDown, false);
     window.addEventListener('mousemove', onWindowMouseMove, false);
     window.addEventListener('mouseup', onWindowMouseUp, false);
