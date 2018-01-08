@@ -13,7 +13,12 @@ function render() {
         }
     }
     if (firstflag) {
-        $("#prompt").fadeOut(500);
+        $(function () {
+            setTimeout(function () {
+                $("#prompt").fadeOut(500);
+            }, 6000);
+        
+        })
         container.appendChild(renderer.domElement);
     }
     firstflag = false;

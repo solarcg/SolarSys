@@ -148,7 +148,6 @@ function init() {
     calculate.add(calculateParams, 'Uranus');
     calculate.add(calculateParams, 'Neptune');
     calculate.add(calculateParams, 'Pluto');
-    gui.open();
     //container.appendChild(renderer.domElement);
 }
 
