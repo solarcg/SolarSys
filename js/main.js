@@ -1,12 +1,14 @@
 var container, stats, gui;
 var camera, scene, renderer;
 var trackCamera = new Map();
+var orbitDraw = new Map();
 var clock = new THREE.Clock();
 var tick = 0;
 var params = {
     Camera: "Galaxy",
 };
 var calculateParams;
+var orbitParams;
 var firstflag = true;
 
 var options = {
@@ -39,6 +41,7 @@ function initScene() {
 
 function initCamera() {
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e10);
+    var cameras = ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
     trackCamera["Galaxy"] = new cameraParameters(3000, 200, "Sun");
     trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
     trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
@@ -76,7 +79,14 @@ function drawOrbit(color, celestialBody) {
             Math.cos(segment) * radius * Math.sin(angle),
             Math.sin(segment) * radius));
     }
-    scene.add(new THREE.Line(orbit, material));
+    return new THREE.Line(orbit, material);
+}
+
+function initOrbit() {
+    var objs = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
+    for (var i in objs) {
+        orbitDraw[objs[i]] = drawOrbit("0xffffff", celestialBodies[objs[i]]);
+    }
 }
 
 
@@ -124,26 +134,11 @@ function initObjects() {
     }
 }
 
-function init() {
-    container = document.getElementById('container');
-
-    initCamera();
-    initScene();
-    initLight();
-    initObjects();
-    initRender();
-    drawOrbit("0xffffff", celestialBodies["Earth"]);
-    stats = new Stats();
-    gui = new dat.GUI();
-    gui.close();
-    window.addEventListener('mousedown', onWindowMouseDown, false);
-    window.addEventListener('mousemove', onWindowMouseMove, false);
-    window.addEventListener('mouseup', onWindowMouseUp, false);
-    window.addEventListener('mousewheel', onMouseWheelChange, false);
-    window.addEventListener('DOMMouseScroll', onMouseWheelChange, false);
-    window.addEventListener('resize', onWindowResize, false);
-
+function initCameraGui() {
     gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
+}
+
+function initCalculateGui() {
     var calculate = gui.addFolder('Calculate');
     calculateParams = new function () {
         this.Sun = true;
@@ -168,6 +163,54 @@ function init() {
     calculate.add(calculateParams, 'Uranus');
     calculate.add(calculateParams, 'Neptune');
     calculate.add(calculateParams, 'Pluto');
+}
+
+function initOrbitGui() {
+    var orbit = gui.addFolder('Orbit');
+    orbitParams = new function () {
+        this.Mercury = false;
+        this.Venus = false;
+        this.Earth = true;
+        this.Mars = false;
+        this.Jupiter = false;
+        this.Saturn = false;
+        this.Uranus = false;
+        this.Neptune = false;
+        this.Pluto = false;
+    };
+    orbit.add(orbitParams, 'Mercury');
+    orbit.add(orbitParams, 'Venus');
+    orbit.add(orbitParams, 'Earth');
+    orbit.add(orbitParams, 'Mars');
+    orbit.add(orbitParams, 'Jupiter');
+    orbit.add(orbitParams, 'Saturn');
+    orbit.add(orbitParams, 'Uranus');
+    orbit.add(orbitParams, 'Neptune');
+    orbit.add(orbitParams, 'Pluto');
+}
+
+function init() {
+    container = document.getElementById('container');
+
+    initCamera();
+    initScene();
+    initLight();
+    initObjects();
+    initRender();
+    initOrbit();
+    stats = new Stats();
+    gui = new dat.GUI();
+    gui.close();
+    window.addEventListener('mousedown', onWindowMouseDown, false);
+    window.addEventListener('mousemove', onWindowMouseMove, false);
+    window.addEventListener('mouseup', onWindowMouseUp, false);
+    window.addEventListener('mousewheel', onMouseWheelChange, false);
+    window.addEventListener('DOMMouseScroll', onMouseWheelChange, false);
+    window.addEventListener('resize', onWindowResize, false);
+
+    initCameraGui();
+    initCalculateGui();
+    initOrbitGui();
     //container.appendChild(renderer.domElement);
 }
 

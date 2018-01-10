@@ -10,6 +10,11 @@ function render() {
     for (var objKey in celestialBodies) {
         if ( firstflag || remain(objKey)) {
             celestialBodies[objKey].update(globalTime.getRelative());
+            if (orbitParams[objKey]) {
+                scene.add(orbitDraw[objKey]);
+            } else {
+                scene.remove(orbitDraw[objKey]);
+            }
         }
     }
     if (firstflag) {
