@@ -6,7 +6,7 @@ var globalTime = {
     getRelative: function () { return this.relative; }
 };
 
-window.setInterval(() => {
+window.setInterval(function(){
     globalTime.relative += 0.001 * globalTime.scale;
     globalTime.absolute += 0.001;
 }, 10);

@@ -1,6 +1,9 @@
 var container, stats, gui;
-var camera, scene, renderer;
+var switchCamera, scene, renderer;
 var trackCamera = new Map();
+var renderCamera;
+var needSet = true;
+var curBody = "Galaxy", nextBody;
 var orbitDraw = new Map();
 var clock = new THREE.Clock();
 var tick = 0;
@@ -40,7 +43,8 @@ function initScene() {
 }
 
 function initCamera() {
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1e10);
+    switchCamera = new cameraParameters(3000, 200, "Sun");
+    switchCamera.setCamera();
     var cameras = ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
     trackCamera["Galaxy"] = new cameraParameters(3000, 200, "Sun");
     trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
@@ -66,9 +70,6 @@ function initLight() {
 
 function drawOrbit(color, celestialBody) {
     var radius = celestialBody.orbit.semiMajorAxis;
-    var x = celestialBody.getX();
-    var y = celestialBody.getY();
-    var z = celestialBody.getZ();
     var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
     var size = 360 / radius;
     var orbit = new THREE.Geometry();
@@ -134,11 +135,42 @@ function initObjects() {
     }
 }
 
-function initCameraGui() {
-    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]);
-}
 
-function initCalculateGui() {
+var posSrc = {pos:0.0};
+var set = true;
+var tween = new TWEEN.Tween(posSrc)
+    .to({pos:1.0}, 3000)
+    .easing(TWEEN.Easing.Cubic.InOut)
+    .onUpdate(function() {
+        var oX = trackCamera[curBody].getX();
+        var oY = trackCamera[curBody].getY();
+        var oZ = trackCamera[curBody].getZ();
+            var dX = trackCamera[nextBody].getX() - trackCamera[curBody].getX();
+            var dY = trackCamera[nextBody].getY() - trackCamera[curBody].getY();
+            var dZ = trackCamera[nextBody].getZ() - trackCamera[curBody].getZ();
+        var pos = posSrc.pos;
+        switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
+    })
+    .onComplete(function() {
+        set = true;
+        switchCamera.body = nextBody;
+        curBody = nextBody;
+        needSet = true;
+        renderCamera = trackCamera[nextBody];
+    })
+
+function initGui() {
+    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
+        nextBody = val;
+        if (nextBody != switchCamera.body) {
+            switchCamera.distance = trackCamera[curBody].distance;
+            renderCamera = switchCamera;
+            posSrc.pos = 0.0;
+            needSet = false;
+            tween.start();
+        }
+    });
+
     var calculate = gui.addFolder('Calculate');
     calculateParams = new function () {
         this.Sun = true;
@@ -163,9 +195,7 @@ function initCalculateGui() {
     calculate.add(calculateParams, 'Uranus');
     calculate.add(calculateParams, 'Neptune');
     calculate.add(calculateParams, 'Pluto');
-}
 
-function initOrbitGui() {
     var orbit = gui.addFolder('Orbit');
     orbitParams = new function () {
         this.Mercury = false;
@@ -189,6 +219,7 @@ function initOrbitGui() {
     orbit.add(orbitParams, 'Pluto');
 }
 
+
 function init() {
     container = document.getElementById('container');
 
@@ -198,6 +229,7 @@ function init() {
     initObjects();
     initRender();
     initOrbit();
+    renderCamera = trackCamera["Galaxy"];
     stats = new Stats();
     gui = new dat.GUI();
     gui.close();
@@ -207,25 +239,22 @@ function init() {
     window.addEventListener('mousewheel', onMouseWheelChange, false);
     window.addEventListener('DOMMouseScroll', onMouseWheelChange, false);
     window.addEventListener('resize', onWindowResize, false);
-
-    initCameraGui();
-    initCalculateGui();
-    initOrbitGui();
-    //container.appendChild(renderer.domElement);
+    initGui()
 }
 
 function onWindowResize() {
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    renderCamera.aspect = window.innerWidth / window.innerHeight;
+    renderCamera.camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
     requestAnimationFrame(animate);
+    TWEEN.update();
     render();
     stats.update();
 }

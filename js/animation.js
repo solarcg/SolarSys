@@ -5,7 +5,6 @@ function remain( objKey ) {
     return false;
 }
 
-
 function render() {
     for (var objKey in celestialBodies) {
         if ( firstflag || remain(objKey)) {
@@ -30,10 +29,9 @@ function render() {
 
     }
     firstflag = false;
-    var body = params.Camera;
-    var renderCamera = trackCamera[body].camera;
-    trackCamera[body].setCamera();
-
+    if (needSet) {
+        renderCamera.setCamera();
+    }
     // if(Math.sqrt(
     //     cameraParameters.getX() * cameraParameters.getX()
     //     + cameraParameters.getY() * cameraParameters.getY()
@@ -43,5 +41,5 @@ function render() {
     // } else {
     //     sunMaterial.depthTest = true;
     // }
-    renderer.render(scene, renderCamera);
+    renderer.render(scene, renderCamera.camera);
 }
