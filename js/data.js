@@ -85,7 +85,7 @@ celestialBodies = {
             period: 5,
             semiMajorAxis: 1000.,
             eccentricity: 0.,
-            inclination: 0.
+            inclination: 30.
         },
         rotation: {
             period: 100.,
@@ -116,6 +116,7 @@ celestialBodies = {
         orbit: {
             period: 3.5,
             semiMajorAxis: 1300.,
+            inclination: 30.0,
         },
     }),
     Ship: new CelestialBody({
@@ -123,12 +124,39 @@ celestialBodies = {
         parent: "Earth",
         radius: 150.,
         spherical: false,
-        path: "res/spaceship/",
-        objPath: "frigate.obj",
-        mtlPath: "frigate.mtl",
+        obj: {
+            path: "res/space/",
+            objPath: "frigate.obj",
+            mtlPath: "frigate.mtl",
+            angle: -30,
+            scale: 0.15,
+        },
         orbit: {
             period: 1.0,
             semiMajorAxis: 20.,
+            inclination: 30,
+        },
+        rotation: {
+            period: 1000000,
+            inclination: 0,
+        },
+    }),
+    Astronaut: new CelestialBody({
+        name: "Astronaut",
+        parent: "Earth",
+        radius: 150.,
+        spherical: false,
+        obj: {
+            path: "res/space/",
+            objPath: "man.obj",
+            mtlPath: null,
+            scale: 0.5,
+            angle: 170,
+        },
+        orbit: {
+            period: 1.0,
+            semiMajorAxis: 20.,
+            inclination: 30,
         },
         rotation: {
             period: 1000000,

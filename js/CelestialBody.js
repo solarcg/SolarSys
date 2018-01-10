@@ -15,9 +15,11 @@ var CelestialBody = function (obj) {
     // Orbit parameters
     // 周期（恒星）、半长轴、离心率、倾角、升交点黄经、平近点角 (历时原点假设轨道是圆形时的黄经偏移)
 
-    this.path = null;
-    this.objPath = null;
-    this.mtlPath = null;
+    this.obj = {
+        path: null, objPath: null, mtlPath: null,
+        scale: 1., angle: 0.
+    }
+
     this.orbit = {
         period: 1., semiMajorAxis: 1., eccentricity: 0.,
         inclination: 0., ascendingNode: 0., meanLongitude: 0.
@@ -110,17 +112,34 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             };
             var onError = function (xhr) {
             };
-            mtlLoader.setPath(that.path);
-            mtlLoader.load(that.mtlPath, function (materials) {
-                materials.preload();
-                objLoader.setMaterials(materials);
-                objLoader.setPath(that.path);
-                objLoader.load(that.objPath, function (object) {
+            if (that.obj.mtlPath != null) {
+                mtlLoader.setPath(that.obj.path);
+                mtlLoader.load(that.obj.mtlPath, function (materials) {
+                    materials.preload();
+                    objLoader.setMaterials(materials);
+                    objLoader.setPath(that.obj.path);
+                    objLoader.load(that.obj.objPath, function (object) {
+                        that.objectGroup.add(object);
+                        var scale = that.obj.scale;
+                        object.rotateY(that.obj.angle / 180.0 * Math.PI);
+                        object.scale.set(scale, scale, scale);
+                    }, onProgress, onError);
+                });
+            } else {
+                objLoader.setPath(that.obj.path);
+                objLoader.load(that.obj.objPath, function (object) {
+                    object.traverse(function (child) {
+                        var material = new THREE.MeshLambertMaterial();
+                        if (child instanceof THREE.Mesh) {
+                            child.material = material;
+                        }
+                    });
                     that.objectGroup.add(object);
-                    object.scale.set(0.15, 0.15, 0.15);
+                    object.rotateY(that.obj.angle / 180.0 * Math.PI);
+                    var scale = that.obj.scale;
+                    object.scale.set(scale, scale, scale);
                 }, onProgress, onError);
-
-            });
+            }
             argScene.add(this.objectGroup);
         }
     } else {

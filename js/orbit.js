@@ -14,9 +14,9 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
     // Note that zOx is the orbit plane
     // x -> z   y -> z  z -> x
 
-    var x = referenceFrameX + this.orbit.semiMajorAxis * Math.sin(10.0 * time / this.orbit.period);
-    var y = referenceFrameY;
-    var z = referenceFrameZ + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period);
+    var x = referenceFrameX + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.cos(this.orbit.inclination / 180.0 * Math.PI);
+    var y = referenceFrameY + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.sin(this.orbit.inclination / 180.0 * Math.PI);
+    var z = referenceFrameZ + this.orbit.semiMajorAxis * Math.sin(10.0 * time / this.orbit.period);
 
     if (this.isComet) {
         var delta = clock.getDelta() * spawnerOptions.timeScale;

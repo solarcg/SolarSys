@@ -60,6 +60,26 @@ function initLight() {
     scene.add(sunLight);
 }
 
+
+function drawOrbit(color, celestialBody) {
+    var radius = celestialBody.orbit.semiMajorAxis;
+    var x = celestialBody.getX();
+    var y = celestialBody.getY();
+    var z = celestialBody.getZ();
+    var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
+    var size = 360 / radius;
+    var orbit = new THREE.Geometry();
+    var material = new THREE.LineBasicMaterial({ color: color, opacity: 1.0 });
+    for (var i = 0; i <= radius; i++) {
+        var segment = (i * size) * Math.PI / 180;
+        orbit.vertices.push(new THREE.Vector3(Math.cos(segment) * radius * Math.cos(angle),
+            Math.cos(segment) * radius * Math.sin(angle),
+            Math.sin(segment) * radius));
+    }
+    scene.add(new THREE.Line(orbit, material));
+}
+
+
 function initRender() {
     renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.shadowMap.enabled = true;
@@ -112,7 +132,7 @@ function init() {
     initLight();
     initObjects();
     initRender();
-
+    drawOrbit("0xffffff", celestialBodies["Earth"]);
     stats = new Stats();
     gui = new dat.GUI();
     gui.close();
