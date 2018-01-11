@@ -69,3 +69,51 @@ function onMouseWheelChange(event) {
     }
     trackCamera[body].distance = newDistance;
 }
+
+var posSrc = {pos:0.0};
+var oX, oY, oZ, dX, dY, dZ;
+tween = new TWEEN.Tween(posSrc)
+    .to({pos:1.0}, 4000)
+    .easing(TWEEN.Easing.Quartic.InOut)
+    .onUpdate(function() {
+        var pos = posSrc.pos;
+        switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
+    })
+    .onComplete(function() {
+        // Need switching to roaming mode
+        if ( goRoaming ) {
+            calculateParams[curBody] = saveCur;
+            calculateParams[nextBody] = saveNext;
+            renderCamera = roamingCamera;
+            cameraControl = new THREE.FirstPersonControls(roamingCamera.camera);
+            cameraControl.lookSpeed = 0.05;
+            cameraControl.movementSpeed = 150;
+            cameraControl.noFly = true;
+            cameraControl.constrainVertical = true;
+            cameraControl.verticalMin = 1.0;
+            cameraControl.verticalMax = 2.0;
+            cameraControl.lon = -150;
+            cameraControl.lat = 120;
+            needSet = false;
+            roamingStatus = true;
+            goRoaming = false;
+        } else {
+            calculateParams[curBody] = saveCur;
+            calculateParams[nextBody] = saveNext;
+            switchCamera.body = nextBody;
+            curBody = nextBody;
+            needSet = true;
+            renderCamera = trackCamera[nextBody];
+        }
+    });
+
+function initTween() {
+    saveCur = calculateParams[curBody];
+    saveNext = calculateParams[nextBody];
+    calculateParams[curBody] = false;
+    calculateParams[nextBody] = false;
+    renderCamera = switchCamera;
+    posSrc.pos = 0.0;
+    needSet = false;
+}
+

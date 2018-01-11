@@ -1,9 +1,13 @@
 var container, stats, gui;
 var switchCamera, scene, renderer;
+var roamingCamera, cameraControl;
+var goRoaming = false, roamingStatus = false;
+var tween;
 var trackCamera = new Map();
 var renderCamera;
 var needSet = true;
-var curBody = "Galaxy", nextBody;
+var curBody = "Galaxy", nextBody = curBody;
+var saveCur, saveNext;
 var orbitDraw = new Map();
 var clock = new THREE.Clock();
 var tick = 0;
@@ -43,9 +47,9 @@ function initScene() {
 }
 
 function initCamera() {
+    roamingCamera = new cameraParameters(3000, 200, "Astronaut");
     switchCamera = new cameraParameters(3000, 200, "Sun");
     switchCamera.setCamera();
-    var cameras = ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
     trackCamera["Galaxy"] = new cameraParameters(3000, 200, "Sun");
     trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
     trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
@@ -69,9 +73,6 @@ function initLight() {
 
 
 function drawOrbit(color, celestialBody) {
-    if (celestialBody.name == "Comet"){
-        var i = null;
-    }
     var radius = celestialBody.orbit.semiMajorAxis;
     var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
     var size = 360 / radius;
@@ -84,13 +85,6 @@ function drawOrbit(color, celestialBody) {
             Math.sin(segment) * radius));
     }
     return new THREE.Line(orbit, material);
-}
-
-function initOrbit() {
-    var objs = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
-    for (var i in objs) {
-        orbitDraw[objs[i]] = drawOrbit("0xffffff", celestialBodies[objs[i]]);
-    }
 }
 
 
@@ -130,43 +124,24 @@ function initObjects() {
     var skyBox = new THREE.Mesh(skyGeometry, materialArray);
     skyBox.rotateX(Math.PI / 2);
     scene.add(skyBox);
+    var orbits = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
+    for (var i in orbits) {
+        orbitDraw[orbits[i]] = drawOrbit(0xffffff, celestialBodies[orbits[i]]);
+    }
     for (var objKey in celestialBodies) {
         celestialBodies[objKey].generateObjectsOnScene(scene);
     }
     for (var objKey in celestialBodies) {
-        celestialBodies[objKey].parent = celestialBodies[celestialBodies[objKey].parent];
+        if (celestialBodies[objKey].parent != null)
+            celestialBodies[objKey].parent = celestialBodies[celestialBodies[objKey].parent];
     }
 }
-
-
-var posSrc = {pos:0.0};
-var oX, oY, oZ, dX, dY, dZ;
-var tween = new TWEEN.Tween(posSrc)
-    .to({pos:1.0}, 4000)
-    .easing(TWEEN.Easing.Quartic.InOut)
-    .onUpdate(function() {
-        var pos = posSrc.pos;
-        calculateParams[curBody] = false;
-        calculateParams[nextBody] = false;
-        switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
-    })
-    .onComplete(function() {
-        calculateParams[curBody] = true;
-        calculateParams[nextBody] = true;
-        switchCamera.body = nextBody;
-        curBody = nextBody;
-        needSet = true;
-        renderCamera = trackCamera[nextBody];
-    })
 
 function initGui() {
     gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
         nextBody = val;
         if (nextBody != switchCamera.body) {
-            switchCamera.distance = trackCamera[curBody].distance;
-            renderCamera = switchCamera;
-            posSrc.pos = 0.0;
-            needSet = false;
+            initTween();
             oX = trackCamera[curBody].getX();
             oY = trackCamera[curBody].getY();
             oZ = trackCamera[curBody].getZ();
@@ -178,7 +153,7 @@ function initGui() {
     });
 
     var calculate = gui.addFolder('Calculate');
-    calculateParams = {Sun:true, Comet: true, Mercury: false, Venus: false, Earth: true, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
+    calculateParams = {Sun:true, Comet: true, Mercury: false, Venus: false, Earth: false, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
     for (var i in calculateParams)
         calculate.add(calculateParams, i);
 
@@ -187,18 +162,48 @@ function initGui() {
     orbitParams = {Comet: true, Mercury: false, Venus: false, Earth: true, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
     for (var i in orbitParams)
         orbit.add(orbitParams, i);
+    
+    var control = new function () {
+        this.Roam = function () {
+            if (roamingStatus == false) {
+                roamingCamera.camera.position.x = celestialBodies["Astronaut"].objectGroup.position.x;
+                roamingCamera.camera.position.y = celestialBodies["Astronaut"].objectGroup.position.y;
+                roamingCamera.camera.position.z = celestialBodies["Astronaut"].objectGroup.position.z;
+                roamingCamera.camera.lookAt(celestialBodies["Astronaut"].objectGroup.position.x, celestialBodies["Astronaut"].objectGroup.position.y, celestialBodies["Astronaut"].objectGroup.position.z);
+                goRoaming = true;
+                initTween();
+                oX = trackCamera[curBody].getX();
+                oY = trackCamera[curBody].getY();
+                oZ = trackCamera[curBody].getZ();
+                dX = celestialBodies["Astronaut"].objectGroup.position.x - oX;
+                dY = celestialBodies["Astronaut"].objectGroup.position.y - oY;
+                dZ = celestialBodies["Astronaut"].objectGroup.position.z - oZ;
+                tween.start();
+            } else {
+                cameraControl.dispose();
+                roamingStatus = false;
+                oX = roamingCamera.camera.position.x;
+                oY = roamingCamera.camera.position.y;
+                oZ = roamingCamera.camera.position.z;
+                dX = trackCamera[curBody].getX() - oX;
+                dY = trackCamera[curBody].getY() - oY;
+                dZ = trackCamera[curBody].getZ() - oZ;
+                initTween();
+                tween.start();
+            }
+        };
+    };
+    gui.add(control, "Roam");
 }
 
 
 function init() {
     container = document.getElementById('container');
-
     initCamera();
     initScene();
     initLight();
     initObjects();
     initRender();
-    initOrbit();
     renderCamera = trackCamera["Galaxy"];
     stats = new Stats();
     gui = new dat.GUI();
@@ -215,16 +220,18 @@ function init() {
 function onWindowResize() {
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
-
+    if (roamingStatus)
+        cameraControl.handleResize();
     renderCamera.aspect = window.innerWidth / window.innerHeight;
     renderCamera.camera.updateProjectionMatrix();
-
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
     requestAnimationFrame(animate);
     TWEEN.update();
+    if (roamingStatus)
+        cameraControl.update(clock.getDelta());
     render();
     stats.update();
 }

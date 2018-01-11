@@ -9,31 +9,31 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
         referenceFrameX = this.parent.getX();
         referenceFrameY = this.parent.getY();
         referenceFrameZ = this.parent.getZ();
-    }
-    // Now this is only a naive way of calculating the orbit
-    // Note that zOx is the orbit plane
-    // x -> z   y -> z  z -> x
+        // Now this is only a naive way of calculating the orbit
+        // Note that zOx is the orbit plane
+        // x -> z   y -> z  z -> x
 
-    var x = referenceFrameX + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.cos(this.orbit.inclination / 180.0 * Math.PI);
-    var y = referenceFrameY + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.sin(this.orbit.inclination / 180.0 * Math.PI);
-    var z = referenceFrameZ + this.orbit.semiMajorAxis * Math.sin(10.0 * time / this.orbit.period);
+        var x = referenceFrameX + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.cos(this.orbit.inclination / 180.0 * Math.PI);
+        var y = referenceFrameY + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.sin(this.orbit.inclination / 180.0 * Math.PI);
+        var z = referenceFrameZ + this.orbit.semiMajorAxis * Math.sin(10.0 * time / this.orbit.period);
 
-    if (this.isComet) {
-        var delta = clock.getDelta() * spawnerOptions.timeScale;
-        tick += delta;
-        if (tick < 0) tick = 0;
-        if (delta > 0) {
-            options.position.x = x;
-            options.position.y = y;
-            options.position.z = z;
-            for (var i = 0; i < spawnerOptions.spawnRate * delta; i++) {
-                this.particleSystem.spawnParticle(options);
+        if (this.isComet) {
+            var delta = clock.getDelta() * spawnerOptions.timeScale;
+            tick += delta;
+            if (tick < 0) tick = 0;
+            if (delta > 0) {
+                options.position.x = x;
+                options.position.y = y;
+                options.position.z = z;
+                for (var i = 0; i < spawnerOptions.spawnRate * delta; i++) {
+                    this.particleSystem.spawnParticle(options);
+                }
             }
+            this.particleSystem.update(tick);
+        } else {
+            this.objectGroup.position.set(x, y, z);
+            // self-rotation
+            this.objectGroup.rotateOnAxis(new THREE.Vector3(0, 1, 0), 1.0 / this.rotation.period);
         }
-        this.particleSystem.update(tick);
-    } else {
-        this.objectGroup.position.set(x, y, z);
-        // self-rotation
-        this.objectGroup.rotateOnAxis(new THREE.Vector3(0, 1, 0), 1.0 / this.rotation.period);
     }
-}
+};

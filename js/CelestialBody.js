@@ -15,10 +15,14 @@ var CelestialBody = function (obj) {
     // Orbit parameters
     // 周期（恒星）、半长轴、离心率、倾角、升交点黄经、平近点角 (历时原点假设轨道是圆形时的黄经偏移)
 
+    this.position = {
+        x: 0, y: 0, z: 0,
+    };
+
     this.obj = {
         path: null, objPath: null, mtlPath: null,
         scale: 1., angle: 0.
-    }
+    };
 
     this.orbit = {
         period: 1., semiMajorAxis: 1., eccentricity: 0.,

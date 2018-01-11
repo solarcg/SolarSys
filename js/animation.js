@@ -1,4 +1,6 @@
 function remain( objKey ) {
+    if (celestialBodies[objKey].parent == null)
+        return true;
     if ((calculateParams[celestialBodies[objKey].parent.name] && celestialBodies[objKey].parent.name != "Sun") ||
         calculateParams[objKey])
         return true;

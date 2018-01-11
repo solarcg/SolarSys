@@ -145,19 +145,19 @@ celestialBodies = {
     Astronaut: new CelestialBody({
         name: "Astronaut",
         parent: "Earth",
-        radius: 150.,
+        radius: 10.,
         spherical: false,
         obj: {
             path: "res/space/",
             objPath: "man.obj",
             mtlPath: null,
-            scale: 0.5,
-            angle: 170,
+            scale: 1.0,
+            angle: 235,
         },
         orbit: {
             period: 1.0,
             semiMajorAxis: 20.,
-            inclination: 30,
+            inclination: 0,
         },
         rotation: {
             period: 1000000,
