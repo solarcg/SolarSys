@@ -69,6 +69,9 @@ function initLight() {
 
 
 function drawOrbit(color, celestialBody) {
+    if (celestialBody.name == "Comet"){
+        var i = null;
+    }
     var radius = celestialBody.orbit.semiMajorAxis;
     var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
     var size = 360 / radius;
@@ -84,7 +87,7 @@ function drawOrbit(color, celestialBody) {
 }
 
 function initOrbit() {
-    var objs = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
+    var objs = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
     for (var i in objs) {
         orbitDraw[objs[i]] = drawOrbit("0xffffff", celestialBodies[objs[i]]);
     }
@@ -137,22 +140,19 @@ function initObjects() {
 
 
 var posSrc = {pos:0.0};
-var set = true;
+var oX, oY, oZ, dX, dY, dZ;
 var tween = new TWEEN.Tween(posSrc)
-    .to({pos:1.0}, 3000)
-    .easing(TWEEN.Easing.Cubic.InOut)
+    .to({pos:1.0}, 4000)
+    .easing(TWEEN.Easing.Quartic.InOut)
     .onUpdate(function() {
-        var oX = trackCamera[curBody].getX();
-        var oY = trackCamera[curBody].getY();
-        var oZ = trackCamera[curBody].getZ();
-            var dX = trackCamera[nextBody].getX() - trackCamera[curBody].getX();
-            var dY = trackCamera[nextBody].getY() - trackCamera[curBody].getY();
-            var dZ = trackCamera[nextBody].getZ() - trackCamera[curBody].getZ();
         var pos = posSrc.pos;
+        calculateParams[curBody] = false;
+        calculateParams[nextBody] = false;
         switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
     })
     .onComplete(function() {
-        set = true;
+        calculateParams[curBody] = true;
+        calculateParams[nextBody] = true;
         switchCamera.body = nextBody;
         curBody = nextBody;
         needSet = true;
@@ -167,56 +167,26 @@ function initGui() {
             renderCamera = switchCamera;
             posSrc.pos = 0.0;
             needSet = false;
+            oX = trackCamera[curBody].getX();
+            oY = trackCamera[curBody].getY();
+            oZ = trackCamera[curBody].getZ();
+            dX = trackCamera[nextBody].getX() - oX;
+            dY = trackCamera[nextBody].getY() - oY;
+            dZ = trackCamera[nextBody].getZ() - oZ;
             tween.start();
         }
     });
 
     var calculate = gui.addFolder('Calculate');
-    calculateParams = new function () {
-        this.Sun = true;
-        this.Comet = true;
-        this.Mercury = false;
-        this.Venus = false;
-        this.Earth = true;
-        this.Mars = false;
-        this.Jupiter = false;
-        this.Saturn = false;
-        this.Uranus = false;
-        this.Neptune = false;
-        this.Pluto = false;
-    };
-    calculate.add(calculateParams, 'Comet');
-    calculate.add(calculateParams, 'Mercury');
-    calculate.add(calculateParams, 'Venus');
-    calculate.add(calculateParams, 'Earth');
-    calculate.add(calculateParams, 'Mars');
-    calculate.add(calculateParams, 'Jupiter');
-    calculate.add(calculateParams, 'Saturn');
-    calculate.add(calculateParams, 'Uranus');
-    calculate.add(calculateParams, 'Neptune');
-    calculate.add(calculateParams, 'Pluto');
+    calculateParams = {Sun:true, Comet: true, Mercury: false, Venus: false, Earth: true, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
+    for (var i in calculateParams)
+        calculate.add(calculateParams, i);
+
 
     var orbit = gui.addFolder('Orbit');
-    orbitParams = new function () {
-        this.Mercury = false;
-        this.Venus = false;
-        this.Earth = true;
-        this.Mars = false;
-        this.Jupiter = false;
-        this.Saturn = false;
-        this.Uranus = false;
-        this.Neptune = false;
-        this.Pluto = false;
-    };
-    orbit.add(orbitParams, 'Mercury');
-    orbit.add(orbitParams, 'Venus');
-    orbit.add(orbitParams, 'Earth');
-    orbit.add(orbitParams, 'Mars');
-    orbit.add(orbitParams, 'Jupiter');
-    orbit.add(orbitParams, 'Saturn');
-    orbit.add(orbitParams, 'Uranus');
-    orbit.add(orbitParams, 'Neptune');
-    orbit.add(orbitParams, 'Pluto');
+    orbitParams = {Comet: true, Mercury: false, Venus: false, Earth: true, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
+    for (var i in orbitParams)
+        orbit.add(orbitParams, i);
 }
 
 
