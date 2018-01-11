@@ -84,8 +84,8 @@ function drawOrbit(color, celestialBody) {
     for (var i = 0; i <= radius; i++) {
         var segment = (i * size) * Math.PI / 180;
         var r = radius*(1-e*e)/(1+e*Math.cos(segment));
-        orbit.vertices.push(new THREE.Vector3(Math.cos(segment) * r * Math.cos(angle)+radius*e,
-            Math.cos(segment) * r * Math.sin(angle),
+        orbit.vertices.push(new THREE.Vector3((Math.cos(segment) * r +radius*e)* Math.cos(angle),
+            (Math.cos(segment) * r +radius*e)* Math.sin(angle),
             Math.sin(segment) * r));
     }
     return new THREE.Line(orbit, material);
