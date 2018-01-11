@@ -71,13 +71,19 @@ function onMouseWheelChange(event) {
 }
 
 var posSrc = {pos:0.0};
-var oX, oY, oZ, dX, dY, dZ;
+var oX, oY, oZ, dX, dY, dZ, oTheta, dTheta, oPhi, dPhi, oDistance, dDistance, oSafeDis, dSafeDis;
+var oCX, oCY, oCZ, dCX, dCY, dCZ;
 tween = new TWEEN.Tween(posSrc)
     .to({pos:1.0}, 4000)
     .easing(TWEEN.Easing.Quartic.InOut)
     .onUpdate(function() {
         var pos = posSrc.pos;
         switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
+        switchCamera.theta = oTheta + dTheta * pos;
+        switchCamera.phi = oPhi + dPhi * pos;
+        switchCamera.distance = oDistance + dDistance * pos;
+        switchCamera.safeDistance = oSafeDis + dSafeDis * pos;
+        switchCamera.camera.lookAt(oCX + dCX * pos, oCY + dCY * pos, oCZ + dCZ * pos);
     })
     .onComplete(function() {
         // Need switching to roaming mode
@@ -97,6 +103,7 @@ tween = new TWEEN.Tween(posSrc)
             needSet = false;
             roamingStatus = true;
             goRoaming = false;
+            roamingCamera.camera.lookAt(0, 0, 0);
         } else {
             calculateParams[curBody] = saveCur;
             calculateParams[nextBody] = saveNext;
@@ -115,5 +122,60 @@ function initTween() {
     renderCamera = switchCamera;
     posSrc.pos = 0.0;
     needSet = false;
+}
+
+function setTween(cur, next) {
+    if (cur == null ) {
+        oX = arguments[2];
+        oY = arguments[3];
+        oZ = arguments[4];
+        oTheta = 0.2;
+        oPhi = 0.3;
+        oDistance = 30;
+        oSafeDis = 30;
+        oCX = roamingCamera.camera.position.x;
+        oCY = roamingCamera.camera.position.y;
+        oCZ = roamingCamera.camera.position.z;
+    } else {
+        oX = trackCamera[cur].getX();
+        oY = trackCamera[cur].getY();
+        oZ = trackCamera[cur].getZ();
+        oTheta = trackCamera[cur].theta;
+        oPhi = trackCamera[cur].phi;
+        oDistance = trackCamera[cur].distance;
+        oSafeDis = trackCamera[cur].safeDistance;
+        oCX = trackCamera[cur].getCenterX();
+        oCY = trackCamera[cur].getCenterY();
+        oCZ = trackCamera[cur].getCenterZ();
+    }
+    if (next == null) {
+        dCX = dX = arguments[2] - oX;
+        dCY = dY = arguments[3] - oY;
+        dCZ = dZ = arguments[4] - oZ;
+        dTheta = 0.2 - oTheta;
+        dPhi = 0.3 - oPhi;
+        dDistance = 30 - oDistance;
+        dSafeDis = 30 - oSafeDis;
+    } else {
+        dX = trackCamera[next].getX() - oX;
+        dY = trackCamera[next].getY() - oY;
+        dZ = trackCamera[next].getZ() - oZ;
+        dCX = trackCamera[next].getCenterX() - oCX;
+        dCY = trackCamera[next].getCenterY() - oCY;
+        dCZ = trackCamera[next].getCenterZ() - oCZ;
+        dTheta = trackCamera[next].theta - oTheta;
+        dPhi = trackCamera[next].phi - oPhi;
+        dDistance = trackCamera[next].distance - oDistance;
+        dSafeDis = trackCamera[next].safeDistance - oSafeDis;
+    }
+}
+
+function cameraCopy(cameraDst, cameraSrc) {
+    cameraDst.theta = cameraSrc.theta;
+    cameraDst.phi = cameraSrc.phi;
+    cameraDst.distance = cameraSrc.distance;
+    cameraDst.safeDistance = cameraSrc.safeDistance;
+    cameraDst.body = cameraSrc.body;
+    cameraDst.setCamera();
 }
 

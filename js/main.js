@@ -72,6 +72,9 @@ function initLight() {
 }
 
 
+
+
+
 function drawOrbit(color, celestialBody) {
     var radius = celestialBody.orbit.semiMajorAxis;
     var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
@@ -137,17 +140,14 @@ function initObjects() {
     }
 }
 
+
 function initGui() {
     gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
         nextBody = val;
-        if (nextBody != switchCamera.body) {
+        if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
             initTween();
-            oX = trackCamera[curBody].getX();
-            oY = trackCamera[curBody].getY();
-            oZ = trackCamera[curBody].getZ();
-            dX = trackCamera[nextBody].getX() - oX;
-            dY = trackCamera[nextBody].getY() - oY;
-            dZ = trackCamera[nextBody].getZ() - oZ;
+            cameraCopy(switchCamera, trackCamera[curBody]);
+            setTween(curBody, nextBody);
             tween.start();
         }
     });
@@ -156,8 +156,6 @@ function initGui() {
     calculateParams = {Sun:true, Comet: true, Mercury: false, Venus: false, Earth: false, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
     for (var i in calculateParams)
         calculate.add(calculateParams, i);
-
-
     var orbit = gui.addFolder('Orbit');
     orbitParams = {Comet: true, Mercury: false, Venus: false, Earth: true, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
     for (var i in orbitParams)
@@ -169,26 +167,16 @@ function initGui() {
                 roamingCamera.camera.position.x = celestialBodies["Astronaut"].objectGroup.position.x;
                 roamingCamera.camera.position.y = celestialBodies["Astronaut"].objectGroup.position.y;
                 roamingCamera.camera.position.z = celestialBodies["Astronaut"].objectGroup.position.z;
-                roamingCamera.camera.lookAt(celestialBodies["Astronaut"].objectGroup.position.x, celestialBodies["Astronaut"].objectGroup.position.y, celestialBodies["Astronaut"].objectGroup.position.z);
                 goRoaming = true;
                 initTween();
-                oX = trackCamera[curBody].getX();
-                oY = trackCamera[curBody].getY();
-                oZ = trackCamera[curBody].getZ();
-                dX = celestialBodies["Astronaut"].objectGroup.position.x - oX;
-                dY = celestialBodies["Astronaut"].objectGroup.position.y - oY;
-                dZ = celestialBodies["Astronaut"].objectGroup.position.z - oZ;
+                cameraCopy(switchCamera, trackCamera[curBody]);
+                setTween(curBody, null, celestialBodies["Astronaut"].objectGroup.position.x, celestialBodies["Astronaut"].objectGroup.position.y, celestialBodies["Astronaut"].objectGroup.position.z);
                 tween.start();
             } else {
                 cameraControl.dispose();
                 roamingStatus = false;
-                oX = roamingCamera.camera.position.x;
-                oY = roamingCamera.camera.position.y;
-                oZ = roamingCamera.camera.position.z;
-                dX = trackCamera[curBody].getX() - oX;
-                dY = trackCamera[curBody].getY() - oY;
-                dZ = trackCamera[curBody].getZ() - oZ;
                 initTween();
+                setTween(null, curBody, roamingCamera.camera.position.x, roamingCamera.camera.position.y, roamingCamera.camera.position.z);
                 tween.start();
             }
         };

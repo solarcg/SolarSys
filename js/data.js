@@ -117,7 +117,8 @@ celestialBodies = {
         orbit: {
             period: 3.5,
             semiMajorAxis: 1300.,
-            inclination: 30.0,
+            eccentricity: 1.0,
+            inclination: 0.0,
         },
     }),
     Ship: new CelestialBody({
