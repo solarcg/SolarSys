@@ -44,7 +44,6 @@ function initScene() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 }
-
 function initCamera() {
     roamingCamera = new cameraParameters(3000, 200, "Astronaut");
     switchCamera = new cameraParameters(3000, 200, "Sun");
@@ -84,7 +83,7 @@ function drawOrbit(color, celestialBody) {
     var material = new THREE.LineBasicMaterial({ color: color, opacity: 1.0 });
     for (var i = 0; i <= radius; i++) {
         var segment = (i * size) * Math.PI / 180;
-        var r = radius*(1-e*e)/(1+e*Math.cos(segment)）;
+        var r = radius*(1-e*e)/(1+e*Math.cos(segment));
         orbit.vertices.push(new THREE.Vector3(Math.cos(segment) * r * Math.cos(angle)+radius*e,
             Math.cos(segment) * r * Math.sin(angle),
             Math.sin(segment) * r));
