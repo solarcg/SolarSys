@@ -12,9 +12,13 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
         // Now this is only a naive way of calculating the orbit
         // Note that zOx is the orbit plane
         // x -> z   y -> z  z -> x
-
-        var x = referenceFrameX + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.cos(this.orbit.inclination / 180.0 * Math.PI);
-        var y = referenceFrameY + this.orbit.semiMajorAxis * Math.cos(10.0 * time / this.orbit.period) * Math.sin(this.orbit.inclination / 180.0 * Math.PI);
+        //1.11version
+        //r=a*(1-e^2)/(1+ecoswt)
+        //x=rcoswt+c
+        //y=rsinwt
+        var r =  this.orbit.semiMajorAxis*(1-this.orbit.eccentricity*this.orbit.eccentricity)/(1+this.orbit.eccentricity* Math.cos(10.0 * time / this.orbit.period));
+        var x = referenceFrameX+(r* Math.cos(10.0 * time / this.orbit.period)+ this.orbit.semiMajorAxis*this.orbit.eccentricity)* Math.cos(this.orbit.inclination / 180.0 * Math.PI);
+        var y = referenceFrameY+r* Math.sin(10.0 * time / this.orbit.period)* Math.sin(this.orbit.inclination / 180.0 * Math.PI);
         var z = referenceFrameZ + this.orbit.semiMajorAxis * Math.sin(10.0 * time / this.orbit.period);
 
         if (this.isComet) {
