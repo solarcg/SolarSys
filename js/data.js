@@ -97,7 +97,8 @@ celestialBodies = {
             type: "phong",
             diffuse: {map: "res/earth/diffuse.jpg"},
             specular: {map: "res/earth/spec.jpg", color: 0x243232, shininess: 25},
-            bump: {map: "res/earth/bump.jpg", height: 0.}
+            bump: {map: "res/earth/bump.jpg", height: 0.05},
+            night: {map: "res/earth/night.png"}
         },
         atmosphere: {
             cloud: {
@@ -205,7 +206,7 @@ celestialBodies = {
         material: {
             type: "lambert",
             diffuse: {map: "res/mars/diffuse.jpg"},
-            bump: {map: "res/mars/bump.jpg", height: 0.}
+            bump: {map: "res/mars/bump.jpg", height: 1.}
         }
     }),
     Jupiter: new CelestialBody({

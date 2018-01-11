@@ -159,8 +159,10 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                 break;
             case "lambert":
                 sphereMaterial = this.bodySphereMaterial
-                    = new THREE.MeshLambertMaterial({
+                    = new THREE.MeshPhongMaterial({
                     color: new THREE.Color(this.material.diffuse.color),
+                    specular: new THREE.Color(0x000000),
+                    shininess: 0,
                     bumpScale: this.material.bump.height
                 });
                 if (this.material.diffuse.map !== null) {
@@ -225,6 +227,24 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             this.lensFlare =
                 new THREE.LensFlare(this.flareTexture, 400, 0,
                     THREE.AdditiveBlending, new THREE.Color(this.shineColor));
+        }
+
+        // Add night
+        this.nightMaterial = null;
+        this.nightSphereMesh = null;
+        if(this.material.night.map !== null) {
+            this.nightMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    nightTexture: { value: textureLoader.load(this.material.night.map) }
+                },
+                vertexShader: generalVS,
+                fragmentShader: nightFS,
+                transparent: true,
+                blending: THREE.CustomBlending,
+                blendEquation: THREE.AddEquation
+            });
+            this.nightSphereMesh = new THREE.Mesh(this.bodySphereGeometry, this.nightMaterial);
+            this.objectGroup.add(this.nightSphereMesh);
         }
 
         // Add clouds

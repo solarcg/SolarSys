@@ -27,42 +27,44 @@
 </div>
 <div id="info">
     <a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a></div>
-<!-- Libraries -->
-<script src="js/libs/three.js"></script>
-<script src="js/libs/Tween.js"></script>
-<script src="js/renderers/Projector.js"></script>
-<script src="js/renderers/CanvasRenderer.js"></script>
-<script src="js/libs/stats.min.js"></script>
-<script src="js/libs/OBJLoader.js"></script>
-<script src="js/libs/MTLLoader.js"></script>
-<script src="js/libs/GPUParticleSystem.js"></script>
-<script src="js/libs/jquery-3.2.1.min.js"></script>
-<!-- Texture loader -->
-<script>var textureLoader = new THREE.TextureLoader();</script>
-<script>var objLoader = new THREE.OBJLoader();</script>
-<script>var mtlLoader = new THREE.MTLLoader();</script>
-<!-- Shaders -->
-<script src="js/shaders.js"></script>
-<!-- Global timing -->
-<script src="js/time.js"></script>
-<!-- Camera parameters -->
-<!-- Note: THREE.js camera is not in this script. -->
-<!-- This file contains an object for calculating camera position. -->
-<script src="js/cameraParameters.js"></script>
-<!-- Celestial body abstract -->
-<script src="js/CelestialBody.js"></script>
-<!-- Orbit function -->
-<script src="js/orbit.js"></script>
-<!-- Data -->
-<script src="js/data.js"></script>
-<!-- Data -->
-<!-- Planet loader -->
-<!-- Animation -->
-<script src="js/animation.js"></script>
-<!-- Controls -->
-<script src="js/control.js"></script>
-<script src="js/libs/dat.gui.min.js"></script>
-<!-- Initializers -->
-<script src="js/main.js"></script>
+    <script src="shaders/general.vs" type="x-shader/x-vertex" id="generalvs"></script>
+    <script src="shaders/night.fs" type="x-shader/x-fragment" id="nightfs"></script>
+    <!-- Libraries -->
+    <script src="js/libs/jquery-3.2.1.min.js"></script>
+    <script src="js/libs/three.js"></script>
+    <script src="js/libs/Tween.js"></script>
+    <script src="js/renderers/Projector.js"></script>
+    <script src="js/renderers/CanvasRenderer.js"></script>
+    <script src="js/libs/stats.min.js"></script>
+    <script src="js/libs/OBJLoader.js"></script>
+    <script src="js/libs/MTLLoader.js"></script>
+    <script src="js/libs/GPUParticleSystem.js"></script>
+    <!-- Texture loader -->
+    <script>var textureLoader = new THREE.TextureLoader();</script>
+    <script>var objLoader = new THREE.OBJLoader();</script>
+    <script>var mtlLoader = new THREE.MTLLoader();</script>
+    <!-- Shaders -->
+    <script src="js/shaders.js"></script>
+    <!-- Global timing -->
+    <script src="js/time.js"></script>
+    <!-- Camera parameters -->
+    <!-- Note: THREE.js camera is not in this script. -->
+    <!-- This file contains an object for calculating camera position. -->
+    <script src="js/cameraParameters.js"></script>
+    <!-- Celestial body abstract -->
+    <script src="js/CelestialBody.js"></script>
+    <!-- Orbit function -->
+    <script src="js/orbit.js"></script>
+    <!-- Data -->
+    <script src="js/data.js"></script>
+    <!-- Data -->
+    <!-- Planet loader -->
+    <!-- Animation -->
+    <script src="js/animation.js"></script>
+    <!-- Controls -->
+    <script src="js/control.js"></script>
+    <script src="js/libs/dat.gui.min.js"></script>
+    <!-- Initializers -->
+    <script src="js/main.js"></script>
 </body>
 </html>
