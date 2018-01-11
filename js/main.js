@@ -34,8 +34,7 @@ var options = {
 var spawnerOptions = {
     spawnRate: 15000,
     horizontalSpeed: 1.5,
-    verticalSpeed: 1.33,
-    timeScale: 1
+    verticalSpeed: 1.33,    timeScale: 1
 };
 
 init();
@@ -55,6 +54,7 @@ function initCamera() {
     trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
     trackCamera["Venus"] = new cameraParameters(30, 30, "Venus");
     trackCamera["Earth"] = new cameraParameters(30, 30, "Earth");
+
     trackCamera["Mars"] = new cameraParameters(30, 30, "Mars");
     trackCamera["Jupiter"] = new cameraParameters(150, 150, "Jupiter");
     trackCamera["Saturn"] = new cameraParameters(150, 150, "Saturn");
@@ -80,12 +80,14 @@ function drawOrbit(color, celestialBody) {
     var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
     var size = 360 / radius;
     var orbit = new THREE.Geometry();
+    var e = celestialBody.orbit.eccentricity;
     var material = new THREE.LineBasicMaterial({ color: color, opacity: 1.0 });
     for (var i = 0; i <= radius; i++) {
         var segment = (i * size) * Math.PI / 180;
-        orbit.vertices.push(new THREE.Vector3(Math.cos(segment) * radius * Math.cos(angle),
-            Math.cos(segment) * radius * Math.sin(angle),
-            Math.sin(segment) * radius));
+        var r = radius*(1-e*e)/(1+e*Math.cos(segment);
+        orbit.vertices.push(new THREE.Vector3(Math.cos(segment) * r * Math.cos(angle)+radius*e,
+            Math.cos(segment) * r * Math.sin(angle),
+            Math.sin(segment) * r));
     }
     return new THREE.Line(orbit, material);
 }
