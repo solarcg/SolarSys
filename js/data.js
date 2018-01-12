@@ -4,6 +4,7 @@ celestialBodies = {
         star: true,
         parent: "Sun",
         radius: 100.,
+        shineColor: 0xffeeaa,
         orbit: {
             semiMajorAxis: 0.
         },
@@ -21,6 +22,10 @@ celestialBodies = {
                 height: 1,
                 speed: 1
             }
+        },
+        halo: {
+            color: new THREE.Vector3(1.0, 0.8, 0.4),
+            radius: 300.
         }
     }),
     Mercury: new CelestialBody({
@@ -109,7 +114,7 @@ celestialBodies = {
             scattering: true,
             atmosphereColor: new THREE.Vector3(0.5, 0.7, 0.8),
             sunsetColor: new THREE.Vector3(0.8, 0.7, 0.6),
-            atmosphereStrength: 1.0,
+            atmosphereStrength: 1.5,
             sunsetStrength: 1.0
         }
     }),
@@ -213,6 +218,13 @@ celestialBodies = {
             type: "lambert",
             diffuse: {map: "res/mars/diffuse.jpg"},
             bump: {map: "res/mars/bump.jpg", height: 1.}
+        },
+        atmosphere: {
+            scattering: true,
+            atmosphereColor: new THREE.Vector3(0.8, 0.6, 0.5),
+            sunsetColor: new THREE.Vector3(0.4, 0.5, 0.7),
+            atmosphereStrength: 0.7,
+            sunsetStrength: 0.4
         }
     }),
     Jupiter: new CelestialBody({

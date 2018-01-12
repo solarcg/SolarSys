@@ -40,10 +40,7 @@ void main( void ) {
 }
 `;
 
-// Atmosphere vertex shader
-// ref:
-//      [1] https://developer.nvidia.com/gpugems/GPUGems2/gpugems2_chapter16.html
-//      [2] https://github.com/TPZF/GlobWeb/blob/master/shaders/SkyFromSpaceVert.glsl
+// This stuff works, currently we do not use the scattering model
 var atmosphereVS = `
 
 varying float intensity1;
@@ -95,6 +92,10 @@ void main(void) {
 }
 `;
 
+// Atmosphere vertex shader
+// ref:
+//      [1] https://developer.nvidia.com/gpugems/GPUGems2/gpugems2_chapter16.html
+//      [2] https://github.com/TPZF/GlobWeb/blob/master/shaders/SkyFromSpaceVert.glsl
 var atmosphereScatteringVS = `
 uniform float innerRadius;
 uniform float outerRadius;
@@ -214,5 +215,41 @@ void main()
     gl_FragColor.rgb = 1.0 - exp(-exposure * (rayleighPhase * color + miePhase * secondaryColor));
     // gl_FragColor.rgb = test;
     gl_FragColor.a = 1.0;
+}
+`;
+
+var haloVS = `
+varying float intensity;
+const float PI = 3.14159265358979;
+
+void main(void) {
+    // Vertex position in world coordinate
+    vec4 vertexPos = modelMatrix * vec4(position, 1.0);
+    vec3 vertexPos3 = vertexPos.xyz/vertexPos.w;
+    // Light direction in world coordinate
+    // Normal vector in world coordinate
+    // Model view position of the vertex
+    vec4 modelViewPos = modelViewMatrix * vec4(position, 1.0);
+    float distance = length(cameraPosition);
+    // Camera
+    vec4 centerPos4 = modelMatrix * vec4(0., 0., 0., 1.);
+    vec3 centerPos3 = (centerPos4/centerPos4.w).xyz;
+    vec3 cameraRelative = cameraPosition - centerPos3;
+
+    vec3 cameraDir = normalize(cameraRelative);
+    vec3 normalVec = (modelMatrix * vec4(normal, 0.)).xyz;
+// pow(dot(normalVec, cameraDir), 4.) * 
+    intensity = pow(dot(normalVec, cameraDir), 4.) * min(distance / 2000., 1.);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
+
+// Atomosphere fragment shader
+var haloFS = `
+varying float intensity;
+uniform vec3 color;
+
+void main(void) {
+    gl_FragColor = vec4(intensity * color, intensity);
 }
 `;

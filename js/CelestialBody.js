@@ -61,12 +61,11 @@ var CelestialBody = function (obj) {
         lower: 2000, higher: 6000,
         color: 0xffffff, specularColor: 0xffffff, specularPower: 5
     };
-    // Holo effect
-    this.holo = {
-        // TODO: Other parameters to be implemented
-        color: 0x000000
+    // halo effect
+    this.halo = {
+        color: null,
+        radius: 1.
     };
-    // TODO: Atmosphere parameters to be implemented
     this.atmosphere = {
         cloud: {
             map: null, height: 1, speed: 20
@@ -211,11 +210,10 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
 
         // Add lens flare
         this.lensFlare = null;
-        if (!this.star) {
+        if (this.star) {
             this.lensFlare =
-                new THREE.LensFlare(this.flareTexture, 20 * Math.log(this.radius) * this.albedo,
+                new THREE.LensFlare(this.flareTexture, 200,
                     0, THREE.AdditiveBlending, new THREE.Color(this.shineColor));
-            this.lensFlare.size = 200;
             this.lensFlare.position.set(this.getX(), this.getY(), this.getZ());
 
             var that = this;
@@ -227,18 +225,18 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                     * (trackCamera[params.Camera].getY() - that.getY()),
                     (trackCamera[params.Camera].getZ() - that.getZ())
                     * (trackCamera[params.Camera].getZ() - that.getZ()));
-                if (cameraDistance / that.radius < 125) {
+                this.transparent = 0.3;
+                if (cameraDistance < 6000) {
                     that.bodySphereMaterial.depthTest = true;
+                    that.haloMaterial.depthTest = true;
+                    that.cloudMaterial.depthTest = true;
                 }
                 else {
                     that.bodySphereMaterial.depthTest = false;
+                    that.haloMaterial.depthTest = false;
                 }
                 this.updateLensFlares();
             };
-        } else {
-            this.lensFlare =
-                new THREE.LensFlare(this.flareTexture, 400, 0,
-                    THREE.AdditiveBlending, new THREE.Color(this.shineColor));
         }
 
         // Add night
@@ -302,6 +300,25 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             this.objectGroup.add(this.atmosphereMesh);
         }
 
+        this.haloGeometry = null;
+        this.haloMaterial = null;
+        this.haloMesh = null;
+        if(this.halo.color != null) {
+            this.haloGeometry = new THREE.SphereGeometry(this.halo.radius, 64, 64);
+            this.haloMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    color: { value: this.halo.color }
+                },
+                vertexShader: haloVS,
+                fragmentShader: haloFS,
+                transparent: true,
+                blending: THREE.CustomBlending,
+                blendEquation: THREE.AddEquation
+            });
+            this.haloMesh = new THREE.Mesh(this.haloGeometry, this.haloMaterial);
+            this.objectGroup.add(this.haloMesh);
+        }
+
         // Add rings
         // Add clouds
         this.ringGeometry = null;
@@ -323,19 +340,15 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         }
 
         // Add meshes to the object group
-        // this.objectGroup.add(this.lensFlare);
+        if(this.lensFlare != null) this.objectGroup.add(this.lensFlare);
         this.objectGroup.add(this.bodySphereMesh);
 
         if (this.ringMeshPositive !== null) {
             this.objectGroup.add(this.ringMeshPositive);
             this.objectGroup.add(this.ringMeshNegative);
         }
-        // if(!this.star) this.bodySphereMesh.castShadow = true;
-        // if(!this.star) this.bodySphereMesh.receiveShadow = true;
         if (this.cloudMesh !== null) {
             this.objectGroup.add(this.cloudMesh);
-            // if(!this.star) this.cloudMesh.castShadow = true;
-            // if(!this.star) this.cloudMesh.receiveShadow = true;
         }
         // simple inclination
         this.objectGroup.rotateZ(this.rotation.inclination / 180.0 * Math.PI);

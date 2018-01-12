@@ -43,8 +43,7 @@ var spawnerOptions = {
 init();
 animate();
 
-function initScene() {
-    scene = new THREE.Scene();
+function initScene() {    scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 }
 
@@ -85,8 +84,8 @@ function drawOrbit(celestialBody) {
     for (var i = 0; i <= radius; i++) {
         var segment = (i * size) * Math.PI / 180;
         var r = radius * (1 - e * e) / (1 + e * Math.cos(segment));
-        orbit.vertices.push(new THREE.Vector3((Math.cos(segment) * r + radius * e) * Math.cos(angle),
-            (Math.cos(segment) * r + radius * e) * Math.sin(angle),
+        orbit.vertices.push(new THREE.Vector3((Math.cos(segment) * r) * Math.cos(angle),
+            (Math.cos(segment) * r) * Math.sin(angle),
             Math.sin(segment) * r));
         var color1 = new THREE.Color(0xffffff);
         var quad = (radius / 4.0);
