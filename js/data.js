@@ -3,7 +3,7 @@ celestialBodies = {
         name: "Sun",
         star: true,
         parent: "Sun",
-        radius: 100.,
+        radius: 200.,
         shineColor: 0xffeeaa,
         orbit: {
             semiMajorAxis: 0.
@@ -25,23 +25,23 @@ celestialBodies = {
         },
         halo: {
             color: new THREE.Vector3(1.0, 0.8, 0.4),
-            radius: 300.
+            radius: 500.
         }
     }),
     Mercury: new CelestialBody({
         name: "Mercury",
-        radius: 3.825,
+        radius: 3.8256,
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
-            period: 1.2,
-            semiMajorAxis: 200.,
+            period: 1.204,
+            semiMajorAxis: 387.1,
             eccentricity: 0.2056,
-            inclination: 0.
+            inclination: 7.0049
         },
         rotation: {
-            period: 100.,
-            inclination: 0,
+            period: 1407.509405,
+            inclination: 28.55,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -57,14 +57,14 @@ celestialBodies = {
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
-            period: 3.1,
-            semiMajorAxis: 600.,
+            period: 3.076,
+            semiMajorAxis: 723.3,
             eccentricity: 0.0068,
-            inclination: 0.
+            inclination: 3.3947
         },
         rotation: {
-            period: 100.,
-            inclination: 0,
+            period: 5832.443616,
+            inclination: 157.16,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -87,15 +87,15 @@ celestialBodies = {
         parent: "Sun",
         shineColor: 0x6666ff,
         orbit: {
-            period: 5,
+            period: 5.,
             semiMajorAxis: 1000.,
             eccentricity: 0.0167,
-            inclination: 30.
+            inclination: 0.0001
         },
         rotation: {
-            period: 100.,
-            inclination: 23.5,
-            meridianAngle: 0.,
+            period: 23.93447117,
+            inclination: -23.4392911,
+            meridianAngle: 280.147,
             offset: 0.
         },
         material: {
@@ -138,14 +138,14 @@ celestialBodies = {
         spherical: false,
         obj: {
             path: "res/space/",
-            objPath: "frigate.obj",
-            mtlPath: "frigate.mtl",
+            objPath: "tiangong.obj",
+            mtlPath: "tiangong.mtl",
             angle: -30,
             scale: 0.15,
         },
         orbit: {
             period: 1.0,
-            semiMajorAxis: 20.,
+            semiMajorAxis: 15.,
             inclination: 30,
         },
         rotation: {
@@ -167,8 +167,8 @@ celestialBodies = {
         },
         orbit: {
             period: 1.0,
-            semiMajorAxis: 20.,
-            inclination: 0,
+            semiMajorAxis: 15.,
+            inclination: 30,
         },
         rotation: {
             period: 1000000,
@@ -177,18 +177,18 @@ celestialBodies = {
     }),
     Moon: new CelestialBody({
         name: "Moon",
-        radius: 1.0,
+        radius: 2.7243,
         parent: "Earth",
         shineColor: 0xff9988,
         orbit: {
-            period: 9.4,
-            semiMajorAxis: 30.,
+            period: 2.0749,
+            semiMajorAxis: 25.,
             eccentricity: 0.0549,
-            inclination: 0.
+            inclination: 5.15
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 655.2,
+            inclination: 23.4608,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -203,14 +203,14 @@ celestialBodies = {
         parent: "Sun",
         shineColor: 0xff9988,
         orbit: {
-            period: 9.4,
-            semiMajorAxis: 1300.,
+            period: 9.4095,
+            semiMajorAxis: 1523.7,
             eccentricity: 0.0934,
-            inclination: 0.
+            inclination: 1.8506
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 24.622962156,
+            inclination: 37.11350,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -227,20 +227,66 @@ celestialBodies = {
             sunsetStrength: 0.4
         }
     }),
+    Phobos: new CelestialBody({
+        name: "Phobos",
+        radius: 1,
+        parent: "Mars",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 1.5945,
+            semiMajorAxis: 20,
+            eccentricity: 0.0151,
+            inclination: 1.082
+        },
+        rotation: {
+            period: 100.,
+            inclination: 37.10,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/phobos/diffuse.jpg"},
+            bump: {map: "res/phobos/bump.jpg", height: 10.}
+        }
+    }),
+    Deimos: new CelestialBody({
+        name: "Deimos",
+        radius: 0.5,
+        parent: "Mars",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 6.3122,
+            semiMajorAxis: 30,
+            eccentricity: 0.00033,
+            inclination: 1.791
+        },
+        rotation: {
+            period: 150.,
+            inclination: 36.48,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/deimos/diffuse.jpg"},
+            bump: {map: "res/deimos/bump.jpg", height: 10.}
+        }
+    }),
     Jupiter: new CelestialBody({
         name: "Jupiter",
-        radius: 40.,
+        radius: 112.09,
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 59.3,
-            semiMajorAxis: 1600.,
+            semiMajorAxis: 2000.,
             eccentricity: 0.0484,
-            inclination: 0.
+            inclination: 1.3053
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 238.23,
+            inclination: 2.22,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -256,20 +302,86 @@ celestialBodies = {
             }
         }
     }),
+    Callisto: new CelestialBody({
+        name: "Callisto",
+        radius: 4.0,
+        parent: "Jupiter",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 2.49,
+            semiMajorAxis: 200.,
+            eccentricity: 0.0045045,
+            inclination: 0.384285,
+        },
+        rotation: {
+            period: 100.,
+            inclination: 25.51,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/callisto/diffuse.jpg"},
+        }
+    }),
+    Europa: new CelestialBody({
+        name: "Europa",
+        radius: 3.0,
+        parent: "Jupiter",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 17.76,
+            semiMajorAxis: 160.,
+            eccentricity: 0.0101,
+            inclination: 0.470,
+        },
+        rotation: {
+            period: 150.,
+            inclination: 25.49,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/europa/diffuse.jpg"},
+        }
+    }),
+    Io: new CelestialBody({
+        name: "Io",
+        radius: 3.0,
+        parent: "Jupiter",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 8.85,
+            semiMajorAxis: 100.,
+            eccentricity: 0.0041,
+            inclination: 0.040,
+        },
+        rotation: {
+            period: 100.,
+            inclination: 25.50,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/io/diffuse.png"},
+        }
+    }),
     Saturn: new CelestialBody({
         name: "Saturn",
-        radius: 40.,
+        radius: 94.49,
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
             period: 40.0,
-            semiMajorAxis: 1900.,
+            semiMajorAxis: 2500.,
             eccentricity: 0.0542,
-            inclination: 0.
+            inclination: 2.4845
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 255.75,
+            inclination: 28.052,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -288,23 +400,67 @@ celestialBodies = {
         ring: {
             map: "res/saturn/ring.png",
             lower: 5,
-            higher: 40,
+            higher: 80,
+        }
+    }),
+    Dione: new CelestialBody({
+        name: "Dione",
+        radius: 5.0,
+        parent: "Saturn",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 3.0,
+            semiMajorAxis: 200.,
+            eccentricity: 0.05,
+            inclination: 0.0049,
+        },
+        rotation: {
+            period: 130.,
+            inclination: 22.9,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/dione/diffuse.jpg"},
+        }
+    }),
+    Titan: new CelestialBody({
+        name: "Titan",
+        radius: 6.0,
+        parent: "Saturn",
+        shineColor: 0xff9988,
+        orbit: {
+            period: 4.0,
+            semiMajorAxis: 150.,
+            eccentricity: 0.05,
+            inclination: 0.0049,
+        },
+        rotation: {
+            period: 120.,
+            inclination: 1.53,
+            meridianAngle: 0.,
+            offset: 0.
+        },
+        material: {
+            type: "lambert",
+            diffuse: {map: "res/titan/diffuse.jpg"},
         }
     }),
     Uranus: new CelestialBody({
         name: "Uranus",
-        radius: 30.,
+        radius: 40.07,
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
-            period: 50.0,
-            semiMajorAxis: 2200.,
+            period: 420.069,
+            semiMajorAxis: 3000.,
             eccentricity: 0.0472,
-            inclination: 0.
+            inclination: 0.7699
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 413.76,
+            inclination: 97.722,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -320,18 +476,18 @@ celestialBodies = {
     }),
     Neptune: new CelestialBody({
         name: "Neptune",
-        radius: 30.,
+        radius: 38.83,
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
-            period: 50.0,
-            semiMajorAxis: 2500.,
-            eccentricity: 0.0086,
-            inclination: 0.
+            period: 823.965,
+            semiMajorAxis: 3500.,
+            eccentricity: 0.0097,
+            inclination: 1.7692
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 386.64,
+            inclination: 28.03,
             meridianAngle: 0.,
             offset: 0.
         },
@@ -347,18 +503,18 @@ celestialBodies = {
     }),
     Pluto: new CelestialBody({
         name: "Pluto",
-        radius: 30.,
+        radius: 15.,
         parent: "Sun",
         shineColor: 0x9999ff,
         orbit: {
-            period: 50.0,
-            semiMajorAxis: 2900.,
-            eccentricity: 0.003484,
-            inclination: 0.
+            period: 32.0,
+            semiMajorAxis: 4000.,
+            eccentricity: 0.2482,
+            inclination: 96.1680
         },
         rotation: {
-            period: 100.,
-            inclination: 0.,
+            period: 153.292944,
+            inclination: 115.60,
             meridianAngle: 0.,
             offset: 0.
         },

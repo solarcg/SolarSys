@@ -281,14 +281,14 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         this.atmosphereGeometry = null;
         this.atmosphereMaterial = null;
         this.atmosphereMesh = null;
-        if(this.atmosphere.scattering) {
+        if (this.atmosphere.scattering) {
             this.atmosphereGeometry = new THREE.SphereGeometry(this.radius * 1.015, 64, 64);
             this.atmosphereMaterial = new THREE.ShaderMaterial({
                 uniforms: {
-                    atmosphereColor: { value: this.atmosphere.atmosphereColor },
-                    sunsetColor: { value: this.atmosphere.sunsetColor },
-                    atmosphereStrength: { value: this.atmosphere.atmosphereStrength },
-                    sunsetStrength: { value: this.atmosphere.sunsetStrength }
+                    atmosphereColor: {value: this.atmosphere.atmosphereColor},
+                    sunsetColor: {value: this.atmosphere.sunsetColor},
+                    atmosphereStrength: {value: this.atmosphere.atmosphereStrength},
+                    sunsetStrength: {value: this.atmosphere.sunsetStrength}
                 },
                 vertexShader: atmosphereVS,
                 fragmentShader: atmosphereFS,
@@ -303,11 +303,11 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         this.haloGeometry = null;
         this.haloMaterial = null;
         this.haloMesh = null;
-        if(this.halo.color != null) {
+        if (this.halo.color != null) {
             this.haloGeometry = new THREE.SphereGeometry(this.halo.radius, 64, 64);
             this.haloMaterial = new THREE.ShaderMaterial({
                 uniforms: {
-                    color: { value: this.halo.color }
+                    color: {value: this.halo.color}
                 },
                 vertexShader: haloVS,
                 fragmentShader: haloFS,
@@ -340,7 +340,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         }
 
         // Add meshes to the object group
-        if(this.lensFlare != null) this.objectGroup.add(this.lensFlare);
+        if (this.lensFlare != null) this.objectGroup.add(this.lensFlare);
         this.objectGroup.add(this.bodySphereMesh);
 
         if (this.ringMeshPositive !== null) {
