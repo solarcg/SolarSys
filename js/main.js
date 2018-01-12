@@ -206,8 +206,9 @@ function initGui() {
                 roamingCamera.camera.position.y = celestialBodies["Astronaut"].objectGroup.position.y;
                 roamingCamera.camera.position.z = celestialBodies["Astronaut"].objectGroup.position.z;
                 goRoaming = true;
-                nextBody = "Earth";
                 initTween();
+                saveNext = calculateParams["Earth"];
+                calculateParams["Earth"] = false;
                 cameraCopy(switchCamera, trackCamera[curBody]);
                 setTween(curBody, null, celestialBodies["Astronaut"].objectGroup.position.x, celestialBodies["Astronaut"].objectGroup.position.y, celestialBodies["Astronaut"].objectGroup.position.z);
                 tween.start();

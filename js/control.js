@@ -89,7 +89,7 @@ tween = new TWEEN.Tween(posSrc)
         // Need switching to roaming mode
         if (goRoaming) {
             calculateParams[curBody] = saveCur;
-            calculateParams[nextBody] = saveNext;
+            calculateParams["Earth"] = saveNext;
             renderCamera = roamingCamera;
             cameraControl = new THREE.FirstPersonControls(roamingCamera.camera);
             cameraControl.lookSpeed = 0.1;
