@@ -41,8 +41,8 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
                 options.position.y -= tailLength * y / Math.sqrt(x * x + y * y + z * z);
                 options.position.z -= tailLength * z / Math.sqrt(x * x + y * y + z * z);
                 options.color = 0x000011;
-                options.size = 20000./distance;
-                options.sizeRandomness = 10;
+                options.size = 8000./distance;
+                options.sizeRandomness = 2;
                 for (var i = 0; i < spawnerOptions.spawnRate * delta; i++) {
                     this.particleSystem.spawnParticle(options);
                 }

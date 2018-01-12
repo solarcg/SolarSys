@@ -59,6 +59,7 @@ function initCamera() {
     for (var i in planets) {
         trackCamera[planets[i]] = new cameraParameters(3.0 * celestialBodies[planets[i]].radius, 3.0 * celestialBodies[planets[i]].radius, planets[i]);
     }
+    trackCamera["Ship"] = new cameraParameters(3.0 * celestialBodies["Ship"].radius, 3.0 * celestialBodies["Ship"].radius, "Ship")
 }
 
 function initLight() {
@@ -152,7 +153,7 @@ function initObjects() {
 
 
 function initGui() {
-    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
+    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Ship"]).onChange(function (val) {
         nextBody = val;
         if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
             initTween();

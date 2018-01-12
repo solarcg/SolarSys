@@ -8,6 +8,10 @@ body {
     overflow: hidden;
 }
 
+.small {
+    font-size: 12px;
+}
+
 #info {
     position: absolute;
     top: 0px;
@@ -36,21 +40,21 @@ a:hover, a:focus {
 }
 
 #loading {
-    width: 200px;
-    height: 80px;
+    width: 400px;
+    height: 20px;
     margin: 15px auto;
 }
 
 #loading span {
-    height: 40px;
-    width: 15px;
-    background: #2fa0ec;
+    height: 5px;
+    width: 25px;
+    background: #ffffffdd;
     display: inline-block;
     animation: loader 1s infinite;
 }
 
 #loading p {
-    color: #2fa0ec;
+    color: #ffffff88;
     font-size: 20px;
     font-family: Helvetica;
     text-transform: uppercase;
@@ -62,7 +66,7 @@ a:hover, a:focus {
 
 @keyframes loader {
     50% {
-        height: 40px;
+        height: 15px;
         margin-top: 0px;
         opacity: .5;
     }

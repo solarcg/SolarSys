@@ -23,7 +23,7 @@ var CelestialBody = function (obj) {
 
     this.obj = {
         path: null, objPath: null, mtlPath: null,
-        scale: 1., angle: 0.
+        scale: 1., angle: 0., x: 0., y: 0., z: 0.
     };
 
     this.orbit = {
@@ -110,7 +110,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         if (this.isComet) {
             this.objectGroup = new THREE.Group();
             this.particleSystem = new THREE.GPUParticleSystem({
-                maxParticles: 100000
+                maxParticles: 80000
             });
             this.objectGroup.add(this.particleSystem);
             argScene.add(this.objectGroup);
@@ -134,6 +134,9 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                         var scale = that.obj.scale;
                         object.rotateY(that.obj.angle / 180.0 * Math.PI);
                         object.scale.set(scale, scale, scale);
+                        object.translateX(that.obj.x);
+                        object.translateY(that.obj.y);
+                        object.translateZ(that.obj.z);
                     }, onProgress, onError);
                 });
             } else {
@@ -149,6 +152,9 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                     object.rotateY(that.obj.angle / 180.0 * Math.PI);
                     var scale = that.obj.scale;
                     object.scale.set(scale, scale, scale);
+                    object.translateX(that.obj.x);
+                    object.translateY(that.obj.y);
+                    object.translateZ(that.obj.z);
                 }, onProgress, onError);
             }
             argScene.add(this.objectGroup);
