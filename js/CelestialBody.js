@@ -313,7 +313,6 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                 vertexShader: haloVS,
                 fragmentShader: haloFS,
                 transparent: true,
-                depthTest: false,
                 blending: THREE.CustomBlending,
                 blendEquation: THREE.AddEquation
             });

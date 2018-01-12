@@ -217,6 +217,13 @@ celestialBodies = {
             type: "lambert",
             diffuse: {map: "res/mars/diffuse.jpg"},
             bump: {map: "res/mars/bump.jpg", height: 1.}
+        },
+        atmosphere: {
+            scattering: true,
+            atmosphereColor: new THREE.Vector3(0.8, 0.6, 0.5),
+            sunsetColor: new THREE.Vector3(0.4, 0.5, 0.7),
+            atmosphereStrength: 0.7,
+            sunsetStrength: 0.4
         }
     }),
     Jupiter: new CelestialBody({
