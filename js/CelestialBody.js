@@ -61,12 +61,11 @@ var CelestialBody = function (obj) {
         lower: 2000, higher: 6000,
         color: 0xffffff, specularColor: 0xffffff, specularPower: 5
     };
-    // Holo effect
-    this.holo = {
-        // TODO: Other parameters to be implemented
-        color: 0x000000
+    // halo effect
+    this.halo = {
+        color: null,
+        radius: 1.
     };
-    // TODO: Atmosphere parameters to be implemented
     this.atmosphere = {
         cloud: {
             map: null, height: 1, speed: 20
@@ -300,6 +299,26 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             });
             this.atmosphereMesh = new THREE.Mesh(this.atmosphereGeometry, this.atmosphereMaterial);
             this.objectGroup.add(this.atmosphereMesh);
+        }
+
+        this.haloGeometry = null;
+        this.haloMaterial = null;
+        this.haloMesh = null;
+        if(this.halo.color != null) {
+            this.haloGeometry = new THREE.SphereGeometry(this.halo.radius, 64, 64);
+            this.haloMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    color: { value: this.halo.color }
+                },
+                vertexShader: haloVS,
+                fragmentShader: haloFS,
+                transparent: true,
+                depthTest: false,
+                blending: THREE.CustomBlending,
+                blendEquation: THREE.AddEquation
+            });
+            this.haloMesh = new THREE.Mesh(this.haloGeometry, this.haloMaterial);
+            this.objectGroup.add(this.haloMesh);
         }
 
         // Add rings
