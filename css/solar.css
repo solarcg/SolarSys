@@ -1,6 +1,6 @@
 body {
     color: #ffffff;
-    font-family: "Adobe Devanagari";
+    font-family: "Segoe UI", Myriad, Helvetica, Arial, "DejaVu Sans", "Noto Sans CJK SC", "Source Han Sans SC", "思源黑体", "等线", "华文细黑", "微软雅黑";
     font-size: 20px;
     text-align: center;
     background-color: #000000;
@@ -26,13 +26,13 @@ img {
 }
 
 a {
-    color: #0080ff;
+    color: #ffffff4a;
     outline: none;
+    text-decoration: none;
 }
 
 a:hover, a:focus {
-    color: #74777b;
-    text-decoration: none;
+    color: #ffffff;
 }
 
 #loading {

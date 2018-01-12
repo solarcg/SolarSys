@@ -287,8 +287,8 @@ celestialBodies = {
         },
         ring: {
             map: "res/saturn/ring.png",
-            lower: 10,
-            higher: 20,
+            lower: 5,
+            higher: 40,
         }
     }),
     Uranus: new CelestialBody({
