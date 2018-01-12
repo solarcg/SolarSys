@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="css/solar.css">
 </head>
 <body>
-
 <div id="container">
     <!--Loading prompt-->
     <div id="prompt">
@@ -25,6 +24,9 @@
         </div>
     </div>
 </div>
+<div>
+    <audio id="promptSound" src="res/prompt/ding.wav" />
+</div>
 <div id="info">
     <a href="https://github.com/solarcg/SolarSys" target="_blank" rel="noopener">SolarSys</a></div>
     <script src="shaders/general.vs" type="x-shader/x-vertex" id="generalvs"></script>
@@ -39,6 +41,8 @@
     <script src="js/libs/OBJLoader.js"></script>
     <script src="js/libs/MTLLoader.js"></script>
     <script src="js/libs/GPUParticleSystem.js"></script>
+    <script src="js/libs/FirstPersonControls.js"></script>
+    <script src="js/libs/OrbitControls.js"></script>
     <!-- Texture loader -->
     <script>var textureLoader = new THREE.TextureLoader();</script>
     <script>var objLoader = new THREE.OBJLoader();</script>

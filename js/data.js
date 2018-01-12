@@ -31,7 +31,7 @@ celestialBodies = {
         orbit: {
             period: 1.2,
             semiMajorAxis: 200.,
-            eccentricity: 0.,
+            eccentricity: 0.2056,
             inclination: 0.
         },
         rotation: {
@@ -54,7 +54,7 @@ celestialBodies = {
         orbit: {
             period: 3.1,
             semiMajorAxis: 600.,
-            eccentricity: 0.,
+            eccentricity: 0.0068,
             inclination: 0.
         },
         rotation: {
@@ -84,7 +84,7 @@ celestialBodies = {
         orbit: {
             period: 5,
             semiMajorAxis: 1000.,
-            eccentricity: 0.,
+            eccentricity: 0.0167,
             inclination: 30.
         },
         rotation: {
@@ -121,8 +121,9 @@ celestialBodies = {
         isComet: true,
         orbit: {
             period: 3.5,
-            semiMajorAxis: 1300.,
-            inclination: 30.0,
+            semiMajorAxis: 3000.,
+            eccentricity: 0.5,
+            inclination: 10.,
         },
     }),
     Ship: new CelestialBody({
@@ -150,19 +151,19 @@ celestialBodies = {
     Astronaut: new CelestialBody({
         name: "Astronaut",
         parent: "Earth",
-        radius: 150.,
+        radius: 10.,
         spherical: false,
         obj: {
             path: "res/space/",
             objPath: "man.obj",
             mtlPath: null,
-            scale: 0.5,
-            angle: 170,
+            scale: 1.0,
+            angle: 235,
         },
         orbit: {
             period: 1.0,
             semiMajorAxis: 20.,
-            inclination: 30,
+            inclination: 0,
         },
         rotation: {
             period: 1000000,
@@ -177,7 +178,7 @@ celestialBodies = {
         orbit: {
             period: 9.4,
             semiMajorAxis: 30.,
-            eccentricity: 0.,
+            eccentricity: 0.0549,
             inclination: 0.
         },
         rotation: {
@@ -199,7 +200,7 @@ celestialBodies = {
         orbit: {
             period: 9.4,
             semiMajorAxis: 1300.,
-            eccentricity: 0.,
+            eccentricity: 0.0934,
             inclination: 0.
         },
         rotation: {
@@ -222,7 +223,7 @@ celestialBodies = {
         orbit: {
             period: 59.3,
             semiMajorAxis: 1600.,
-            eccentricity: 0.,
+            eccentricity: 0.0484,
             inclination: 0.
         },
         rotation: {
@@ -251,7 +252,7 @@ celestialBodies = {
         orbit: {
             period: 40.0,
             semiMajorAxis: 1900.,
-            eccentricity: 0.,
+            eccentricity: 0.0542,
             inclination: 0.
         },
         rotation: {
@@ -286,7 +287,7 @@ celestialBodies = {
         orbit: {
             period: 50.0,
             semiMajorAxis: 2200.,
-            eccentricity: 0.,
+            eccentricity: 0.0472,
             inclination: 0.
         },
         rotation: {
@@ -313,7 +314,7 @@ celestialBodies = {
         orbit: {
             period: 50.0,
             semiMajorAxis: 2500.,
-            eccentricity: 0.,
+            eccentricity: 0.0086,
             inclination: 0.
         },
         rotation: {
@@ -340,7 +341,7 @@ celestialBodies = {
         orbit: {
             period: 50.0,
             semiMajorAxis: 2900.,
-            eccentricity: 0.,
+            eccentricity: 0.003484,
             inclination: 0.
         },
         rotation: {
