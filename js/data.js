@@ -4,6 +4,7 @@ celestialBodies = {
         star: true,
         parent: "Sun",
         radius: 100.,
+        shineColor: 0xffeeaa,
         orbit: {
             semiMajorAxis: 0.
         },

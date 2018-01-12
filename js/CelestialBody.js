@@ -210,11 +210,10 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
 
         // Add lens flare
         this.lensFlare = null;
-        if (!this.star) {
+        if (this.star) {
             this.lensFlare =
-                new THREE.LensFlare(this.flareTexture, 20 * Math.log(this.radius) * this.albedo,
+                new THREE.LensFlare(this.flareTexture, 200,
                     0, THREE.AdditiveBlending, new THREE.Color(this.shineColor));
-            this.lensFlare.size = 200;
             this.lensFlare.position.set(this.getX(), this.getY(), this.getZ());
 
             var that = this;
@@ -226,18 +225,18 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                     * (trackCamera[params.Camera].getY() - that.getY()),
                     (trackCamera[params.Camera].getZ() - that.getZ())
                     * (trackCamera[params.Camera].getZ() - that.getZ()));
-                if (cameraDistance / that.radius < 125) {
+                this.transparent = 0.3;
+                if (cameraDistance < 6000) {
                     that.bodySphereMaterial.depthTest = true;
+                    that.haloMaterial.depthTest = true;
+                    that.cloudMaterial.depthTest = true;
                 }
                 else {
                     that.bodySphereMaterial.depthTest = false;
+                    that.haloMaterial.depthTest = false;
                 }
                 this.updateLensFlares();
             };
-        } else {
-            this.lensFlare =
-                new THREE.LensFlare(this.flareTexture, 400, 0,
-                    THREE.AdditiveBlending, new THREE.Color(this.shineColor));
         }
 
         // Add night
@@ -341,19 +340,15 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         }
 
         // Add meshes to the object group
-        // this.objectGroup.add(this.lensFlare);
+        if(this.lensFlare != null) this.objectGroup.add(this.lensFlare);
         this.objectGroup.add(this.bodySphereMesh);
 
         if (this.ringMeshPositive !== null) {
             this.objectGroup.add(this.ringMeshPositive);
             this.objectGroup.add(this.ringMeshNegative);
         }
-        // if(!this.star) this.bodySphereMesh.castShadow = true;
-        // if(!this.star) this.bodySphereMesh.receiveShadow = true;
         if (this.cloudMesh !== null) {
             this.objectGroup.add(this.cloudMesh);
-            // if(!this.star) this.cloudMesh.castShadow = true;
-            // if(!this.star) this.cloudMesh.receiveShadow = true;
         }
         // simple inclination
         this.objectGroup.rotateZ(this.rotation.inclination / 180.0 * Math.PI);
