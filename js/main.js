@@ -11,6 +11,8 @@ var saveCur, saveNext;
 var orbitDraw = new Map();
 var clock = new THREE.Clock();
 var tick = 0;
+var cometSet = true;
+var lastCometX, lastCometY, lastCometZ;
 var params = {
     Camera: "Galaxy",
 };
@@ -80,13 +82,26 @@ function drawOrbit(color, celestialBody) {
     var size = 360 / radius;
     var orbit = new THREE.Geometry();
     var e = celestialBody.orbit.eccentricity;
-    var material = new THREE.LineBasicMaterial({ color: color, opacity: 1.0 });
+    var material = new THREE.LineBasicMaterial({ vertexColors: true });
     for (var i = 0; i <= radius; i++) {
         var segment = (i * size) * Math.PI / 180;
         var r = radius*(1-e*e)/(1+e*Math.cos(segment));
         orbit.vertices.push(new THREE.Vector3((Math.cos(segment) * r +radius*e)* Math.cos(angle),
             (Math.cos(segment) * r +radius*e)* Math.sin(angle),
             Math.sin(segment) * r));
+        var color1 = new THREE.Color(0xffffff);  
+        var quad = (radius / 4.0);
+        if (i < quad) {
+            color1.setRGB((0 + (4 * i / radius) * 100) / 255, (50 + (4 * i / radius) * 50) / 255, 100.0 / 255 );
+        } else if ( i >= quad && i < 2 * quad) {
+            color1.setRGB((100 - (4 * i / radius - 1) * 100) / 255, (100 - (4 * i / radius - 1) * 50) / 255, 100.0 / 255 );
+        } else if ( i >= 2 * quad && i < 3 * quad) {
+            color1.setRGB((0 + (4 * i / radius - 2) * 100) / 255, (50 + (4 * i / radius - 2) * 50) / 255, 100.0 / 255 );
+        } else {
+            color1.setRGB((100 - (4 * i / radius - 3) * 100) / 255, (100 - (4 * i / radius - 3) * 50) / 255, 100.0 / 255 );
+        }
+        
+        orbit.colors.push(color1);
     }
     return new THREE.Line(orbit, material);
 }

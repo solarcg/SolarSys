@@ -116,9 +116,9 @@ celestialBodies = {
         isComet: true,
         orbit: {
             period: 3.5,
-            semiMajorAxis: 1300.,
-            eccentricity: 1.0,
-            inclination: 0.0,
+            semiMajorAxis: 3000.,
+            eccentricity: 0.5,
+            inclination: 10.,
         },
     }),
     Ship: new CelestialBody({
