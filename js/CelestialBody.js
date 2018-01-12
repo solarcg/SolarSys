@@ -5,7 +5,9 @@ var CelestialBody = function (obj) {
     // If the planet is the sun
     this.star = false;
     // Object shape info
-    this.spherical = true; this.oblateness = 0.; this.radius = 1.;
+    this.spherical = true;
+    this.oblateness = 0.;
+    this.radius = 1.;
     this.isComet = false;
     this.particleSystem = null;
     // Parent/moon objects
@@ -48,10 +50,10 @@ var CelestialBody = function (obj) {
     this.material = {
         // "phong", "lambert", "basic"
         type: "phong",
-        diffuse: { map: null, color: 0xffffff },
-        specular: { map: null, color: 0xffffff, shininess: 25 },
-        night: { map: null },
-        bump: { map: null, height: 10 }
+        diffuse: {map: null, color: 0xffffff},
+        specular: {map: null, color: 0xffffff, shininess: 25},
+        night: {map: null},
+        bump: {map: null, height: 10}
     };
     // Planet ring definitions
     this.ring = {
@@ -236,10 +238,10 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         // Add night
         this.nightMaterial = null;
         this.nightSphereMesh = null;
-        if(this.material.night.map !== null) {
+        if (this.material.night.map !== null) {
             this.nightMaterial = new THREE.ShaderMaterial({
                 uniforms: {
-                    nightTexture: { value: textureLoader.load(this.material.night.map) }
+                    nightTexture: {value: textureLoader.load(this.material.night.map)}
                 },
                 vertexShader: generalVS,
                 fragmentShader: nightFS,
@@ -295,7 +297,6 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
         // this.objectGroup.add(this.lensFlare);
         this.objectGroup.add(this.bodySphereMesh);
 
-
         if (this.ringMeshPositive !== null) {
             this.objectGroup.add(this.ringMeshPositive);
             this.objectGroup.add(this.ringMeshNegative);
@@ -315,8 +316,8 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
 
 
 CelestialBody.prototype.updateClouds = function (time) {
-    if(this.cloudGeometry !== null) {
-        this.cloudGeometry.rotateY(time*this.atmosphere.cloud.speed/360);
+    if (this.cloudGeometry !== null) {
+        this.cloudGeometry.rotateY(time * this.atmosphere.cloud.speed / 360);
     }
 }
 

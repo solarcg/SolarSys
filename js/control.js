@@ -70,13 +70,13 @@ function onMouseWheelChange(event) {
     trackCamera[body].distance = newDistance;
 }
 
-var posSrc = {pos:0.0};
+var posSrc = {pos: 0.0};
 var oX, oY, oZ, dX, dY, dZ, oTheta, dTheta, oPhi, dPhi, oDistance, dDistance, oSafeDis, dSafeDis;
 var oCX, oCY, oCZ, dCX, dCY, dCZ;
 tween = new TWEEN.Tween(posSrc)
-    .to({pos:1.0}, 4000)
+    .to({pos: 1.0}, 4000)
     .easing(TWEEN.Easing.Quartic.InOut)
-    .onUpdate(function() {
+    .onUpdate(function () {
         var pos = posSrc.pos;
         switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
         switchCamera.theta = oTheta + dTheta * pos;
@@ -85,14 +85,14 @@ tween = new TWEEN.Tween(posSrc)
         switchCamera.safeDistance = oSafeDis + dSafeDis * pos;
         switchCamera.camera.lookAt(oCX + dCX * pos, oCY + dCY * pos, oCZ + dCZ * pos);
     })
-    .onComplete(function() {
+    .onComplete(function () {
         // Need switching to roaming mode
-        if ( goRoaming ) {
+        if (goRoaming) {
             calculateParams[curBody] = saveCur;
             calculateParams[nextBody] = saveNext;
             renderCamera = roamingCamera;
             cameraControl = new THREE.FirstPersonControls(roamingCamera.camera);
-            cameraControl.lookSpeed = 0.05;
+            cameraControl.lookSpeed = 0.1;
             cameraControl.movementSpeed = 150;
             cameraControl.noFly = true;
             cameraControl.constrainVertical = true;
@@ -125,7 +125,7 @@ function initTween() {
 }
 
 function setTween(cur, next) {
-    if (cur == null ) {
+    if (cur == null) {
         oX = arguments[2];
         oY = arguments[3];
         oZ = arguments[4];

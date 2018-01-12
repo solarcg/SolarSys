@@ -1,4 +1,4 @@
-var container, stats, gui;
+var container, stats, gui, promptSound;
 var switchCamera, scene, renderer;
 var roamingCamera, cameraControl;
 var goRoaming = false, roamingStatus = false;
@@ -18,6 +18,7 @@ var params = {
 };
 var calculateParams;
 var orbitParams;
+var control;
 var firstflag = true;
 
 var options = {
@@ -36,7 +37,7 @@ var options = {
 var spawnerOptions = {
     spawnRate: 15000,
     horizontalSpeed: 1.5,
-    verticalSpeed: 1.33,    timeScale: 1
+    verticalSpeed: 1.33, timeScale: 1,
 };
 
 init();
@@ -46,6 +47,7 @@ function initScene() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 }
+
 function initCamera() {
     roamingCamera = new cameraParameters(3000, 200, "Astronaut");
     switchCamera = new cameraParameters(3000, 200, "Sun");
@@ -73,34 +75,31 @@ function initLight() {
 }
 
 
-
-
-
-function drawOrbit(color, celestialBody) {
+function drawOrbit(celestialBody) {
     var radius = celestialBody.orbit.semiMajorAxis;
     var angle = celestialBody.orbit.inclination / 180.0 * Math.PI;
     var size = 360 / radius;
     var orbit = new THREE.Geometry();
     var e = celestialBody.orbit.eccentricity;
-    var material = new THREE.LineBasicMaterial({ vertexColors: true });
+    var material = new THREE.LineBasicMaterial({vertexColors: true});
     for (var i = 0; i <= radius; i++) {
         var segment = (i * size) * Math.PI / 180;
-        var r = radius*(1-e*e)/(1+e*Math.cos(segment));
-        orbit.vertices.push(new THREE.Vector3((Math.cos(segment) * r +radius*e)* Math.cos(angle),
-            (Math.cos(segment) * r +radius*e)* Math.sin(angle),
+        var r = radius * (1 - e * e) / (1 + e * Math.cos(segment));
+        orbit.vertices.push(new THREE.Vector3((Math.cos(segment) * r + radius * e) * Math.cos(angle),
+            (Math.cos(segment) * r + radius * e) * Math.sin(angle),
             Math.sin(segment) * r));
-        var color1 = new THREE.Color(0xffffff);  
+        var color1 = new THREE.Color(0xffffff);
         var quad = (radius / 4.0);
         if (i < quad) {
-            color1.setRGB((0 + (4 * i / radius) * 100) / 255, (50 + (4 * i / radius) * 50) / 255, 100.0 / 255 );
-        } else if ( i >= quad && i < 2 * quad) {
-            color1.setRGB((100 - (4 * i / radius - 1) * 100) / 255, (100 - (4 * i / radius - 1) * 50) / 255, 100.0 / 255 );
-        } else if ( i >= 2 * quad && i < 3 * quad) {
-            color1.setRGB((0 + (4 * i / radius - 2) * 100) / 255, (50 + (4 * i / radius - 2) * 50) / 255, 100.0 / 255 );
+            color1.setRGB((0 + (4 * i / radius) * 100) / 255, (50 + (4 * i / radius) * 50) / 255, 100.0 / 255);
+        } else if (i >= quad && i < 2 * quad) {
+            color1.setRGB((100 - (4 * i / radius - 1) * 100) / 255, (100 - (4 * i / radius - 1) * 50) / 255, 100.0 / 255);
+        } else if (i >= 2 * quad && i < 3 * quad) {
+            color1.setRGB((0 + (4 * i / radius - 2) * 100) / 255, (50 + (4 * i / radius - 2) * 50) / 255, 100.0 / 255);
         } else {
-            color1.setRGB((100 - (4 * i / radius - 3) * 100) / 255, (100 - (4 * i / radius - 3) * 50) / 255, 100.0 / 255 );
+            color1.setRGB((100 - (4 * i / radius - 3) * 100) / 255, (100 - (4 * i / radius - 3) * 50) / 255, 100.0 / 255);
         }
-        
+
         orbit.colors.push(color1);
     }
     return new THREE.Line(orbit, material);
@@ -145,7 +144,7 @@ function initObjects() {
     scene.add(skyBox);
     var orbits = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
     for (var i in orbits) {
-        orbitDraw[orbits[i]] = drawOrbit(0xffffff, celestialBodies[orbits[i]]);
+        orbitDraw[orbits[i]] = drawOrbit(celestialBodies[orbits[i]]);
     }
     for (var objKey in celestialBodies) {
         celestialBodies[objKey].generateObjectsOnScene(scene);
@@ -169,21 +168,45 @@ function initGui() {
     });
 
     var calculate = gui.addFolder('Calculate');
-    calculateParams = {Sun:true, Comet: true, Mercury: false, Venus: false, Earth: false, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
+    calculateParams = {
+        Sun: true,
+        Comet: true,
+        Mercury: false,
+        Venus: false,
+        Earth: true,
+        Mars: false,
+        Jupiter: false,
+        Saturn: false,
+        Uranus: false,
+        Neptune: false,
+        Pluto: false
+    };
     for (var i in calculateParams)
         calculate.add(calculateParams, i);
     var orbit = gui.addFolder('Orbit');
-    orbitParams = {Comet: true, Mercury: false, Venus: false, Earth: true, Mars: false, Jupiter: false, Saturn: false, Uranus: false, Neptune: false, Pluto: false};
+    orbitParams = {
+        Comet: true,
+        Mercury: false,
+        Venus: false,
+        Earth: true,
+        Mars: false,
+        Jupiter: false,
+        Saturn: false,
+        Uranus: false,
+        Neptune: false,
+        Pluto: false
+    };
     for (var i in orbitParams)
         orbit.add(orbitParams, i);
-    
-    var control = new function () {
+
+    control = new function () {
         this.Roam = function () {
             if (roamingStatus == false) {
                 roamingCamera.camera.position.x = celestialBodies["Astronaut"].objectGroup.position.x;
                 roamingCamera.camera.position.y = celestialBodies["Astronaut"].objectGroup.position.y;
                 roamingCamera.camera.position.z = celestialBodies["Astronaut"].objectGroup.position.z;
                 goRoaming = true;
+                nextBody = "Earth";
                 initTween();
                 cameraCopy(switchCamera, trackCamera[curBody]);
                 setTween(curBody, null, celestialBodies["Astronaut"].objectGroup.position.x, celestialBodies["Astronaut"].objectGroup.position.y, celestialBodies["Astronaut"].objectGroup.position.z);
@@ -196,13 +219,16 @@ function initGui() {
                 tween.start();
             }
         };
+        this.Collision = false;
     };
     gui.add(control, "Roam");
+    gui.add(control, "Collision");
 }
 
 
 function init() {
     container = document.getElementById('container');
+    promptSound = document.getElementById('promptSound');
     initCamera();
     initScene();
     initLight();
@@ -231,11 +257,39 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function checkCrash() {
+    var cameraPos = roamingCamera.camera.position.clone();
+    for (var objKey in celestialBodies) {
+        if (celestialBodies[objKey].parent == celestialBodies["Sun"]) {
+            var r = celestialBodies[objKey].radius;
+            var dX = celestialBodies[objKey].getX() - roamingCamera.camera.position.x;
+            var dY = celestialBodies[objKey].getY() - roamingCamera.camera.position.y;
+            var dZ = celestialBodies[objKey].getZ() - roamingCamera.camera.position.z;
+            if (Math.sqrt(dX * dX + dY * dY + dZ * dZ) > 2 * r)
+                continue;
+            var localBodyPos = celestialBodies[objKey].objectGroup.position.clone();
+            var globalBodyPos = localBodyPos.applyMatrix4(celestialBodies[objKey].objectGroup.matrix);
+            var directVector = globalBodyPos.sub(cameraPos).normalize();
+            var ray = new THREE.Raycaster(cameraPos, directVector);
+            var collisionResults = ray.intersectObject(celestialBodies[objKey].objectGroup, true);
+            if (collisionResults.length > 0 && collisionResults[0].distance < celestialBodies[objKey].radius + directVector.length()) {
+                return true;
+            }
+
+        }
+    }
+    return false;
+}
+
 function animate() {
     requestAnimationFrame(animate);
     TWEEN.update();
-    if (roamingStatus)
+    if (roamingStatus) {
         cameraControl.update(clock.getDelta());
+        if (control.Collision && checkCrash()) {
+            promptSound.play();
+        }
+    }
     render();
     stats.update();
 }
