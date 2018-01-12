@@ -43,7 +43,8 @@ var spawnerOptions = {
 init();
 animate();
 
-function initScene() {    scene = new THREE.Scene();
+function initScene() {
+    scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 }
 
@@ -51,18 +52,13 @@ function initCamera() {
     roamingCamera = new cameraParameters(3000, 200, "Astronaut");
     switchCamera = new cameraParameters(3000, 200, "Sun");
     switchCamera.setCamera();
-    trackCamera["Galaxy"] = new cameraParameters(3000, 200, "Sun");
-    trackCamera["Sun"] = new cameraParameters(200, 200, "Sun");
-    trackCamera["Mercury"] = new cameraParameters(30, 30, "Mercury");
-    trackCamera["Venus"] = new cameraParameters(30, 30, "Venus");
-    trackCamera["Earth"] = new cameraParameters(30, 30, "Earth");
-
-    trackCamera["Mars"] = new cameraParameters(30, 30, "Mars");
-    trackCamera["Jupiter"] = new cameraParameters(150, 150, "Jupiter");
-    trackCamera["Saturn"] = new cameraParameters(150, 150, "Saturn");
-    trackCamera["Uranus"] = new cameraParameters(150, 150, "Uranus");
-    trackCamera["Neptune"] = new cameraParameters(150, 150, "Neptune");
-    trackCamera["Pluto"] = new cameraParameters(150, 150, "Pluto");
+    trackCamera["Galaxy"] = new cameraParameters(7000, 200, "Sun");
+    trackCamera["Galaxy"].theta = 80.0;
+    trackCamera["Galaxy"].phi = 0.0;
+    var planets = ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"];
+    for (var i in planets) {
+        trackCamera[planets[i]] = new cameraParameters(3.0 * celestialBodies[planets[i]].radius, 3.0 * celestialBodies[planets[i]].radius, planets[i]);
+    }
 }
 
 function initLight() {
@@ -170,24 +166,24 @@ function initGui() {
     calculateParams = {
         Sun: true,
         Comet: true,
-        Mercury: false,
-        Venus: false,
+        Mercury: true,
+        Venus: true,
         Earth: true,
-        Mars: false,
-        Jupiter: false,
-        Saturn: false,
-        Uranus: false,
-        Neptune: false,
-        Pluto: false
+        Mars: true,
+        Jupiter: true,
+        Saturn: true,
+        Uranus: true,
+        Neptune: true,
+        Pluto: true
     };
     for (var i in calculateParams)
         calculate.add(calculateParams, i);
     var orbit = gui.addFolder('Orbit');
     orbitParams = {
-        Comet: true,
+        Comet: false,
         Mercury: false,
         Venus: false,
-        Earth: true,
+        Earth: false,
         Mars: false,
         Jupiter: false,
         Saturn: false,
