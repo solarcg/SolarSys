@@ -105,7 +105,12 @@ celestialBodies = {
                 map: "res/earth/clouds.png",
                 height: 0.1,
                 speed: 0.02
-            }
+            },
+            scattering: true,
+            atmosphereColor: new THREE.Vector3(0.5, 0.7, 0.8),
+            sunsetColor: new THREE.Vector3(0.8, 0.7, 0.6),
+            atmosphereStrength: 1.0,
+            sunsetStrength: 1.0
         }
     }),
     Comet: new CelestialBody({

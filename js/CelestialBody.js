@@ -64,7 +64,13 @@ var CelestialBody = function (obj) {
     this.atmosphere = {
         cloud: {
             map: null, height: 1, speed: 20
-        }
+        },
+        // By wave length
+        scattering: false,
+        atmosphereColor: new THREE.Vector3(0.5, 0.7, 0.8),
+        sunsetColor: new THREE.Vector3(0.8, 0.7, 0.6),
+        atmosphereStrength: 1.0,
+        sunsetStrength: 1.0
     };
 
     mergeRecursive(this, obj);
@@ -265,6 +271,29 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
                 });
             }
             this.cloudMesh = new THREE.Mesh(this.cloudGeometry, this.cloudMaterial);
+        }
+
+        // Add atmosphere
+        this.atmosphereGeometry = null;
+        this.atmosphereMaterial = null;
+        this.atmosphereMesh = null;
+        if(this.atmosphere.scattering) {
+            this.atmosphereGeometry = new THREE.SphereGeometry(this.radius * 1.015, 64, 64);
+            this.atmosphereMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    atmosphereColor: { value: this.atmosphere.atmosphereColor },
+                    sunsetColor: { value: this.atmosphere.sunsetColor },
+                    atmosphereStrength: { value: this.atmosphere.atmosphereStrength },
+                    sunsetStrength: { value: this.atmosphere.sunsetStrength }
+                },
+                vertexShader: atmosphereVS,
+                fragmentShader: atmosphereFS,
+                transparent: true,
+                blending: THREE.CustomBlending,
+                blendEquation: THREE.AddEquation
+            });
+            this.atmosphereMesh = new THREE.Mesh(this.atmosphereGeometry, this.atmosphereMaterial);
+            this.objectGroup.add(this.atmosphereMesh);
         }
 
         // Add rings
