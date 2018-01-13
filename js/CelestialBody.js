@@ -374,7 +374,7 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
 
 CelestialBody.prototype.updateClouds = function (time) {
     if (this.cloudGeometry !== null) {
-        this.cloudGeometry.rotateY(time * this.atmosphere.cloud.speed / 180.0 * Math.PI);
+        this.cloudGeometry.rotateY(this.atmosphere.cloud.speed / 180.0 * Math.PI);
     }
 }
 
