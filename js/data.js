@@ -144,7 +144,7 @@ celestialBodies = {
             scale: 0.008,
         },
         orbit: {
-            period: -1.0,
+            period: 1.0,
             semiMajorAxis: 15.,
             inclination: 30,
         },
@@ -169,7 +169,7 @@ celestialBodies = {
             z: 0.01,
         },
         orbit: {
-            period: -1.0,
+            period: 1.0,
             semiMajorAxis: 15.,
             inclination: 30,
         },
