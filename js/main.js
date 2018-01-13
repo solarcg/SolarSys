@@ -2,6 +2,7 @@ var container, stats, gui, promptSound;
 var switchCamera, scene, renderer;
 var roamingCamera, cameraControl;
 var sunLight;
+var ambientLight;
 var goRoaming = false, roamingStatus = false;
 var tween;
 var trackCamera = new Map();
@@ -69,8 +70,11 @@ function initLight() {
     // Add light
     sunLight = new THREE.PointLight(0xFFFFFF, 1.0);
     sunLight.position.set(0, 0, 0);
-    sunLight.castShadow = true;
     scene.add(sunLight);
+    ambientLight = new THREE.AmbientLight(0xFFFFFF);
+    ambientLight.intensity = 0;
+    scene.add(ambientLight)
+    // sunLight.castShadow = true;
 }
 
 
@@ -238,6 +242,7 @@ function initGui() {
         };
         this.Collision = false;
         this.Light = 1.0;
+        this.Ambient = 0.0;
         this.TimeScale = 1.0;
         this.Screenshot = function () {
             var dataURL = renderer.domElement.toDataURL();
@@ -247,25 +252,33 @@ function initGui() {
             newWindow.document.body.appendChild(img);
         }
     };
-    gui.add(control, "Roam");
-    gui.add(control, "Collision");
-
+    
     gui.add(control, 'Light', 0.0, 2.0)
-        .onChange(function (val) {
+    .onChange(function (val) {
         window.removeEventListener('mousedown', onWindowMouseDown, false);
         sunLight.intensity = val;
-        })
-        .onFinishChange(function () {
-            window.addEventListener('mousedown', onWindowMouseDown, false);
-        });
+    })
+    .onFinishChange(function () {
+        window.addEventListener('mousedown', onWindowMouseDown, false);
+    });
+    gui.add(control, 'Ambient', 0.0, 1.0)
+    .onChange(function (val) {
+        window.removeEventListener('mousedown', onWindowMouseDown, false);
+        ambientLight.intensity = val;
+    })
+    .onFinishChange(function () {
+        window.addEventListener('mousedown', onWindowMouseDown, false);
+    });
     gui.add(control, 'TimeScale', 0.0, 10.0)
-        .onChange(function (val) {
+    .onChange(function (val) {
         window.removeEventListener('mousedown', onWindowMouseDown, false);
         globalTime.scale = val;
-        })
-        .onFinishChange(function () {
-            window.addEventListener('mousedown', onWindowMouseDown, false);
-        });
+    })
+    .onFinishChange(function () {
+        window.addEventListener('mousedown', onWindowMouseDown, false);
+    });
+    gui.add(control, "Collision");
+    gui.add(control, "Roam");
     gui.add(control, "Screenshot");
     gui.autoPlace = false;
 }
