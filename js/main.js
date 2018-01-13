@@ -1,6 +1,7 @@
 var container, stats, gui, promptSound;
 var switchCamera, scene, renderer;
 var roamingCamera, cameraControl;
+var sunLight;
 var goRoaming = false, roamingStatus = false;
 var tween;
 var trackCamera = new Map();
@@ -18,6 +19,7 @@ var params = {
 };
 var calculateParams;
 var orbitParams;
+var cometParams;
 var control;
 var firstflag = true;
 
@@ -26,12 +28,12 @@ var options = {
     positionRandomness: .3,
     velocity: new THREE.Vector3(),
     velocityRandomness: 3.0,
-    color: 0xaa88ff,
+    color: 0x000011,
     colorRandomness: .2,
     turbulence: 0.,
     lifetime: 2.,
-    size: 5,
-    sizeRandomness: 1
+    size: 10,
+    sizeRandomness: 2
 };
 
 var spawnerOptions = {
@@ -55,6 +57,7 @@ function initCamera() {
     trackCamera["Galaxy"] = new cameraParameters(7000, 200, "Sun");
     trackCamera["Galaxy"].theta = 80.0;
     trackCamera["Galaxy"].phi = 0.0;
+    trackCamera["Comet"] = new cameraParameters(1000, 1000, "Comet");
     var planets = ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"];
     for (var i in planets) {
         trackCamera[planets[i]] = new cameraParameters(3.0 * celestialBodies[planets[i]].radius, 3.0 * celestialBodies[planets[i]].radius, planets[i]);
@@ -64,7 +67,7 @@ function initCamera() {
 
 function initLight() {
     // Add light
-    var sunLight = new THREE.PointLight(0xFFFFFF);
+    sunLight = new THREE.PointLight(0xFFFFFF, 1.0);
     sunLight.position.set(0, 0, 0);
     sunLight.castShadow = true;
     scene.add(sunLight);
@@ -103,7 +106,7 @@ function drawOrbit(celestialBody) {
 
 
 function initRender() {
-    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true, preserveDrawingBuffer: true});
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -136,7 +139,7 @@ function initObjects() {
     var skyBox = new THREE.Mesh(skyGeometry, materialArray);
     skyBox.rotateX(Math.PI / 2);
     scene.add(skyBox);
-    var orbits = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
+    var orbits = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"];
     for (var i in orbits) {
         orbitDraw[orbits[i]] = drawOrbit(celestialBodies[orbits[i]]);
     }
@@ -151,16 +154,6 @@ function initObjects() {
 
 
 function initGui() {
-    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Ship"]).onChange(function (val) {
-        nextBody = val;
-        if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
-            initTween();
-            cameraCopy(switchCamera, trackCamera[curBody]);
-            setTween(curBody, nextBody);
-            tween.start();
-        }
-    });
-
     var calculate = gui.addFolder('Calculate');
     calculateParams = {
         Sun: true,
@@ -190,9 +183,36 @@ function initGui() {
         Neptune: false,
         Pluto: false
     };
+    var comet = gui.addFolder('CometParameters');
+    cometParams = {
+        Length: 6000.,
+        Size: 15000.
+    };
+    comet.add(cometParams, "Length", 1000, 100000)
+        .onChange(function () {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    comet.add(cometParams, "Size", 1000, 100000)
+        .onChange(function () {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
     for (var i in orbitParams)
         orbit.add(orbitParams, i);
-
+    gui.add(params, 'Camera', ["Galaxy", "Sun", "Comet", "Ship", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
+        nextBody = val;
+        if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
+            initTween();
+            cameraCopy(switchCamera, trackCamera[curBody]);
+            setTween(curBody, nextBody);
+            tween.start();
+        }
+    });
     control = new function () {
         this.Roam = function () {
             if (roamingStatus == false) {
@@ -217,9 +237,37 @@ function initGui() {
             }
         };
         this.Collision = false;
+        this.Light = 1.0;
+        this.TimeScale = 1.0;
+        this.Screenshot = function () {
+            var dataURL = renderer.domElement.toDataURL();
+            var newWindow = window.open()
+            var img = newWindow.document.createElement("img");
+            img.src = dataURL;
+            newWindow.document.body.appendChild(img);
+        }
     };
     gui.add(control, "Roam");
     gui.add(control, "Collision");
+
+    gui.add(control, 'Light', 0.0, 2.0)
+        .onChange(function (val) {
+        window.removeEventListener('mousedown', onWindowMouseDown, false);
+        sunLight.intensity = val;
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    gui.add(control, 'TimeScale', 0.0, 10.0)
+        .onChange(function (val) {
+        window.removeEventListener('mousedown', onWindowMouseDown, false);
+        globalTime.scale = val;
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    gui.add(control, "Screenshot");
+    gui.autoPlace = false;
 }
 
 

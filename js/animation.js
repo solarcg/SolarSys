@@ -23,12 +23,10 @@ function render() {
             setTimeout(function () {
                 $("#prompt").fadeOut(500);
                 container.appendChild(stats.domElement);
+                container.appendChild(renderer.domElement);
                 gui.open();
             }, 6000);
-        
         })
-        container.appendChild(renderer.domElement);
-
     }
     firstflag = false;
     if (needSet) {

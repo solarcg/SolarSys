@@ -2,7 +2,7 @@ body {
     color: #ffffff;
     font-family: "Segoe UI", Myriad, Helvetica, Arial, "DejaVu Sans", "Noto Sans CJK SC", "Source Han Sans SC", "思源黑体", "等线", "华文细黑", "微软雅黑";
     font-size: 20px;
-    text-align: center;
+    text-align: left;
     background-color: #000000;
     margin: 0px;
     overflow: hidden;
@@ -12,7 +12,16 @@ body {
     font-size: 12px;
 }
 
+#container {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+
 #info {
+    text-align: center;
     position: absolute;
     top: 0px;
     width: 100%;
@@ -23,6 +32,8 @@ h3, p {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+
 
 
 img {
