@@ -17,7 +17,7 @@ varying vec2 vUv;
 varying vec3 vNormal;
 
 void main( void ) {
-    vec4 nightColor = vec4(texture2D( nightTexture, vUv ).rgb, 0.8);
+    vec4 nightColor = vec4(texture2D( nightTexture, vUv ).rgb, 1.0);
     vec4 dayColor = vec4(0, 0, 0, 0);
     vec3 sunDirection = vec3(viewMatrix * vec4(0, 0, 0, 1));
 
