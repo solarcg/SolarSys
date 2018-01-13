@@ -107,7 +107,7 @@ function pre() {
     $.preLoad(manifest, {
         each: function (count) {
             progressBar.progressSet(count * 2);
-            progressBar.attr({'data-loading': (parseInt(count / manifest.length)).toString() + "%"});
+            progressBar.attr({'data-loading': (parseInt(count / manifest.length * 100)).toString() + "%"});
         },
         all: function () {
             progressBar.progressSet(100);
