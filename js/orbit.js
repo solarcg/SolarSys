@@ -21,6 +21,7 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
         var y = referenceFrameY + (r * Math.cos(10.0 * time / this.orbit.period)) * Math.sin(this.orbit.inclination / 180.0 * Math.PI);
         var z = referenceFrameZ + r * Math.sin(10.0 * time / this.orbit.period);
         if (this.isComet) {
+            this.cometPivot.position.set(x, y, z);
             if (cometSet) {
                 this.objectGroup.position.set(x, y, z);
                 lastCometX = x;
@@ -33,14 +34,13 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
             if (tick < 0) tick = 0;
             if (delta > 0) {
                 var distance = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
-                var tailLength = 1e5 / distance;
+                var tailLength = 1.2e4 / distance;
                 this.particleSystem.color = new THREE.Color();
                 options.position.x -= tailLength * x / Math.sqrt(x * x + y * y + z * z);
                 options.position.y -= tailLength * y / Math.sqrt(x * x + y * y + z * z);
                 options.position.z -= tailLength * z / Math.sqrt(x * x + y * y + z * z);
-                options.color = 0x000011;
-                options.size = 8000. / distance;
-                options.sizeRandomness = 2;
+                // options.size = 10000. / distance;
+                // options.sizeRandomness = 2;
                 for (var i = 0; i < spawnerOptions.spawnRate * delta; i++) {
                     this.particleSystem.spawnParticle(options);
                 }

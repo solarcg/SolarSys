@@ -1,6 +1,7 @@
 var container, stats, gui, promptSound;
 var switchCamera, scene, renderer;
 var roamingCamera, cameraControl;
+var sunLight;
 var goRoaming = false, roamingStatus = false;
 var tween;
 var trackCamera = new Map();
@@ -26,12 +27,12 @@ var options = {
     positionRandomness: .3,
     velocity: new THREE.Vector3(),
     velocityRandomness: 3.0,
-    color: 0xaa88ff,
+    color: 0x000011,
     colorRandomness: .2,
     turbulence: 0.,
     lifetime: 2.,
-    size: 5,
-    sizeRandomness: 1
+    size: 10,
+    sizeRandomness: 2
 };
 
 var spawnerOptions = {
@@ -55,6 +56,7 @@ function initCamera() {
     trackCamera["Galaxy"] = new cameraParameters(7000, 200, "Sun");
     trackCamera["Galaxy"].theta = 80.0;
     trackCamera["Galaxy"].phi = 0.0;
+    trackCamera["Comet"] = new cameraParameters(1000, 1000, "Comet");
     var planets = ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"];
     for (var i in planets) {
         trackCamera[planets[i]] = new cameraParameters(3.0 * celestialBodies[planets[i]].radius, 3.0 * celestialBodies[planets[i]].radius, planets[i]);
@@ -64,7 +66,7 @@ function initCamera() {
 
 function initLight() {
     // Add light
-    var sunLight = new THREE.PointLight(0xFFFFFF);
+    sunLight = new THREE.PointLight(0xFFFFFF, 1.0);
     sunLight.position.set(0, 0, 0);
     sunLight.castShadow = true;
     scene.add(sunLight);
@@ -103,7 +105,7 @@ function drawOrbit(celestialBody) {
 
 
 function initRender() {
-    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true, preserveDrawingBuffer: true});
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -151,7 +153,7 @@ function initObjects() {
 
 
 function initGui() {
-    gui.add(params, 'Camera', ["Galaxy", "Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Ship"]).onChange(function (val) {
+    gui.add(params, 'Camera', ["Galaxy", "Sun", "Comet", "Ship", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
         nextBody = val;
         if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
             initTween();
@@ -217,9 +219,13 @@ function initGui() {
             }
         };
         this.Collision = false;
+        this.Light = 1.0;
     };
     gui.add(control, "Roam");
     gui.add(control, "Collision");
+    gui.add(control, 'Light', 0.0, 2.0).onChange(function (val) {
+        sunLight.intensity = val;
+    });
 }
 
 

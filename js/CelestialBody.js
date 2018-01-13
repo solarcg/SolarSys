@@ -108,9 +108,10 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
     // if(this.spherical)
     if (!this.spherical) {
         if (this.isComet) {
+            this.cometPivot = new THREE.Group();
             this.objectGroup = new THREE.Group();
             this.particleSystem = new THREE.GPUParticleSystem({
-                maxParticles: 80000
+                maxParticles: 150000
             });
             this.objectGroup.add(this.particleSystem);
             argScene.add(this.objectGroup);
