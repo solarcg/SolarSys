@@ -1,4 +1,4 @@
-function remain( objKey ) {
+function remain(objKey) {
     if (celestialBodies[objKey].parent == null)
         return true;
     if ((calculateParams[celestialBodies[objKey].parent.name] && celestialBodies[objKey].parent.name != "Sun") ||
@@ -9,7 +9,7 @@ function remain( objKey ) {
 
 function render() {
     for (var objKey in celestialBodies) {
-        if ( firstflag || remain(objKey)) {
+        if (firstflag || remain(objKey)) {
             celestialBodies[objKey].update(globalTime.getRelative());
             if (orbitParams[objKey]) {
                 scene.add(orbitDraw[objKey]);
@@ -25,21 +25,12 @@ function render() {
                 container.appendChild(stats.domElement);
                 container.appendChild(renderer.domElement);
                 gui.open();
-            }, 6000);
-        })
+            }, 2000);
+        });
     }
     firstflag = false;
     if (needSet) {
         renderCamera.setCamera();
     }
-    // if(Math.sqrt(
-    //     cameraParameters.getX() * cameraParameters.getX()
-    //     + cameraParameters.getY() * cameraParameters.getY()
-    //     + cameraParameters.getZ() * cameraParameters.getZ()
-    // ) > 2000) {
-    //     sunMaterial.depthTest = false;
-    // } else {
-    //     sunMaterial.depthTest = true;
-    // }
     renderer.render(scene, renderCamera.camera);
 }

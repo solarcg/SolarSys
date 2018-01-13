@@ -43,8 +43,80 @@ var spawnerOptions = {
     verticalSpeed: 1.33, timeScale: 1,
 };
 
-init();
-animate();
+$('.progress').progressInitialize();
+
+var progressBar = $('#control');
+
+progressBar.click(function (e) {
+    e.preventDefault();
+    progressBar.progressSet(0);
+    pre();
+    $(this).removeAttr('onclick');
+});
+
+
+function pre() {
+    var manifest = [
+        "res/callisto/diffuse.jpg",
+        "res/comet/particle2.png",
+        "res/comet/perlin-512.png",
+        "res/deimos/diffuse.jpg",
+        "res/deimos/bump.jpg",
+        "res/dione/diffuse.jpg",
+        "res/earth/diffuse.jpg",
+        "res/earth/bump.jpg",
+        "res/earth/clouds.png",
+        "res/earth/night.png",
+        "res/earth/spec.jpg",
+        "res/effects/flare.jpg",
+        "res/europa/diffuse.jpg",
+        "res/io/diffuse.png",
+        "res/jupiter/clouds.png",
+        "res/jupiter/diffuse.jpg",
+        "res/jupiter/ring.png",
+        "res/loading/splash.png",
+        "res/mars/diffuse.jpg",
+        "res/mars/bump.jpg",
+        "res/mercury/diffuse.jpg",
+        "res/mercury/bump.jpg",
+        "res/moon/diffuse.jpg",
+        "res/moon/bump.jpg",
+        "res/neptune/diffuse.jpg",
+        "res/neptune/ring.png",
+        "res/phobos/diffuse.jpg",
+        "res/phobos/bump.jpg",
+        "res/pluto/diffuse.jpg",
+        "res/saturn/diffuse.png",
+        "res/saturn/bump.png",
+        "res/saturn/clouds.png",
+        "res/saturn/ring.png",
+        "res/skybox/posX.jpg",
+        "res/skybox/posY.jpg",
+        "res/skybox/posZ.jpg",
+        "res/skybox/negX.jpg",
+        "res/skybox/negY.jpg",
+        "res/skybox/negZ.jpg",
+        "res/sol/diffuse.png",
+        "res/titan/diffuse.jpg",
+        "res/uranus/diffuse.jpg",
+        "res/uranus/ring.png",
+        "res/venus/diffuse.jpg",
+        "res/venus/bump.jpg",
+        "res/venus/clouds.jpg",
+    ];
+    $.preLoad(manifest, {
+        each: function (count) {
+            progressBar.progressSet(count * 2);
+            progressBar.attr({'data-loading': (parseInt(count / manifest.length)).toString() + "%"});
+        },
+        all: function () {
+            progressBar.progressSet(100);
+            progressBar.attr({'data-loading': (100).toString() + "%"});
+            init();
+            animate();
+        }
+    });
+}
 
 function initScene() {
     scene = new THREE.Scene();
@@ -114,7 +186,7 @@ function initRender() {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    
+
     // renderer.shadowMapEnabled = true;
     // renderer.shadowMapSoft = true;
     // renderer.shadowMap.enabled = true;
@@ -252,31 +324,31 @@ function initGui() {
             newWindow.document.body.appendChild(img);
         }
     };
-    
+
     gui.add(control, 'Light', 0.0, 2.0)
-    .onChange(function (val) {
-        window.removeEventListener('mousedown', onWindowMouseDown, false);
-        sunLight.intensity = val;
-    })
-    .onFinishChange(function () {
-        window.addEventListener('mousedown', onWindowMouseDown, false);
-    });
+        .onChange(function (val) {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+            sunLight.intensity = val;
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
     gui.add(control, 'Ambient', 0.0, 1.0)
-    .onChange(function (val) {
-        window.removeEventListener('mousedown', onWindowMouseDown, false);
-        ambientLight.intensity = val;
-    })
-    .onFinishChange(function () {
-        window.addEventListener('mousedown', onWindowMouseDown, false);
-    });
+        .onChange(function (val) {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+            ambientLight.intensity = val;
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
     gui.add(control, 'TimeScale', 0.0, 10.0)
-    .onChange(function (val) {
-        window.removeEventListener('mousedown', onWindowMouseDown, false);
-        globalTime.scale = val;
-    })
-    .onFinishChange(function () {
-        window.addEventListener('mousedown', onWindowMouseDown, false);
-    });
+        .onChange(function (val) {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+            globalTime.scale = val;
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
     gui.add(control, "Collision");
     gui.add(control, "Roam");
     gui.add(control, "Screenshot");
