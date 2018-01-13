@@ -219,6 +219,7 @@ function initGui() {
         };
         this.Collision = false;
         this.Light = 1.0;
+        this.TimeScale = 1.0;
         this.Screenshot = function () {
             var dataURL = renderer.domElement.toDataURL();
             var newWindow = window.open()
@@ -233,6 +234,14 @@ function initGui() {
         .onChange(function (val) {
         window.removeEventListener('mousedown', onWindowMouseDown, false);
         sunLight.intensity = val;
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    gui.add(control, 'TimeScale', 0.0, 10.0)
+        .onChange(function (val) {
+        window.removeEventListener('mousedown', onWindowMouseDown, false);
+        globalTime.scale = val;
         })
         .onFinishChange(function () {
             window.addEventListener('mousedown', onWindowMouseDown, false);
