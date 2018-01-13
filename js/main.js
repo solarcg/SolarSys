@@ -153,16 +153,6 @@ function initObjects() {
 
 
 function initGui() {
-    gui.add(params, 'Camera', ["Galaxy", "Sun", "Comet", "Ship", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
-        nextBody = val;
-        if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
-            initTween();
-            cameraCopy(switchCamera, trackCamera[curBody]);
-            setTween(curBody, nextBody);
-            tween.start();
-        }
-    });
-
     var calculate = gui.addFolder('Calculate');
     calculateParams = {
         Sun: true,
@@ -194,6 +184,15 @@ function initGui() {
     };
     for (var i in orbitParams)
         orbit.add(orbitParams, i);
+    gui.add(params, 'Camera', ["Galaxy", "Sun", "Comet", "Ship", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
+        nextBody = val;
+        if (nextBody != switchCamera.body || (curBody == "Galaxy" && nextBody == "Sun")) {
+            initTween();
+            cameraCopy(switchCamera, trackCamera[curBody]);
+            setTween(curBody, nextBody);
+            tween.start();
+        }
+    });
 
     control = new function () {
         this.Roam = function () {
@@ -220,12 +219,26 @@ function initGui() {
         };
         this.Collision = false;
         this.Light = 1.0;
+        this.Screenshot = function () {
+            var dataURL = renderer.domElement.toDataURL();
+            var newWindow = window.open()
+            var img = newWindow.document.createElement("img");
+            img.src = dataURL;
+            newWindow.document.body.appendChild(img);
+        }
     };
     gui.add(control, "Roam");
     gui.add(control, "Collision");
-    gui.add(control, 'Light', 0.0, 2.0).onChange(function (val) {
+    gui.add(control, 'Light', 0.0, 2.0)
+        .onChange(function (val) {
+        window.removeEventListener('mousedown', onWindowMouseDown, false);
         sunLight.intensity = val;
-    });
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    gui.add(control, "Screenshot");
+    gui.autoPlace = false;
 }
 
 
