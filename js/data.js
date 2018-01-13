@@ -403,7 +403,7 @@ celestialBodies = {
             cloud: {
                 map: "res/saturn/clouds.png",
                 height: 0.5,
-                speed: 0.02
+                speed: 2.
             },
             scattering: true,
             atmosphereColor: new THREE.Vector3(0.8, 0.7, 0.5),
