@@ -34,12 +34,12 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
             if (tick < 0) tick = 0;
             if (delta > 0) {
                 var distance = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
-                var tailLength = 6000.0 / distance;
+                var tailLength = cometParams["Length"] / distance;
+                options.size = cometParams["Size"] / distance;
                 this.particleSystem.color = new THREE.Color();
                 options.position.x -= tailLength * x / Math.sqrt(x * x + y * y + z * z);
                 options.position.y -= tailLength * y / Math.sqrt(x * x + y * y + z * z);
                 options.position.z -= tailLength * z / Math.sqrt(x * x + y * y + z * z);
-                // options.size = 10000. / distance;
                 // options.sizeRandomness = 2;
                 for (var i = 0; i < spawnerOptions.spawnRate * delta; i++) {
                     this.particleSystem.spawnParticle(options);

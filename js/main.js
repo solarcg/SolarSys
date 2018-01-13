@@ -19,6 +19,7 @@ var params = {
 };
 var calculateParams;
 var orbitParams;
+var cometParams;
 var control;
 var firstflag = true;
 
@@ -138,7 +139,7 @@ function initObjects() {
     var skyBox = new THREE.Mesh(skyGeometry, materialArray);
     skyBox.rotateX(Math.PI / 2);
     scene.add(skyBox);
-    var orbits = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"];
+    var orbits = ["Comet", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"];
     for (var i in orbits) {
         orbitDraw[orbits[i]] = drawOrbit(celestialBodies[orbits[i]]);
     }
@@ -194,6 +195,8 @@ function initGui() {
         }
     });
 
+
+
     control = new function () {
         this.Roam = function () {
             if (roamingStatus == false) {
@@ -230,6 +233,25 @@ function initGui() {
     };
     gui.add(control, "Roam");
     gui.add(control, "Collision");
+    var comet = gui.addFolder('CometParameters');
+    cometParams = {
+        Length: 6000.,
+        Size: 15000.
+    };
+    comet.add(cometParams, "Length", 1000, 100000)
+        .onChange(function () {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    comet.add(cometParams, "Size", 1000, 100000)
+        .onChange(function () {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
     gui.add(control, 'Light', 0.0, 2.0)
         .onChange(function (val) {
         window.removeEventListener('mousedown', onWindowMouseDown, false);
