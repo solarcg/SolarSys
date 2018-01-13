@@ -183,6 +183,25 @@ function initGui() {
         Neptune: false,
         Pluto: false
     };
+    var comet = gui.addFolder('CometParameters');
+    cometParams = {
+        Length: 6000.,
+        Size: 15000.
+    };
+    comet.add(cometParams, "Length", 1000, 100000)
+        .onChange(function () {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
+    comet.add(cometParams, "Size", 1000, 100000)
+        .onChange(function () {
+            window.removeEventListener('mousedown', onWindowMouseDown, false);
+        })
+        .onFinishChange(function () {
+            window.addEventListener('mousedown', onWindowMouseDown, false);
+        });
     for (var i in orbitParams)
         orbit.add(orbitParams, i);
     gui.add(params, 'Camera', ["Galaxy", "Sun", "Comet", "Ship", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]).onChange(function (val) {
@@ -194,9 +213,6 @@ function initGui() {
             tween.start();
         }
     });
-
-
-
     control = new function () {
         this.Roam = function () {
             if (roamingStatus == false) {
@@ -233,25 +249,7 @@ function initGui() {
     };
     gui.add(control, "Roam");
     gui.add(control, "Collision");
-    var comet = gui.addFolder('CometParameters');
-    cometParams = {
-        Length: 6000.,
-        Size: 15000.
-    };
-    comet.add(cometParams, "Length", 1000, 100000)
-        .onChange(function () {
-            window.removeEventListener('mousedown', onWindowMouseDown, false);
-        })
-        .onFinishChange(function () {
-            window.addEventListener('mousedown', onWindowMouseDown, false);
-        });
-    comet.add(cometParams, "Size", 1000, 100000)
-        .onChange(function () {
-            window.removeEventListener('mousedown', onWindowMouseDown, false);
-        })
-        .onFinishChange(function () {
-            window.addEventListener('mousedown', onWindowMouseDown, false);
-        });
+
     gui.add(control, 'Light', 0.0, 2.0)
         .onChange(function (val) {
         window.removeEventListener('mousedown', onWindowMouseDown, false);
