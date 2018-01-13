@@ -34,7 +34,7 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
             if (tick < 0) tick = 0;
             if (delta > 0) {
                 var distance = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
-                var tailLength = 1.2e4 / distance;
+                var tailLength = 6000.0 / distance;
                 this.particleSystem.color = new THREE.Color();
                 options.position.x -= tailLength * x / Math.sqrt(x * x + y * y + z * z);
                 options.position.y -= tailLength * y / Math.sqrt(x * x + y * y + z * z);
