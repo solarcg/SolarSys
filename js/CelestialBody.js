@@ -343,6 +343,14 @@ CelestialBody.prototype.generateObjectsOnScene = function (argScene) {
             this.ringMeshPositive = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
             this.ringGeometry = new THREE.CylinderGeometry(this.radius + this.ring.higher, this.radius + this.ring.lower, 0, 100, 100, true);
             this.ringMeshNegative = new THREE.Mesh(this.ringGeometry, this.ringMaterial);
+            // if(this.name === "Saturn") {
+            //     this.ringMeshPositive.castShadow = true;
+            //     this.ringMeshPositive.receiveShadow = true;
+            //     this.ringMeshNegative.castShadow = true;
+            //     this.ringMeshNegative.receiveShadow = true;
+            //     this.bodySphereMesh.castShadow = true;
+            //     this.bodySphereMesh.receiveShadow = true;
+            // }
         }
 
         // Add meshes to the object group

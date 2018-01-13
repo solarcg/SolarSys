@@ -104,22 +104,20 @@ function drawOrbit(celestialBody) {
 
 function initRender() {
     renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-    renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-
+    
     // renderer.shadowMapEnabled = true;
     // renderer.shadowMapSoft = true;
+    // renderer.shadowMap.enabled = true;
     // renderer.shadowCameraNear = 3;
-    // renderer.shadowCameraFar = camera.far;
+    // renderer.shadowCameraFar = 100;
+    // renderer.shadowMapDarkness = 0.2;
     // renderer.shadowCameraFov = 50;
     // renderer.shadowMapBias = 0.0039;
-    // renderer.shadowMapDarkness = 0.5;
     // renderer.shadowMapWidth = 1024;
     // renderer.shadowMapHeight = 1024;
-
-
 }
 
 function initObjects() {

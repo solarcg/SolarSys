@@ -134,7 +134,7 @@ celestialBodies = {
     Ship: new CelestialBody({
         name: "Ship",
         parent: "Earth",
-        radius: 0.08,
+        radius: 0.2,
         spherical: false,
         obj: {
             path: "res/space/",
@@ -198,6 +198,7 @@ celestialBodies = {
         material: {
             type: "lambert",
             diffuse: {map: "res/moon/diffuse.jpg"},
+            bump: {map: "res/moon/bump.jpg", height: 0.1}
         }
     }),
     Mars: new CelestialBody({
@@ -224,10 +225,10 @@ celestialBodies = {
         },
         atmosphere: {
             scattering: true,
-            atmosphereColor: new THREE.Vector3(0.8, 0.6, 0.5),
+            atmosphereColor: new THREE.Vector3(0.9, 0.8, 0.6),
             sunsetColor: new THREE.Vector3(0.4, 0.5, 0.7),
-            atmosphereStrength: 0.7,
-            sunsetStrength: 0.4
+            atmosphereStrength: 1.0,
+            sunsetStrength: 0.9
         }
     }),
     Phobos: new CelestialBody({
@@ -300,10 +301,15 @@ celestialBodies = {
         atmosphere: {
             cloud: {
                 map: "res/jupiter/clouds.png",
-                height: 0.5,
+                height: 0.3,
                 speed: 0.02
-            }
-        }
+            },
+            scattering: true,
+            atmosphereColor: new THREE.Vector3(1.0, 0.8, 0.7),
+            sunsetColor: new THREE.Vector3(0.7, 0.7, 0.8),
+            atmosphereStrength: 1.8,
+            sunsetStrength: 0.6
+        },
     }),
     Callisto: new CelestialBody({
         name: "Callisto",
@@ -398,7 +404,12 @@ celestialBodies = {
                 map: "res/saturn/clouds.png",
                 height: 0.5,
                 speed: 0.02
-            }
+            },
+            scattering: true,
+            atmosphereColor: new THREE.Vector3(0.8, 0.7, 0.5),
+            sunsetColor: new THREE.Vector3(0.7, 0.7, 0.8),
+            atmosphereStrength: 1.5,
+            sunsetStrength: 0.8
         },
         ring: {
             map: "res/saturn/ring.png",
@@ -475,7 +486,14 @@ celestialBodies = {
             map: "res/uranus/ring.png",
             lower: 10,
             higher: 20,
-        }
+        },
+        atmosphere: {
+            scattering: true,
+            atmosphereColor: new THREE.Vector3(0.5, 0.9, 0.7),
+            sunsetColor: new THREE.Vector3(0.7, 0.9, 0.8),
+            atmosphereStrength: 0.2,
+            sunsetStrength: 0.7
+        },
     }),
     Neptune: new CelestialBody({
         name: "Neptune",

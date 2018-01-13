@@ -5,7 +5,7 @@ var cameraParameters = function (distance, safeDistance, body) {
     this.safeDistance = safeDistance;
     this.safeFar = 1e6;
     this.body = body;
-    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1e10);
+    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.4, 1e7);
 };
 
 cameraParameters.prototype.getDistance = function () { return this.distance; };
