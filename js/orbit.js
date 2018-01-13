@@ -17,7 +17,7 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
         //x=rcoswt+c
         //y=rsinwt
         var r = this.orbit.semiMajorAxis * (1 - this.orbit.eccentricity * this.orbit.eccentricity) / (1 + this.orbit.eccentricity * Math.cos(10.0 * time / this.orbit.period));
-        var x = referenceFrameX + (r * Math.cos(10.0 * time / this.orbit.period))* Math.cos(this.orbit.inclination / 180.0 * Math.PI);
+        var x = referenceFrameX + (r * Math.cos(10.0 * time / this.orbit.period)) * Math.cos(this.orbit.inclination / 180.0 * Math.PI);
         var y = referenceFrameY + (r * Math.cos(10.0 * time / this.orbit.period)) * Math.sin(this.orbit.inclination / 180.0 * Math.PI);
         var z = referenceFrameZ + r * Math.sin(10.0 * time / this.orbit.period);
         if (this.isComet) {
@@ -32,16 +32,14 @@ CelestialBody.prototype.updateOrbitAndRotation = function (time) {
             tick += delta;
             if (tick < 0) tick = 0;
             if (delta > 0) {
-                let distanceFunc = (x, y, z) => Math.sqrt(x*x+y*y+z*z);
-                let distance = distanceFunc(this.getX(), this.getY(), this.getZ());
-                let tailLength = 1e5/distance;
-
+                var distance = distanceFunc(this.getX(), this.getY(), this.getZ());
+                var tailLength = 1e5 / distance;
                 this.particleSystem.color = new THREE.Color();
                 options.position.x -= tailLength * x / Math.sqrt(x * x + y * y + z * z);
                 options.position.y -= tailLength * y / Math.sqrt(x * x + y * y + z * z);
                 options.position.z -= tailLength * z / Math.sqrt(x * x + y * y + z * z);
                 options.color = 0x000011;
-                options.size = 8000./distance;
+                options.size = 8000. / distance;
                 options.sizeRandomness = 2;
                 for (var i = 0; i < spawnerOptions.spawnRate * delta; i++) {
                     this.particleSystem.spawnParticle(options);

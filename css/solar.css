@@ -48,7 +48,7 @@ a:hover, a:focus {
 #loading span {
     height: 5px;
     width: 25px;
-    background: #ffffffdd;
+    background: #ffffff;
     display: inline-block;
     animation: loader 1s infinite;
 }
