@@ -59,13 +59,25 @@ a:hover, a:focus {
     overflow: hidden;
     position: relative;
 
-    box-shadow: 0 1px 1px #ccc;
-    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffffff;
+    border-radius: 15px;
 
-    background-color: #000000;
-    background-image: -webkit-linear-gradient(top, #000000, #000000);
-    background-image: -moz-linear-gradient(top, #000000, #000000);
-    background-image: linear-gradient(top, #000000, #000000);
+    background-color: transparent;
+
+    transition: box-shadow 0.5s;
+    -moz-transition: box-shadow 0.5s;
+    -o-transition: box-shadow 0.5s;
+    -webkit-transition: box-shadow 0.5s;
+}
+
+.progress:hover, .progress:focus {
+    box-shadow: 0px 0px 30px #ffffffaa;
+    transition: box-shadow 0.5s;
+    -moz-transition: box-shadow 0.5s;
+    -o-transition: box-shadow 0.5s;
+    -webkit-transition: box-shadow 0.5s;
 }
 
 .progress.in-progress,

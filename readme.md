@@ -1,5 +1,26 @@
-# Solar System CG
+# The Pale Dots
 
+Solar system simulation with three.js
+
+View online the GitHub page: [https://solarcg.github.io/SolarSys/](https://solarcg.github.io/SolarSys/)
+
+![](res/loading/splash.png)
+
+Features:
+
+- Smoothly switching between cameras
+- First-person roaming
+- Photo-realistic rendering for a few solar system bodies
+- A simple yet beautiful atmospheric model
+- etc...
+
+## Project Process 项目进展
+
+This project has now finished (no longer update...). And we will add readme for the repo later.
+
+这个项目现已完成（我们短期之内将不再更新）。自述文档的内容将在日后完善。
+
+--------
 ## 克隆这个仓库
 
 请确保已经安装 [Git](https://git-scm.com/) 并配置环境变量。
