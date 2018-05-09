@@ -531,7 +531,7 @@ celestialBodies = {
             period: 32.0,
             semiMajorAxis: 4000.,
             eccentricity: 0.2482,
-            inclination: 96.1680
+            inclination: 17.1449
         },
         rotation: {
             period: 153.292944,
