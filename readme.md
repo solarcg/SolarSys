@@ -1,36 +1,36 @@
 # The Pale Dots
 
-基于three.js的太阳系模拟 [Github静态页面](https://solarcg.github.io/SolarSys/)
+Solar system simulation with three.js
+
+View online the GitHub page: [https://solarcg.github.io/SolarSys/](https://solarcg.github.io/SolarSys/)
 
 ![](res/loading/splash.png)
 
-## 关于Pale Dots
+## About Pale Dots
 
-> 仔细瞧它，便会看到一个小点。正是这个小点，是我们，是我们的家。你所熟识的人、所听闻存在过的人，都是在这里，度过了他们的一生。我们欢笑与苦难的总和，……物种史上所有的圣人和罪者，都曾在这粒尘埃之中，这粒茕孑于太阳光芒的尘埃之中。——卡尔·萨根《暗淡蓝点》
+> If you look at it, you see a dot. That‘s here. That’s home. That‘s us. On it, everyone you ever heard of,  every human being who ever lived, lived out their lives. The aggregate of all our joys and sufferings, … every saint and sinner in the history of our species, lived there on a mote of dust, suspended in a sunbeam.—Carl Sagan, the Pale Blue Dot
 
-## 实现
+## Features
 
-- 接近于照片的真实感天体绘制
-- 天体的运动、平滑切换动画
-- 第一人称视角自由漫游
-- 漫游碰撞检测和观察安全距离
-- 逻辑与数据的分离，通过参数指定天体绘制
-- 接近于物理大气散射模型的大气效果实现
+- Smoothly switching between cameras
+- First-person roaming and collision checking
+- Photo-realistic rendering for a few solar system bodies
+- A simple yet beautiful atmospheric model
 - etc...
 
-## 天体绘制
+## Celestial Bodies
 
-![](./images/4.png) 
+![](./images/4.png)
 
-## 渲染效果
+ ## Rendering Effect
 
-![](./images/1.png)
+![](./images/1.png) 
 
 ![](./images/2.png) 
 
-![](./images/3.png)  
+![](./images/3.png) 
 
-## 大气散射
+## Atmospheric Scattering
 
 ![](./images/5.png) 
 
