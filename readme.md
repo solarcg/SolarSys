@@ -8,7 +8,7 @@ View online the GitHub page: [https://solarcg.github.io/SolarSys/](https://solar
 
 ## About Pale Dots
 
-> If you look at it, you see a dot. That‘s here. That’s home. That‘s us. On it, everyone you ever heard of,  every human being who ever lived, lived out their lives. The aggregate of all our joys and sufferings, … every saint and sinner in the history of our species, lived there on a mote of dust, suspended in a sunbeam.—Carl Sagan, the Pale Blue Dot
+> If you look at it, you see a dot. That‘s here. That’s home. That‘s us. On it, everyone you ever heard of,  every human being who ever lived, lived out their lives. The aggregate of all our joys and sufferings, … every saint and sinner in the history of our species, lived there on a mote of dust, suspended in a sunbeam. —Carl Sagan, the Pale Blue Dot
 
 ## Features
 
