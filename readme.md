@@ -2,6 +2,12 @@
 
 Solar system simulation with three.js
 
+[查看中文自述文档](readme-cn.md)
+
+For the virtual reality version of this project, see: [celestialphineas/EarthVR](https://github.com/celestialphineas/EarthVR)
+
+这个项目还有一个VR版本（仅包含地月，但采用真实轨道），可以在装有主流现代浏览器的手机上查看：[celestialphineas/EarthVR](https://github.com/celestialphineas/EarthVR)
+
 View online the GitHub page: [https://solarcg.github.io/SolarSys/](https://solarcg.github.io/SolarSys/)
 
 ![](res/loading/splash.png)
