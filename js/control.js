@@ -15,9 +15,9 @@ function onWindowMouseMove(event) {
         
         trackCamera[body].theta += (event.clientX - windowHalfX - mouseStatus.x) * 0.01;
 
-        if (trackCamera[body].phi + (event.clientY - windowHalfY - mouseStatus.y) * 0.01 >= -0.5 * Math.PI &&
-            trackCamera[body].phi + (event.clientY - windowHalfY - mouseStatus.y) * 0.01 <= 0.5 * Math.PI)
-            trackCamera[body].phi += (event.clientY - windowHalfY - mouseStatus.y) * 0.01;
+        if (trackCamera[body].phi - (event.clientY - windowHalfY - mouseStatus.y) * 0.01 >= -0.5 * Math.PI &&
+            trackCamera[body].phi - (event.clientY - windowHalfY - mouseStatus.y) * 0.01 <= 0.5 * Math.PI)
+            trackCamera[body].phi -= (event.clientY - windowHalfY - mouseStatus.y) * 0.01;
     }
     mouseStatus.x = event.clientX - windowHalfX;
     mouseStatus.y = event.clientY - windowHalfY;
