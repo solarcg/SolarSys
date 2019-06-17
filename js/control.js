@@ -72,6 +72,9 @@ var oCX, oCY, oCZ, dCX, dCY, dCZ;
 tween = new TWEEN.Tween(posSrc)
     .to({ pos: 1.0 }, 4000)
     .easing(TWEEN.Easing.Quartic.InOut)
+    .onStart(function () {
+        globalTimeFlag = false;
+    })
     .onUpdate(function () {
         var pos = posSrc.pos;
         switchCamera.camera.position.set(oX + dX * pos, oY + dY * pos, oZ + dZ * pos);
@@ -108,6 +111,7 @@ tween = new TWEEN.Tween(posSrc)
             needSet = true;
             renderCamera = trackCamera[nextBody];
         }
+        globalTimeFlag = true;
     });
 
 function initTween() {
